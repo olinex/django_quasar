@@ -1,0 +1,24 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+
+# production
+/static/*
+/package-lock.json
+
+# misc
+.DS_Store
+npm-debug.log*
+
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Pycharm
+.idea/
+
+__pycache__/
+*.py[cod]
+*$py.class
