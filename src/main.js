@@ -11,10 +11,11 @@ require(`quasar/dist/quasar.${__THEME}.css`)
 // require(`quasar/dist/quasar.ie.${__THEME}.css`)
 
 import Vue from 'vue'
+import Vuelidate from 'vuelidate'
 import Quasar, {
   QLayout, QToolbar, QToolbarTitle, QBtn, QIcon, QTabs, QRouteTab, QList, QListHeader, QItem, QAjaxBar,
   QItemSide, QItemMain, QFab, QFabAction, QSideLink, QFixedPosition,QCard, QCardTitle, QCardSeparator,
-  QCardMain, QCardActions, QField, QInput
+  QCardMain, QCardActions, QField, QInput, QCollapsible
 } from 'quasar'
 import router from './router'
 import store from './stores'
@@ -22,11 +23,12 @@ import hasPerm from './utils/has-perm'
 import {DEBUG} from "./settings";
 
 Vue.config.productionTip = DEBUG
+Vue.use(Vuelidate)
 Vue.use(Quasar, {
   components: {
     QLayout, QToolbar, QToolbarTitle, QBtn, QIcon, QTabs, QRouteTab, QList, QListHeader, QItem,
     QItemSide, QItemMain, QFab, QFabAction, QSideLink, QFixedPosition, QAjaxBar, QCard, QCardTitle,
-    QCardSeparator, QCardActions, QCardMain, QField, QInput
+    QCardSeparator, QCardActions, QCardMain, QField, QInput, QCollapsible
   }
 }) // Install Quasar Framework
 
@@ -54,7 +56,7 @@ router.beforeEach((to, from, next) => {
     next()
   } else {
     next({
-      name: '401',
+      name: 'Error401',
     })
   }
 })

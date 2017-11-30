@@ -3,9 +3,9 @@ const DEBUG = process.env.NODE_ENV !== 'production'
 
 const PROJECT_NAME = 'django vue'
 
-const HOME_NAME = 'home'
+const HOME_NAME = 'Home'
 const HOME_PATH = '/home'
-const MAIN_NAME = 'main'
+const MAIN_NAME = 'Main'
 const MAIN_PATH = ''
 
 // message levels of this framework

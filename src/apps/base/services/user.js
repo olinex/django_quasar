@@ -22,6 +22,13 @@ const logoutRequest = async () => {
   );
 };
 
+const passwordRequest = async ({old_password,new_password:{password1,password2}}) => {
+  return corsRequest(
+    http.LOGOUT_URL,
+    {method: 'POST', data:{old_password,new_password:{password1,password2}}}
+  );
+};
+
 const mailNoticeRequest = async ({mail_notice}) => {
   return corsRequest(
     http.MAIL_NOTICE_URL,
@@ -40,6 +47,7 @@ export {
   refreshRequest,
   loginRequest,
   logoutRequest,
+  passwordRequest,
   mailNoticeRequest,
   onlineNoticeRequest
 }

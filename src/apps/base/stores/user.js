@@ -1,12 +1,3 @@
-import {
-  refreshRequest,
-  loginRequest,
-  logoutRequest,
-  mailNoticeRequest,
-  onlineNoticeRequest
-} from '../services/user'
-import {RESPONSE_STATUS} from "src/settings";
-
 const namespaced = true
 
 function stateInitial() {
@@ -29,7 +20,8 @@ function stateInitial() {
 const state = stateInitial()
 
 const getters = {
-  fullName: state => `${state.first_name} ${state.last_name}`
+  fullName: state => `${state.first_name} ${state.last_name}`,
+  initialData: state => stateInitial()
 }
 
 const mutations = {
@@ -67,53 +59,9 @@ const mutations = {
   }
 }
 
-const actions = {
-  async initial({commit}) {
-    const response = await refreshRequest()
-    if (response.status === RESPONSE_STATUS.OK) {
-      commit('refresh',response.data)
-      return true
-    }
-    return false
-  },
-  async login({commit},{username,password}) {
-    const response = await loginRequest({username,password})
-    if (response.status === RESPONSE_STATUS.OK) {
-      commit('refresh',response.data)
-      return true
-    }
-    return false
-  },
-  async logout({commit}) {
-    const response = await logoutRequest()
-    if (response.status === RESPONSE_STATUS.OK) {
-      commit('clear')
-      return true
-    }
-    return false
-  },
-  async mailNoticeTrigger({state,commit}) {
-    const response = await mailNoticeRequest({mail_notice:!state.mail_notice})
-    if (response.status === RESPONSE_STATUS.OK) {
-      commit('mailNoticeToggle')
-      return true
-    }
-    return false
-  },
-  async onlineNoticeTrigger({state,commit}) {
-    const response = await onlineNoticeRequest({online_notice:!state.online_notice})
-    if (response.status === RESPONSE_STATUS.OK) {
-      commit('onlineNoticeToggle')
-      return true
-    }
-    return false
-  },
-}
-
 export default {
   namespaced,
   state,
   getters,
-  mutations,
-  actions
+  mutations
 }

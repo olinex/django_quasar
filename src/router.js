@@ -34,8 +34,8 @@ export default new VueRouter({
       ],
     },
     {name: HOME_NAME, path: HOME_PATH, component: load('components/Main'), meta: {right:'all'}},
-    {name: 'login', path: '/login', component: load('apps/base/views/login'), meta: {right: 'all'}},
-    {name: '401', path: '/401', component: load('components/Error401'), meta: {right: 'all'}},
-    {name: '404', path: '*', component: load('components/Error404'), meta: {right: 'all'}}
+    {name: 'Login', path: '/login', component: load('apps/base/views/Login'), meta: {right: 'all'}},
+    {name: 'Error401', path: '/401', component: load('components/Error401'), meta: {right: 'all'}},
+    {name: 'Error404', path: '*', component: load('components/Error404'), meta: {right: 'all'}}
   ]
 })

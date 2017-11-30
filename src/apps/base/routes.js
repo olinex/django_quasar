@@ -1,9 +1,12 @@
-import Navbar from './views/Navbar.vue'
-
+import load from 'src/utils/route-loader'
+import Content from './views/Content.vue'
 
 export default {
   name: 'base',
   path: '/base',
-  components: {navbar:Navbar,},
-  meta: {right: 'all'}
+  component: Content,
+  meta: {right: 'all'},
+  children: [
+    {name: 'base:UserEdit', path: 'user', component: load('apps/base/views/UserEdit'), meta: {right: 'all'}},
+  ]
 }

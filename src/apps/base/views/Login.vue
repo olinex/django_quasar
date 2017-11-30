@@ -31,8 +31,9 @@
 
 <script>
   import {DefaultBackGround} from 'src/components/backgrounds'
-  import {HOME_NAME} from 'src/settings'
+  import {HOME_NAME,RESPONSE_STATUS} from 'src/settings'
   import {Toast} from 'quasar'
+  import {loginRequest} from '../services/user'
   export default {
     components:{
       DefaultBackGround
@@ -45,11 +46,12 @@
     },
     methods: {
       async login() {
-        const result = await this.$store.dispatch('user/login',this.$data)
-        if (result) {
+        const response = await loginRequest(this.$data)
+        if (response.status === RESPONSE_STATUS.OK) {
+          this.$store.commit('user/refresh',response.data)
           this.$router.replace({name:HOME_NAME})
         } else {
-          Toast.create.error('cannot login')
+          Toast.create.error(response.data.detail)
         }
       }
     }
