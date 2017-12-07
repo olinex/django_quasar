@@ -1,47 +1,83 @@
-import {corsRequest} from "src/utils/request";
-import {http} from "../urls/user";
+import {corsRequest, newSocket} from "src/utils/request";
+import {http, socket} from "../urls/user";
 
 const refreshRequest = async () => {
-  return corsRequest(
-    http.REFRESH_URL,
-    {method: 'GET'}
-  )
+  return await corsRequest({
+    url: http.REFRESH_URL(),
+    options: {method: 'GET'}
+  })
 }
 
 const loginRequest = async ({username, password}) => {
-  return corsRequest(
-    http.LOGIN_URL,
-    {method: 'POST', data: {username, password}}
-  );
-};
+  return await corsRequest({
+    url: http.LOGIN_URL(),
+    options: {
+      method: 'POST',
+      data: {username, password}
+    }
+  })
+}
 
 const logoutRequest = async () => {
-  return corsRequest(
-    http.LOGOUT_URL,
-    {method: 'GET'}
-  );
-};
+  return await corsRequest({
+    url: http.LOGOUT_URL(),
+    options: {method: 'GET'}
+  })
+}
 
-const passwordRequest = async ({old_password,new_password:{password1,password2}}) => {
-  return corsRequest(
-    http.LOGOUT_URL,
-    {method: 'POST', data:{old_password,new_password:{password1,password2}}}
-  );
-};
+const passwordRequest = async ({old_password, new_password: {password1, password2}}) => {
+  return await corsRequest({
+    url: http.PASSWORD_URL(),
+    options: {
+      method: 'POST',
+      data: {old_password, new_password: {password1, password2}}
+    }
+  })
+}
 
 const mailNoticeRequest = async ({mail_notice}) => {
-  return corsRequest(
-    http.MAIL_NOTICE_URL,
-    {method: 'POST', data: {mail_notice}}
-  );
-};
+  return await corsRequest({
+    url: http.MAIL_NOTICE_URL(),
+    options: {
+      method: 'POST',
+      data: {mail_notice}
+    }
+  })
+}
 
 const onlineNoticeRequest = async ({online_notice}) => {
-  return corsRequest(
-    http.ONLINE_NOTICE_URL,
-    {method: 'POST', data: {online_notice}}
-  );
-};
+  return await corsRequest({
+    url: http.ONLINE_NOTICE_URL(),
+    options: {
+      method: 'POST',
+      data: {online_notice}
+    }
+  })
+}
+
+const onlineUserRequest = async () => {
+  return await corsRequest({
+    url: http.ONLINE_USERS_URL(),
+    options: {method: 'GET'}
+  })
+}
+
+const userUpdateRequest = async ({id}, {first_name, last_name, email, phone}) => {
+  return await corsRequest({
+    url: http.DETAIL_URL(id),
+    options: {
+      method: 'PATCH',
+      data: {first_name, last_name, email, phone}
+    }
+  })
+}
+
+const baseSocket = async (message) => {
+  return await newSocket({
+    url: socket.base(),
+    message: message
+  })
+}
 
 export {
   refreshRequest,
@@ -49,5 +85,8 @@ export {
   logoutRequest,
   passwordRequest,
   mailNoticeRequest,
-  onlineNoticeRequest
+  onlineUserRequest,
+  onlineNoticeRequest,
+  userUpdateRequest,
+  baseSocket
 }

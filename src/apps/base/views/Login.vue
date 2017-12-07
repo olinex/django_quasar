@@ -51,7 +51,7 @@
           this.$store.commit('user/refresh',response.data)
           this.$router.replace({name:HOME_NAME})
         } else {
-          Toast.create.error(response.data.detail)
+          Toast.create.negative(response.data.detail)
         }
       }
     }

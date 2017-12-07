@@ -12,10 +12,18 @@ require(`quasar/dist/quasar.${__THEME}.css`)
 
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
+import {ForeignKey} from './components/fields'
 import Quasar, {
-  QLayout, QToolbar, QToolbarTitle, QBtn, QIcon, QTabs, QRouteTab, QList, QListHeader, QItem, QAjaxBar,
-  QItemSide, QItemMain, QFab, QFabAction, QSideLink, QFixedPosition,QCard, QCardTitle, QCardSeparator,
-  QCardMain, QCardActions, QField, QInput, QCollapsible
+  QLayout, QToolbar, QToolbarTitle, QSideLink,
+  QList, QListHeader, QItem, QItemMain, QItemSide,
+  QCard, QCardTitle, QCardSeparator, QCardMain, QCardActions,
+  QField, QInput, QCollapsible, QAutocomplete, QSearch,
+  QModal, QModalLayout,
+  QTabs, QRouteTab, QTab, QTabPane,
+  QFab, QFabAction,
+  QPagination, QAjaxBar, QBtn, QIcon, QFixedPosition,
+  QChatMessage,
+  QScrollArea
 } from 'quasar'
 import router from './router'
 import store from './stores'
@@ -23,14 +31,24 @@ import hasPerm from './utils/has-perm'
 import {DEBUG} from "./settings";
 
 Vue.config.productionTip = DEBUG
+
 Vue.use(Vuelidate)
 Vue.use(Quasar, {
   components: {
-    QLayout, QToolbar, QToolbarTitle, QBtn, QIcon, QTabs, QRouteTab, QList, QListHeader, QItem,
-    QItemSide, QItemMain, QFab, QFabAction, QSideLink, QFixedPosition, QAjaxBar, QCard, QCardTitle,
-    QCardSeparator, QCardActions, QCardMain, QField, QInput, QCollapsible
+    QLayout, QToolbar, QToolbarTitle, QSideLink,
+    QList, QListHeader, QItem, QItemMain, QItemSide,
+    QCard, QCardTitle, QCardSeparator, QCardMain, QCardActions,
+    QField, QInput, QCollapsible, QAutocomplete, QSearch,
+    QModal, QModalLayout,
+    QTabs, QRouteTab, QTab, QTabPane,
+    QFab, QFabAction,
+    QPagination, QAjaxBar, QBtn, QIcon, QFixedPosition,
+    QChatMessage,
+    QScrollArea
   }
 }) // Install Quasar Framework
+
+Vue.component(ForeignKey.name,ForeignKey)
 
 if (__THEME === 'mat') {
   require('quasar-extras/roboto-font')

@@ -12,8 +12,15 @@ function stateInitial() {
     mail_notice: false,
     online_notice: false,
     address: null,
-    permissions: new Set([]),
-    groups: new Set([])
+    address_detail: {
+      region: null,
+      name: null,
+    },
+    permissions: [],
+    groups: [],
+    groups_detail: [],
+    socket: null,
+    talks: [],
   }
 }
 
@@ -25,17 +32,21 @@ const getters = {
 }
 
 const mutations = {
-  refreshPermissions(state, permissions) {
-    state.permissions = new Set(permissions)
+  refreshTalks(state, talks) {
+    state.talks = [...talks]
   },
-  addPermissions(state, ...permissions) {
-    permissions.forEach(perm => state.permissions.add(perm))
+  addTalks(state, ...talks) {
+    const oldTalks = new Set(state.talks)
+    talks.forEach(talk => oldTalks.add(talk))
+    state.talks = [...oldTalks]
   },
-  removePermissions(state, ...permissions) {
-    permissions.forEach(perm => state.permissions.delete(perm))
+  removeTalks(state, ...talks) {
+    const oldTalks = new Set(state.talks)
+    talks.forEach(talk => oldTalks.delete(talk))
+    state.talks = [...oldTalks]
   },
-  clearPermissions(state) {
-    state.permissions.clear()
+  clearTalks(state) {
+    state.talks = []
   },
   activeToggle(state) {
     state.is_active = !state.is_active
@@ -56,7 +67,13 @@ const mutations = {
     for (let key of Object.keys(initial)) {
       state[key] = initial[key]
     }
-  }
+  },
+  joinSocket(state,socket) {
+    state.socket = socket
+  },
+  leaveSocket(state) {
+    state.socket = null
+  },
 }
 
 export default {

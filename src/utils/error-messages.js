@@ -1,3 +1,5 @@
+import deepGetter from './deep-getter'
+
 const errorMessages = {
   required(field) {
     return `${field} is required`
@@ -42,10 +44,16 @@ const errorMessages = {
   url(field) {
     return `${field} isn't a valid URL address`
   },
+  requiredIf(field) {
+    return `${field} is required`
+  },
+  sameAs(field,eq) {
+    return `${field} must same as ${eq}`
+  }
 }
 
-function getErrorMessage(validator,name) {
-  const valid = validator[name]
+function getErrorMessage({validator,name}) {
+  const valid = deepGetter({object:validator,name})
   const messages = []
   for (let value of Object.values(valid.$params)) {
     if (!valid[value.type]) {
@@ -59,6 +67,9 @@ function getErrorMessage(validator,name) {
         case 'between':
           messages.push(errorMessages[value.type](name,value.min,value.max))
               break
+        case 'sameAs':
+          messages.push(errorMessages[value.type](name,value.eq))
+              break
         default:
           messages.push(errorMessages[value.type](name))
       }
@@ -70,8 +81,8 @@ function getErrorMessage(validator,name) {
 function mapErrorMessage(names) {
   const map = {}
   for (let name of names) {
-    map[`${name}_err`] = function () {
-      return getErrorMessages(this.$v, name)
+    map[`${name.split('/').join('__')}_err`] = function () {
+      return getErrorMessage({validator:this.$v, name})
     }
   }
   return map

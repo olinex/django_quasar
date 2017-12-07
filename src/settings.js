@@ -3,10 +3,19 @@ const DEBUG = process.env.NODE_ENV !== 'production'
 
 const PROJECT_NAME = 'django vue'
 
+// the most import route: home and main
 const HOME_NAME = 'Home'
 const HOME_PATH = '/home'
 const MAIN_NAME = 'Main'
 const MAIN_PATH = ''
+
+// search param settings
+const PAGE_KEY = 'page'
+const PAGE_SIZE_KEY = 'page_size'
+const ORDERING_KEY = 'ordering'
+
+const DEFAULT_SEARCH_SIZE = 6
+const DEFAULT_PAGE_SIZE = 10
 
 // message levels of this framework
 const LEVELS = {
@@ -24,13 +33,13 @@ const XSRFCOOKIENAME = 'csrftoken';
 const XSRFHEADERNAME = 'X-CSRFToken';
 
 // the level for framework to determine which log will be print
-const LOG_LEVEL = LEVELS.ERROR;
+const LOG_LEVEL = LEVELS.WARNING;
 
 // the http location of the server side for program
-const HTTP_HOST = DEBUG ? 'http://127.0.0.1:8000' : '';
+const HTTP_HOST = DEBUG ? 'http://127.0.0.1:8000' : 'http://127.0.0.1:8000';
 
 // the socket location for program
-const SOCKET_HOST = DEBUG ? 'ws://127.0.0.1:8000' : '';
+const SOCKET_HOST = DEBUG ? 'ws://127.0.0.1:8000' : 'ws://127.0.0.1:8000';
 
 // the status of socket connections
 const SOCKET_STATUS = {
@@ -109,5 +118,10 @@ export {
   HTTP_HOST,
   SOCKET_HOST,
   SOCKET_STATUS,
-  RESPONSE_STATUS
+  RESPONSE_STATUS,
+  PAGE_KEY,
+  PAGE_SIZE_KEY,
+  ORDERING_KEY,
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_SEARCH_SIZE
 }

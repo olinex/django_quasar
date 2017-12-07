@@ -52,7 +52,7 @@
         if (result) {
           this.$router.replace({name:HOME_NAME})
         } else {
-          Toast.create.error('cannot login')
+          Toast.create.negative('cannot login')
         }
       }
     }

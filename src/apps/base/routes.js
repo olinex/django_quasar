@@ -1,12 +1,24 @@
 import load from 'src/utils/route-loader'
-import Content from './views/Content.vue'
 
 export default {
-  name: 'base',
+  name: 'base:Base',
   path: '/base',
-  component: Content,
-  meta: {right: 'all'},
+  component: load('apps/base/views/Base'),
+  meta: {
+    right: 'all',
+    link: true,
+    verboseName: 'base'
+  },
   children: [
-    {name: 'base:UserEdit', path: 'user', component: load('apps/base/views/UserEdit'), meta: {right: 'all'}},
+    {
+      name: 'base:UserEdit',
+      path: 'user',
+      component: load('apps/base/views/UserEdit'),
+      meta: {
+        right: 'all',
+        link: true,
+        verboseName: 'user edit'
+      }
+    },
   ]
 }
