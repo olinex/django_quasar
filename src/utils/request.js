@@ -4,13 +4,13 @@ import {
   DEBUG, LOG_LEVEL, LEVELS, FILTER_TYPES,
   HTTP_HOST, SOCKET_HOST, RESPONSE_STATUS,
   XSRFHEADERNAME, XSRFCOOKIENAME,
-  PAGE_SIZE_KEY, PAGE_KEY, ORDERING_KEY
+  PAGE_SIZE_KEY, PAGE_KEY, ORDERING_KEY, DEFAULT_PAGE_SIZE
 } from '../settings'
 
 // default method for search param name
 const searchName = {
   startswith: field => `${field}__startswith`,
-  exact: field => `${field}__exact`,
+  exact: field => field,
   pageSize: PAGE_SIZE_KEY,
   page: PAGE_KEY,
   ordering: ORDERING_KEY
@@ -45,9 +45,6 @@ axios.interceptors.response.use(
   },
   (error) => {
     console.log(error)
-    if (DEBUG) {
-      serializer(error.response)
-    }
     if (error.response.status >= RESPONSE_STATUS.BAD_REQUEST) {
       if (LOG_LEVEL >= LEVELS.ERROR) {
         Toast.create.negative(error.response.data.detail);
@@ -152,9 +149,27 @@ const newSocket = ({url, message, open = open_handler, error = error_handler, cl
   return socket
 }
 
+function listRequestCreater(url) {
+  return async ({field, terms, pageSize, page, direct, ordering}) => {
+    const search = field ? {[searchName.exact(field)]: terms} : {}
+    return await corsRequest({
+      url: url,
+      options: {
+        params: {
+          ...search,
+          [searchName.pageSize]: pageSize || DEFAULT_PAGE_SIZE,
+          [searchName.page]: page || 1,
+          [searchName.ordering]: ordering ? (direct ? ordering : `-${ordering}`) : '-id',
+        }
+      }
+    })
+  }
+}
+
 export {
   searchName,
   request,
   corsRequest,
-  newSocket
+  newSocket,
+  listRequestCreater
 }

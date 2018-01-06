@@ -1,5 +1,9 @@
 import RouterBreadcrumb from './RouterBreadcrumb'
+import HistoryBreadcrumb from './HistoryBreadcrumb'
+import StatesBreadcrumb from './StatesBreadcrumb'
 
 export {
-  RouterBreadcrumb
+  RouterBreadcrumb,
+  HistoryBreadcrumb,
+  StatesBreadcrumb
 }

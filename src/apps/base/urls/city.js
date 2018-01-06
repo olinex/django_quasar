@@ -1,5 +1,6 @@
 const http = {
-  LIST_URL: () => `/base/city/`
+  LIST_URL: () => `/base/city/`,
+  DETAIL_URL: (id) => `/base/city/${id}/`
 }
 
 const socket = {}

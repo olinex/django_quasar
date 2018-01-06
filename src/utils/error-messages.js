@@ -44,12 +44,22 @@ const errorMessages = {
   url(field) {
     return `${field} isn't a valid URL address`
   },
+
   requiredIf(field) {
     return `${field} is required`
   },
+
   sameAs(field,eq) {
     return `${field} must same as ${eq}`
-  }
+  },
+
+  minValue(field, min) {
+    return `${field} can not less than ${min}`
+  },
+
+  maxValue(field, max) {
+    return `${field} can not greater than ${max}`
+  },
 }
 
 function getErrorMessage({validator,name}) {
@@ -62,6 +72,12 @@ function getErrorMessage({validator,name}) {
           messages.push(errorMessages[value.type](name,value.min))
               break
         case 'maxLength':
+          messages.push(errorMessages[value.type](name,value.max))
+              break
+        case 'minValue':
+          messages.push(errorMessages[value.type](name,value.min))
+              break
+        case 'maxValue':
           messages.push(errorMessages[value.type](name,value.max))
               break
         case 'between':

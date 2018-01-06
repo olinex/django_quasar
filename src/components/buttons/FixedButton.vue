@@ -1,5 +1,5 @@
 <template>
-  <q-fixed-position corner="bottom-right" :offset="[18, 18]">
+  <q-fixed-position corner="bottom-left" :offset="[18, 18]">
     <q-fab color="cyan" icon="keyboard_arrow_up" direction="up">
       <q-fab-action
         :color="socket ? 'positive':'faded'"
@@ -26,7 +26,6 @@
   import {RESPONSE_STATUS} from 'src/settings'
   import {baseSocket,onlineNoticeRequest,mailNoticeRequest} from "src/apps/base/services/user"
   import {createResponse} from "src/utils/response"
-  import Talk from 'src/storages/talks'
 
   export default {
     name: "fixed-button",
@@ -66,7 +65,6 @@
         }
       },
       async socketToggler() {
-        console.log(this.socket)
         if (this.socket) {
           this.socket.close()
           this.$store.commit('user/leaveSocket')
@@ -77,13 +75,10 @@
       },
       socketMessageHandler(event) {
         const data = JSON.parse(event.data)
-        const user_id = data.user_id
+        const user_id = data.from_user_id
         if (data.type === 'talk') {
-          const userTalk = new Talk({
-            self_id:this.$store.state.user.id
-          })
-          this.$store.commit('user/addTalks',user_id)
-          userTalk.receiveTalk(user_id, data)
+          this.$store.commit('user/addTalk',data)
+          this.$store.commit('user/addTalker',user_id)
         } else {
           createResponse(data)
         }

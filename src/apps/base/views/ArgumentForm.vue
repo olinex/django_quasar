@@ -1,0 +1,147 @@
+<template>
+  <div>
+    <q-card>
+      <q-card-title class="text-black">
+        {{name}}
+        <span slot="subtitle">{{id}}</span>
+      </q-card-title>
+      <q-card-main>
+        <div class="row items-center justify-start">
+          <q-btn icon="save" color="primary" @click="update">
+            <i>update</i>
+          </q-btn>
+        </div>
+        <div class="row">
+          <!-- value -->
+          <q-field
+            class="col-6" :error="$v.value.$error"
+            :error-label="value_err"
+            :helper="help_text"
+          >
+            <q-input
+              v-if="form === 'int'"
+              type="number"
+              float-label="value" clearable
+              v-model="value" @blur="$v.value.$touch"
+            ></q-input>
+
+            <q-input
+              v-else-if="form === 'str'"
+              float-label="value" clearable
+              v-model="value" @blur="$v.value.$touch"
+            ></q-input>
+
+            <q-toggle
+              v-else-if="form === 'bool'"
+              float-label="value" clearable
+              v-model="value" @blur="$v.value.$touch"
+            ></q-toggle>
+
+            <q-input
+              v-else float-label="value" clearable
+              v-model="value" @blur="$v.value.$touch"
+            ></q-input>
+          </q-field>
+
+          <!-- sequence -->
+          <q-field
+            class="col-6" :error="$v.sequence.$error"
+            :error-label="sequence_err"
+            helper="required"
+          >
+            <q-input
+              type="number"
+              float-label="sequence" clearable
+              v-model="sequence" @blur="$v.sequence.$touch"
+            ></q-input>
+          </q-field>
+          <q-field class="col-3" helper="readonly">
+            <q-datetime
+              float-label="create time"
+              v-model="create_time" :disable="true" type="datetime"
+            ></q-datetime>
+          </q-field>
+          <q-field class="col-3" helper="readonly">
+            <q-datetime
+              float-label="last modify time"
+              v-model="last_modify_time" :disable="true" type="datetime"
+            ></q-datetime>
+          </q-field>
+        </div>
+      </q-card-main>
+    </q-card>
+  </div>
+</template>
+
+<script>
+  import {Toast} from 'quasar'
+  import {http} from "../urls/argument"
+  import {detailRequest,updateRequest} from "../services/argument"
+  import {RESPONSE_STATUS} from "src/settings"
+  import {required,numeric,minValue} from 'vuelidate/lib/validators'
+  import {mapErrorMessage} from 'src/utils/error-messages'
+
+  export default {
+    props: {
+      id: {type: Number, required: true}
+    },
+    async mounted() {
+      await this.getData()
+    },
+    data() {
+      return {
+        name: '',
+        form: null,
+        value: true,
+        help_text: true,
+        sequence: 0,
+        create_time: '',
+        last_modify_time: '',
+      }
+    },
+    validations: {
+      value: {required},
+      sequence: {required,numeric,minValue:minValue(1)}
+    },
+    computed: {
+      ...mapErrorMessage([
+        'value','sequence'
+      ]),
+      url() {
+        return http.LIST_URL()
+      },
+    },
+    methods: {
+      refresh(data) {
+        this.create_time = data.create_time
+        this.last_modify_time = data.last_modify_time
+        this.form = data.form
+        this.value = data.value
+        this.help_text = data.help_text
+        this.name = data.name
+        this.sequence = data.sequence
+      },
+      async getData() {
+        const response = await detailRequest(this.$props.id)
+        if (response.status === RESPONSE_STATUS.OK) {
+          this.refresh(response.data)
+        } else {
+          Toast.create.negative(response.data.detail)
+        }
+      },
+      async update() {
+        const response = await updateRequest({
+          id: this.$props.id,
+          value: this.value,
+          sequence: this.sequence
+        })
+        if (response.status === RESPONSE_STATUS.OK) {
+          this.refresh(response.data)
+          Toast.create.positive("update successfully")
+        } else {
+          Toast.create.negative(response.data.detail)
+        }
+      }
+    }
+  }
+</script>

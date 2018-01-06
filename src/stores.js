@@ -7,7 +7,31 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    user
+    user,
+    history: {
+      namespaced: true,
+      state: {
+        routes: [],
+      },
+      mutations: {
+        addRoute(state,route) {
+          if (route.meta.link) {
+            const index = state.routes.findIndex(r => r.name === route.name)
+            if (index !== -1) {
+              state.routes[index] = route
+            } else {
+              state.routes.push(route)
+            }
+          }
+        },
+        removeRoute(state,route) {
+          state.routes = state.routes.filter(r => r.name !== route.name)
+        },
+        clearRoutes(state) {
+          state.routes = []
+        }
+      }
+    }
   },
   strict: DEBUG
 })

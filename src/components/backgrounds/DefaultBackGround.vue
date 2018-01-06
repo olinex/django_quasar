@@ -1,7 +1,7 @@
 <template>
   <div class="fullscreen bg-light">
     <div class="fixed-center">
-      <slot></slot>
+      <slot/>
     </div>
   </div>
 </template>

@@ -1,8 +1,8 @@
-import {corsRequest, searchName} from "src/utils/request";
+import {corsRequest, searchName, listRequestCreater} from "src/utils/request";
 import {http} from "../urls/province";
 import {DEFAULT_SEARCH_SIZE} from "src/settings";
 
-const searchRequest = async ({country, name, pageSize, page = 1, ordering = '-id'}) => {
+const searchRequest = async ({country, name, pageSize, page, ordering}) => {
   return await corsRequest({
     url: http.LIST_URL(),
     options: {
@@ -10,13 +10,56 @@ const searchRequest = async ({country, name, pageSize, page = 1, ordering = '-id
         country,
         [searchName.startswith('name')]: name,
         [searchName.pageSize]: pageSize || DEFAULT_SEARCH_SIZE,
-        [searchName.page]: page,
-        [searchName.ordering]: ordering,
+        [searchName.page]: page || 1,
+        [searchName.ordering]: ordering || '-id',
+      }
+    }
+  })
+}
+
+const countryLimitSearchRequest = (country) => {
+  return ({name, pageSize, page, ordering}) => {
+    return searchRequest({
+      country, name, pageSize, page, ordering
+    })
+  }
+}
+
+const detailRequest = async (id) => {
+  return await corsRequest({
+    url: http.DETAIL_URL(id),
+    options: {method: 'GET'}
+  })
+}
+
+const updateRequest = async ({id,name,country,sequence}) => {
+  return await corsRequest({
+    url: http.DETAIL_URL(id),
+    options: {
+      method: 'PATCH',
+      data: {
+        name,country,sequence
+      }
+    }
+  })
+}
+
+const createRequest = async ({name,country,sequence}) => {
+  return await corsRequest({
+    url: http.LIST_URL(),
+    options: {
+      method: 'POST',
+      data: {
+        name,country,sequence
       }
     }
   })
 }
 
 export {
-  searchRequest
+  searchRequest,
+  countryLimitSearchRequest,
+  detailRequest,
+  updateRequest,
+  createRequest
 }

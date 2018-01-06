@@ -2,7 +2,7 @@
   <!-- Don't drop "q-app" class -->
   <div id="q-app">
     <router-view />
-    <q-ajax-bar position="bottom" size="8px"/>
+    <q-ajax-bar color="positive" position="bottom" size="8px"/>
   </div>
 </template>
 
@@ -12,5 +12,3 @@
  */
 export default {}
 </script>
-
-<style></style>

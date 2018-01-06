@@ -2,40 +2,40 @@
   <div class="row">
     <foreign-key
       v-model="province"
-      cls="col-4"
+      class="col-4"
       field="name"
       :error="$v.province.$error"
-      :error_label="province_err"
+      :error-label="province_err"
       helper="the province of the address"
-      placeholder="province"
+      float-label="province"
       :request="getProvinceRequest"
       @blur="$v.province.$touch"
-    ></foreign-key>
+    />
 
     <foreign-key
       v-model="city"
-      cls="col-4"
+      class="col-4"
       field="name"
       :error="$v.city.$error"
-      :error_label="city_err"
+      :error-label="city_err"
       helper="the city of the address"
-      placeholder="city"
+      float-label="city"
       :request="getCityRequest"
       @blur="$v.city.$touch"
-    ></foreign-key>
+    />
 
     <foreign-key
       :value="value"
-      cls="col-4"
+      class="col-4"
       field="name"
       :error="error"
-      :error_label="error_label"
+      :error-label="error_label"
       helper="the region of the address"
-      placeholder="region"
+      float-label="region"
       :request="getRegionRequest"
       @blur="blurHandler"
       @input="inputHandler"
-    ></foreign-key>
+    />
   </div>
 </template>
 
@@ -49,7 +49,7 @@
   import {cityLimitSearchRequest} from "../services/region";
 
   export default {
-    name: "Location",
+    name: "location",
     data() {
       return {
         province: null,

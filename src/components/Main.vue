@@ -7,12 +7,12 @@
       <q-toolbar-title>
         django quasar
       </q-toolbar-title>
-      <router-breadcrumb></router-breadcrumb>
       <q-btn flat round small @click="fullScreenToggler">
-        <q-icon :name="fullScreen ? 'fullscreen_exit' : 'fullscreen'"/>
+        <q-icon :name="fullScreen ? 'fullscreen_exit' : 'fullscreen'"></q-icon>
       </q-btn>
-      <q-btn flat round small @click="$refs.chatModal.trigger()" :color="allNewCount > 0 ? 'primary':'nagetive'">
+      <q-btn flat round small @click="$refs.chatModal.trigger()">
         <q-icon name="mail"/>
+        <q-chip v-if="allNewCount > 0" floating small color="negative">{{allNewCount}}</q-chip>
       </q-btn>
       <q-btn flat round small @click="$router.push({name:'base:UserEdit'})">
         <q-icon name="perm_identity"/>
@@ -24,15 +24,16 @@
 
     <div slot="left">
       <q-list no-border link inset-delimiter>
-        <q-side-link item to="/twitter">
-          <q-item-side icon="rss feed"/>
-          <q-item-main label="Twitter"/>
+        <q-side-link item :to="{name:'base:Base'}">
+          <q-item-side icon="settings"/>
+          <q-item-main label="Settings"/>
         </q-side-link>
       </q-list>
     </div>
-    <router-view></router-view>
-    <chat-modal ref="chatModal"></chat-modal>
-    <fixed-button ref="fixedButton"></fixed-button>
+    <history-breadcrumb/>
+    <router-view/>
+    <chat-modal ref="chatModal"/>
+    <fixed-button ref="fixedButton"/>
   </q-layout>
 </template>
 
@@ -40,9 +41,8 @@
   import {mapState} from 'vuex'
   import {Toast,AppFullscreen} from 'quasar'
   import {RESPONSE_STATUS} from 'src/settings'
-  import Talk from 'src/storages/talks'
   import {FixedButton} from './buttons'
-  import {RouterBreadcrumb} from './breadcrumbs'
+  import {HistoryBreadcrumb} from './breadcrumbs'
   import {ChatModal} from './modals'
   import {logoutRequest, refreshRequest} from 'src/apps/base/services/user'
 
@@ -55,17 +55,16 @@
     components: {
       ChatModal,
       FixedButton,
-      RouterBreadcrumb
+      HistoryBreadcrumb
     },
-    computed: {
-      allNewCount() {
-        const userTalk = new Talk({self_id: this.$store.state.user.id})
-        const countList = this.talks.map(talk => userTalk.userNewTalksCount(talk))
-        return countList.reduce((a, b) => a + b, 0)
-      },
-      ...mapState('user', {talks: state => state.talks})
-    },
-    mounted: async function () {
+    computed: mapState(
+      'user',
+      {
+        talks: state => state.talks,
+        allNewCount: state => state.talks.filter(talk => !talk.readed).length
+      }
+      ),
+    async mounted() {
       const response = await refreshRequest()
       if (response.status === RESPONSE_STATUS.OK) {
         this.$store.commit('user/refresh', response.data)

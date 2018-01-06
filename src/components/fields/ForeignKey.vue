@@ -1,8 +1,8 @@
 <template>
-  <q-field :class="cls" :error="error" :error-label="error_label" :helper="helper">
+  <q-field :error="error" :error-label="errorLabel" :helper="helper">
     <q-input
       :value="label"
-      :placeholder="placeholder"
+      :float-label="floatLabel"
       @input="inputHandler($event)"
       @blur="blurHandler"
       :after="[ { icon: 'more_horiz', more: false, handler: moreToggler } ]"
@@ -37,7 +37,7 @@
   import {RESPONSE_STATUS, DEFAULT_SEARCH_SIZE} from 'src/settings'
 
   export default {
-    name: 'ForeignKey',
+    name: 'foreign-key',
     data() {
       return {
         label: '',
@@ -48,14 +48,13 @@
       }
     },
     props: {
-      cls: {type: [String, Array], default: 'col-6'},
       error: {type: Boolean, required: true, default: false},
-      error_label: {type: String, required: true},
+      errorLabel: {type: String, required: false},
       helper: {type: String, required: true},
-      placeholder: {type: String, required: true},
+      floatLabel: {type: String, required: true},
       request: {type: Function, required: true},
       field: {type: String, required: true},
-      value: {type: Number}
+      value: {type: Number},
     },
     computed: {
       maxPage() {
@@ -82,7 +81,7 @@
         this.$emit('input', option.id)
         this.moreToggler()
       },
-      async getOptions(page) {
+      async getOptions({name, page}) {
         const response = await this.$props.request({name, page})
         if (response.status === RESPONSE_STATUS.OK) {
           this.options = response.data.results
@@ -96,7 +95,7 @@
       },
       async search(name, done) {
         // make a request to the pass in api and refresh the options
-        await this.getOptions(1)
+        await this.getOptions({name, page: 1})
         done(this.options.map(item => {
           return {
             value: item.id || item.pk,
@@ -112,12 +111,14 @@
     watch: {
       async page(val, oldVal) {
         if (val !== oldVal) {
-          await this.getOptions(val)
+          await this.getOptions({page: val})
         }
       },
-      async more(val, oldVal) {
+      async more(val) {
         if (val) {
-          await this.getOptions(1)
+          this.page = 1
+          this.count = 0
+          await this.getOptions({page: 1})
         }
       }
     }

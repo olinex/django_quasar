@@ -1,8 +1,8 @@
 <template>
   <q-card>
-    <q-card-title>
-      {{ storeFullName }}
-    </q-card-title>
+    <q-card-media>
+      <img :src="avatar">
+    </q-card-media>
     <q-card-separator/>
     <q-list>
       <q-collapsible icon="account_circle" label="base data" opened>
@@ -13,7 +13,7 @@
             :error-label="first_name_err"
             helper="length must greater than 1 and less than 3"
           >
-            <q-input clearable placeholder="first name" v-model="first_name" @blur="$v.first_name.$touch"></q-input>
+            <q-input clearable float-label="first name" v-model="first_name" @blur="$v.first_name.$touch"></q-input>
           </q-field>
           <!-- last name -->
           <q-field
@@ -21,7 +21,7 @@
             :error-label="last_name_err"
             helper="length must greater than 1 and less than 13"
           >
-            <q-input clearable placeholder="last name" v-model="last_name" @blur="$v.last_name.$touch"></q-input>
+            <q-input clearable float-label="last name" v-model="last_name" @blur="$v.last_name.$touch"></q-input>
           </q-field>
           <!-- emial -->
           <q-field
@@ -29,7 +29,7 @@
             :error-label="email_err"
             helper="email address"
           >
-            <q-input type="email" clearable placeholder="email" v-model="email" @blur="$v.email.$touch"></q-input>
+            <q-input type="email" clearable float-label="email" v-model="email" @blur="$v.email.$touch"></q-input>
           </q-field>
           <!-- phone -->
           <q-field
@@ -37,20 +37,27 @@
             :error-label="phone_err"
             helper="phone number"
           >
-            <q-input type="number" clearable placeholder="phone" v-model="phone" @blur="$v.phone.$touch"></q-input>
+            <q-input type="number" clearable float-label="phone" v-model="phone" @blur="$v.phone.$touch"></q-input>
           </q-field>
+          <!-- avatar -->
+          <q-uploader
+            :headers="defaultHeader"
+            method="PATCH" class="col-12"
+            :url="uploadUrl" name="avatar"
+            extensions=".gif,.jpg,.jpeg,.png"
+          ></q-uploader>
           <location
             v-model="address_detail.region"
             :error="$v.address_detail.region.$error"
             :error_label="address_detail__region_err"
-          ></location>
+          />
           <q-field
             class="col-12" :error="$v.address_detail.name.$error"
             :error-label="address_detail__name_err"
             helper="address name"
           >
             <q-input
-              clearable placeholder="address name"
+              clearable float-label="address name"
               v-model="address_detail.name"
               @blur="$v.address_detail.name.$touch"
             ></q-input>
@@ -69,7 +76,7 @@
             helper="the last password user used to login"
           >
             <q-input
-              type="password" clearable placeholder="old password" v-model="old_password"
+              type="password" clearable float-label="old password" v-model="old_password"
               @blur="$v.old_password.$touch"
             ></q-input>
           </q-field>
@@ -80,7 +87,7 @@
             helper="the new password"
           >
             <q-input
-              type="password" clearable placeholder="new password" v-model="password1"
+              type="password" clearable float-label="new password" v-model="password1"
               @blur="$v.password1.$touch"
             ></q-input>
           </q-field>
@@ -91,7 +98,7 @@
             helper="repeat new password"
           >
             <q-input
-              type="password" clearable placeholder="repeat password" v-model="password2"
+              type="password" clearable float-label="repeat password" v-model="password2"
               @blur="$v.password2.$touch"
             ></q-input>
           </q-field>
@@ -105,16 +112,16 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
   import {Toast} from 'quasar'
   import {mapErrorMessage} from 'src/utils/error-messages'
+  import {http} from "../urls/user"
   import {RESPONSE_STATUS} from 'src/settings'
-  import {passwordRequest, userUpdateRequest} from '../services/user'
+  import {passwordRequest, updateRequest} from '../services/user'
   import Location from '../components/Location'
   import {
     email, minLength, maxLength, numeric, requiredIf, sameAs, required
   } from 'vuelidate/lib/validators'
-  import ForeignKey from "../../../components/fields/ForeignKey.vue";
+  import defaultHeader from 'src/utils/default-headers'
 
   export default {
     components: {Location},
@@ -125,12 +132,13 @@
         email: this.$store.state.user.email,
         phone: this.$store.state.user.phone,
         address_detail: {
-          region:this.$store.state.user.address_detail.region,
-          name:this.$store.state.user.address_detail.name
+          region: this.$store.state.user.address_detail.region,
+          name: this.$store.state.user.address_detail.name
         },
+        avatar: this.$store.state.user.avatar,
         old_password: '',
         password1: '',
-        password2: '',
+        password2: ''
       }
     },
     validations: {
@@ -147,12 +155,12 @@
       password2: {requiredIf: requiredIf('password1'), sameAs: sameAs('password1'), minLength: minLength(6)},
     },
     computed: {
-      ...mapGetters(
-        'user',
-        {
-          storeFullName: state => state.fullName
-        }
-      ),
+      uploadUrl() {
+        return http.DETAIL_URL(this.$store.state.user.id)
+      },
+      defaultHeader() {
+        return defaultHeader()
+      },
       ...mapErrorMessage([
         'first_name', 'last_name', 'email', 'phone',
         'address_detail/region', 'address_detail/name',
@@ -199,16 +207,18 @@
       },
       async changeUserData() {
         if (this.userDataValid) {
-          const response = await userUpdateRequest(
+          const data = {
+            first_name: this.first_name,
+            last_name: this.last_name,
+            email: this.email,
+            phone: this.phone,
+          }
+          const response = await updateRequest(
             {id: this.$store.state.user.id},
-            {
-              first_name: this.first_name,
-              last_name: this.last_name,
-              email: this.email,
-              phone: this.phone,
-            }
+            data
           )
           if (response.status === RESPONSE_STATUS.OK) {
+            this.$store.commit('user/refresh', data)
             Toast.create.positive('user data changed successfully')
           } else {
             Toast.create.negative(response.data.detail)

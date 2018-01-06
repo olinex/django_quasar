@@ -12,18 +12,24 @@ require(`quasar/dist/quasar.${__THEME}.css`)
 
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
-import {ForeignKey} from './components/fields'
+import {ForeignKey,ManyToManyField} from './components/fields'
+import {BaseTable} from './components/tables'
+import {ButtonGroup} from './components/forms'
+import {StatesBreadcrumb} from './components/breadcrumbs'
 import Quasar, {
   QLayout, QToolbar, QToolbarTitle, QSideLink,
   QList, QListHeader, QItem, QItemMain, QItemSide,
   QCard, QCardTitle, QCardSeparator, QCardMain, QCardActions,
-  QField, QInput, QCollapsible, QAutocomplete, QSearch,
+  QField, QInput, QCollapsible, QAutocomplete, QSearch, QSelect, QToggle, QDatetime,
   QModal, QModalLayout,
   QTabs, QRouteTab, QTab, QTabPane,
   QFab, QFabAction,
-  QPagination, QAjaxBar, QBtn, QIcon, QFixedPosition,
-  QChatMessage,
-  QScrollArea
+  QPagination, QAjaxBar, QBtn, QIcon, QFixedPosition, QPopover,
+  QChatMessage, QChip, QUploader,
+  QScrollArea,
+  QDataTable,
+  QStepper, QStep,
+  QDialogSelect
 } from 'quasar'
 import router from './router'
 import store from './stores'
@@ -38,17 +44,24 @@ Vue.use(Quasar, {
     QLayout, QToolbar, QToolbarTitle, QSideLink,
     QList, QListHeader, QItem, QItemMain, QItemSide,
     QCard, QCardTitle, QCardSeparator, QCardMain, QCardActions,
-    QField, QInput, QCollapsible, QAutocomplete, QSearch,
+    QField, QInput, QCollapsible, QAutocomplete, QSearch, QSelect, QToggle, QDatetime,
     QModal, QModalLayout,
     QTabs, QRouteTab, QTab, QTabPane,
     QFab, QFabAction,
-    QPagination, QAjaxBar, QBtn, QIcon, QFixedPosition,
-    QChatMessage,
-    QScrollArea
+    QPagination, QAjaxBar, QBtn, QIcon, QFixedPosition, QPopover,
+    QChatMessage, QChip, QUploader,
+    QScrollArea,
+    QDataTable,
+    QStepper, QStep,
+    QDialogSelect
   }
 }) // Install Quasar Framework
 
 Vue.component(ForeignKey.name,ForeignKey)
+Vue.component(ManyToManyField.name,ManyToManyField)
+Vue.component(BaseTable.name,BaseTable)
+Vue.component(StatesBreadcrumb.name,StatesBreadcrumb)
+Vue.component(ButtonGroup.name,ButtonGroup)
 
 if (__THEME === 'mat') {
   require('quasar-extras/roboto-font')
@@ -71,10 +84,9 @@ Quasar.start(() => {
 // check all the permission of ther route
 router.beforeEach((to, from, next) => {
   if (to.matched.some(route => route.meta && hasPerm(route.meta.right, store.state.user.permissions))) {
+    store.commit('history/addRoute',to)
     next()
   } else {
-    next({
-      name: 'Error401',
-    })
+    next({name: 'Error401'})
   }
 })

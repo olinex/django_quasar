@@ -25,7 +25,9 @@
     },
     computed: {
       routes() {
-        return this.$route.matched.filter(route => route.name !== this.homeName && route.meta && route.meta.link)
+        return this.$route.matched.filter(
+          route => route.name !== this.homeName && route.meta && route.meta.link
+        )
       }
     }
   }

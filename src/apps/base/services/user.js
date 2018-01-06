@@ -62,7 +62,7 @@ const onlineUserRequest = async () => {
   })
 }
 
-const userUpdateRequest = async ({id}, {first_name, last_name, email, phone}) => {
+const updateRequest = async ({id}, {first_name, last_name, email, phone}) => {
   return await corsRequest({
     url: http.DETAIL_URL(id),
     options: {
@@ -87,6 +87,6 @@ export {
   mailNoticeRequest,
   onlineUserRequest,
   onlineNoticeRequest,
-  userUpdateRequest,
+  updateRequest,
   baseSocket
 }
