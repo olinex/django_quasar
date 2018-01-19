@@ -13,7 +13,7 @@
       </q-card-title>
       <q-card-main>
         <div class="row">
-          <q-btn icon="save" color="primary" @click="save">
+          <q-btn icon="save" color="primary" :disable="$v.$error" @click="save">
             <i>save</i>
           </q-btn>
         </div>
@@ -50,7 +50,7 @@
             <q-input
               float-label="name" clearable
               v-model="name" @blur="$v.name.$touch"
-            ></q-input>
+            />
           </q-field>
 
           <!-- sequence -->
@@ -63,7 +63,7 @@
               type="number"
               float-label="sequence" clearable
               v-model="sequence" @blur="$v.sequence.$touch"
-            ></q-input>
+            />
           </q-field>
         </div>
       </q-card-main>
@@ -73,7 +73,6 @@
 
 <script>
   import {Toast} from 'quasar'
-  import {RESPONSE_STATUS} from "src/settings"
   import {createRequest} from "../services/region"
   import {required,numeric,minValue} from 'vuelidate/lib/validators'
   import {mapErrorMessage} from 'src/utils/error-messages'
@@ -110,10 +109,10 @@
           name: this.name,
           city: this.city,
           sequence: this.sequence
-        })
-        if (response.status === RESPONSE_STATUS.CREATED) {
-          const id = response.data.id
-          this.$router.push({name:'base:RegionForm',params: {id}})
+        });
+        if (response.status === this.$settings.RESPONSE_STATUS.CREATED) {
+          const id = response.data.id;
+          this.$router.push({name:'base:RegionForm',params: {id}});
           Toast.create.positive("update successfully")
         } else {
           Toast.create.negative(response.data.detail)

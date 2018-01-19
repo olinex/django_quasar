@@ -2,21 +2,23 @@
   <q-modal highlight v-model="open" position="right" :content-css="{minWidth: '40vw', minHeight: '100vh'}">
     <q-modal-layout>
       <q-toolbar slot="header">
-        <q-btn flat @click="open = false" icon="keyboard_arrow_left"></q-btn>
+        <q-btn flat @click="open = false" icon="keyboard_arrow_left"/>
         <div class="q-toolbar-title">Chat</div>
       </q-toolbar>
       <div class="layout-padding">
         <q-tabs inverted align="center" ref="tabs">
-          <q-tab default label="users" slot="title" name="users" icon="people"></q-tab>
+          <q-tab default label="users" slot="title" name="users" icon="people"/>
           <q-tab-pane name="users">
             <q-scroll-area style="width: 30vw; height: 50vh;">
               <q-list separator highlight no-border>
                 <q-item v-for="user in users" :key="user.id">
                   <q-item-main>
-                    <q-item-tile label>{{ `${user.first_name} ${user.last_name}` }}</q-item-tile>
+                    <q-item-tile label>
+                      {{ `${user.first_name || '*'} ${user.last_name || '*'}` }}
+                    </q-item-tile>
                   </q-item-main>
                   <q-item-side right>
-                    <q-btn color="blue-6" flat icon="done" @click="createTalker(user.id)"></q-btn>
+                    <q-btn color="blue-6" flat icon="done" @click="createTalker(user.id)"/>
                   </q-item-side>
                 </q-item>
               </q-list>
@@ -40,13 +42,13 @@
                 :avatar="talk.avatar"
                 :key="index"
                 :name="talk.from_username"
-                :stamp="talk.create_time"
+                :stamp="(new Date(talk.create_time).toLocaleString())"
                 :sent="talk.from_user_id === id"
                 :text="[talk.content]"
-              ></q-chat-message>
+              />
             </q-scroll-area>
-            <q-btn icon="clear_all" small round flat @click="clearUserTalks(user_id)"></q-btn>
-            <q-btn icon="close" small round flat @click="closeUserTalks(user_id)"></q-btn>
+            <q-btn icon="clear_all" small round flat @click="clearUserTalks(user_id)"/>
+            <q-btn icon="close" small round flat @click="closeUserTalks(user_id)"/>
             <chat-text-field :user_id="user_id"/>
           </q-tab-pane>
         </q-tabs>
@@ -58,7 +60,6 @@
 <script>
   import {mapState} from 'vuex'
   import {QChatMessage} from 'quasar'
-  import {RESPONSE_STATUS} from "src/settings"
   import ChatTextField from '../fields/ChatTextField'
   import {onlineUserRequest} from "src/apps/base/services/user"
 
@@ -83,28 +84,28 @@
     ),
     methods: {
       async trigger() {
-        this.open = !this.open
+        this.open = !this.open;
         if (this.open) {
-          const response = await onlineUserRequest()
-          if (response.status === RESPONSE_STATUS.OK) {
+          const response = await onlineUserRequest();
+          if (response.status === this.$settings.RESPONSE_STATUS.OK) {
             this.users = response.data.result
           }
         }
       },
       createTalker(user_id) {
-        this.$store.commit('user/addTalker',user_id)
+        this.$store.commit('user/addTalker',user_id);
         this.$refs.tabs.selectTab(user_id)
       },
       getUserName(user_id) {
-        const user = this.users.find(user => user.id === user_id)
-        return `${user.first_name} ${user.last_name}`
+        const user = this.users.find(user => user.id === user_id);
+        return `${user.first_name || '*'} ${user.last_name || '*'}`
       },
       readTalks(user_id) {
         this.$store.commit('user/readUserTalks',user_id)
       },
       closeUserTalks(user_id) {
-        this.$store.commit('user/clearUserTalks',user_id)
-        this.$store.commit('user/removeTalker',user_id)
+        this.$store.commit('user/clearUserTalks',user_id);
+        this.$store.commit('user/removeTalker',user_id);
         this.$refs.tabs.selectTab('users')
       },
       clearUserTalks(user_id) {

@@ -9,7 +9,7 @@ var
   ProgressBarPlugin = require('progress-bar-webpack-plugin'),
   useCssSourceMap =
     (env.dev && config.dev.cssSourceMap) ||
-    (env.prod && config.build.productionSourceMap)
+    (env.prod && config.build.productionSourceMap);
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -95,4 +95,4 @@ module.exports = {
   performance: {
     hints: false
   }
-}
+};

@@ -4,7 +4,7 @@ import {MAIN_NAME, MAIN_PATH, HOME_NAME, HOME_PATH} from './settings'
 import load from 'src/utils/route-loader'
 import baseRoutes from 'src/apps/base/routes'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 export default new VueRouter({
   /*
@@ -27,10 +27,7 @@ export default new VueRouter({
       name: MAIN_NAME,
       path: MAIN_PATH,
       component: load('components/Main'),
-      meta: {
-        right: 'all',
-        link: false
-      },
+      meta: {right: 'all', link: false},
       redirect: {name:HOME_NAME},
       children: [
         baseRoutes,
@@ -40,34 +37,25 @@ export default new VueRouter({
       name: HOME_NAME,
       path: HOME_PATH,
       component: load('components/Main'),
-      meta: {
-        right:'all',
-        link: true
-      }
+      meta: {right:'all', link: false, verboseName: 'main'}
     },
     {
       name: 'Login',
       path: '/login',
       component: load('apps/base/views/Login'),
-      meta: {
-        right: 'all'
-      }
+      meta: {right: 'all', link: false, verboseName: 'login'}
     },
     {
       name: 'Error401',
       path: '/401',
       component: load('components/Error401'),
-      meta: {
-        right: 'all'
-      }
+      meta: {right: 'all', link: false, verboseName: '401'}
     },
     {
       name: 'Error404',
       path: '*',
       component: load('components/Error404'),
-      meta: {
-        right: 'all'
-      }
+      meta: {right: 'all', link: false, verboseName: '404'}
     }
   ]
 })

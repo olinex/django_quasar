@@ -63,8 +63,8 @@
         {label: '50', value: 50},
         {label: '100', value: 100},
       ]"
-      ></q-select>
-      <q-pagination v-model="page" :max="maxPage"></q-pagination>
+      />
+      <q-pagination v-model="page" :max="maxPage"/>
     </div>
 
   </div>
@@ -72,7 +72,6 @@
 
 <script>
   import {Loading, Toast} from 'quasar'
-  import {RESPONSE_STATUS} from "src/settings"
   import {listRequestCreater, corsRequest} from "src/utils/request"
 
   export default {
@@ -131,9 +130,9 @@
     },
     methods: {
       async getData({field, terms, page, pageSize, direct, ordering} = {}) {
-        Loading.show()
-        const table = this.$refs.table
-        const request = listRequestCreater(this.$props.url)
+        Loading.show();
+        const table = this.$refs.table;
+        const request = listRequestCreater(this.$props.url);
         const response = await request({
           field: field || table.filtering.field,
           terms: terms || table.filtering.terms,
@@ -141,41 +140,43 @@
           pageSize: pageSize || table.pagination.rowsPerPage,
           direct: direct || table.sorting.dir,
           ordering: ordering || table.sorting.field
-        })
-        if (response.status === RESPONSE_STATUS.OK) {
-          this.data = response.data.results
+        });
+        if (response.status === this.$settings.RESPONSE_STATUS.OK) {
+          this.data = response.data.results;
           this.count = response.data.count
         } else {
-          this.data = []
+          this.data = [];
           this.count = 0
         }
         Loading.hide()
       },
       async refreshHandler(done) {
-        await this.getData({})
+        await this.getData({});
         done()
       },
       selectHandler(count) {
         console.log(count)
       },
       rowclickHandler(row) {
-        this.$router.push({name: this.$props.detail, params: {id: row.id}})
+        if (this.$props.detail) {
+          this.$router.push({name: this.$props.detail, params: {id: row.id}})
+        }
       },
       printPDF({rows}) {
-        console.log(this.$refs.table)
+        console.log(this.$refs.table);
         const rowIds = rows.map(row => row.id)
       },
       async actionHandler({action, rows}) {
-        const url = `${this.$props.url}${action}/`
+        const url = `${this.$props.url}${action}/`;
         const response = await corsRequest({
           url,
           options: {
             method: 'PATCH',
             data: {ids: rows.map(row => row.data.id)}
           }
-        })
-        if (response.status === RESPONSE_STATUS.OK) {
-          await this.getData({})
+        });
+        if (response.status === this.$settings.RESPONSE_STATUS.OK) {
+          await this.getData({});
           Toast.create.positive(response.data.detail)
         } else {
           Toast.create.negative(response.data.detail)

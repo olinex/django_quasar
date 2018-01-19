@@ -1,21 +1,20 @@
 // the status of the debug
-const DEBUG = process.env.NODE_ENV !== 'production'
+const DEBUG = process.env.NODE_ENV !== 'production';
 
-const PROJECT_NAME = 'django vue'
+const PROJECT_NAME = 'django vue';
 
 // the most import route: home and main
-const HOME_NAME = 'Home'
-const HOME_PATH = '/home'
-const MAIN_NAME = 'Main'
-const MAIN_PATH = ''
+const HOME_NAME = 'Home';
+const HOME_PATH = '/home';
+const MAIN_NAME = 'Main';
+const MAIN_PATH = '';
 
 // search param settings
-const PAGE_KEY = 'page'
-const PAGE_SIZE_KEY = 'page_size'
-const ORDERING_KEY = 'ordering'
+const PAGE_KEY = 'page';
+const PAGE_SIZE_KEY = 'page_size';
+const ORDERING_KEY = 'ordering';
 
-const DEFAULT_SEARCH_SIZE = 6
-const DEFAULT_PAGE_SIZE = 10
+const DEFAULT_PAGE_SIZE = 10;
 
 // message levels of this framework
 const LEVELS = {
@@ -122,6 +121,26 @@ export {
   PAGE_KEY,
   PAGE_SIZE_KEY,
   ORDERING_KEY,
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_SEARCH_SIZE
+  DEFAULT_PAGE_SIZE
+}
+
+export default {
+  DEBUG,
+  PROJECT_NAME,
+  HOME_NAME,
+  HOME_PATH,
+  MAIN_NAME,
+  MAIN_PATH,
+  LEVELS,
+  LOG_LEVEL,
+  XSRFHEADERNAME,
+  XSRFCOOKIENAME,
+  HTTP_HOST,
+  SOCKET_HOST,
+  SOCKET_STATUS,
+  RESPONSE_STATUS,
+  PAGE_KEY,
+  PAGE_SIZE_KEY,
+  ORDERING_KEY,
+  DEFAULT_PAGE_SIZE
 }

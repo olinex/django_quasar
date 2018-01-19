@@ -1,8 +1,8 @@
 const http = {
   LIST_URL: () => `/path/to/resource`
-}
+};
 
-const socket = {}
+const socket = {};
 
 export {
   http, socket

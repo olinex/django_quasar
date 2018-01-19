@@ -1,4 +1,4 @@
-var path = require('path')
+var path = require('path');
 
 module.exports = {
   // Webpack aliases
@@ -46,7 +46,7 @@ module.exports = {
     // https://github.com/chimurai/http-proxy-middleware
     proxyTable: {}
   }
-}
+};
 
 /*
  * proxyTable example:

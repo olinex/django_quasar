@@ -1,7 +1,7 @@
 <template>
   <div class="row items-center justify-start">
     <div class="col-11">
-      <slot></slot>
+      <slot/>
       <q-btn v-show="isDraft" icon="done" color="primary" @click="actionHandler('confirm')">
         <i>confirm</i>
       </q-btn>
@@ -26,13 +26,12 @@
       :value="isActive" class="col-1 order-last"
       checked-icon="lock_open" unchecked-icon="lock"
       @blur="actionHandler(isActive ? 'lock' : 'active')"
-    ></q-toggle>
+    />
   </div>
 </template>
 
 <script>
   import {corsRequest} from "src/utils/request"
-  import {RESPONSE_STATUS} from "src/settings"
   import {Toast} from "quasar"
 
   export default {
@@ -53,33 +52,33 @@
     computed: {},
     methods: {
       async actionHandler(action) {
-        const url = `${this.$props.url}${action}/`
+        const url = `${this.$props.url}${action}/`;
         const response = await corsRequest({
           url,
           options: {
             method: 'PATCH',
             data: {ids: [this.$props.id]}
           }
-        })
-        if (response.status === RESPONSE_STATUS.OK) {
-          await this.$emit('action')
+        });
+        if (response.status === this.$settings.RESPONSE_STATUS.OK) {
+          await this.$emit('action');
           Toast.create.positive(response.data.detail)
         } else {
           Toast.create.negative(response.data.detail)
         }
       },
       async deleteHandler() {
-        const url = `${this.$props.url}delete/`
+        const url = `${this.$props.url}delete/`;
         const response = await corsRequest({
           url,
           options: {
             method: 'PATCH',
             data: {ids: [this.$props.id]}
           }
-        })
-        if (response.status === RESPONSE_STATUS.OK) {
-          this.$store.commit('history/removeRoute',this.$route)
-          this.$router.go(-1)
+        });
+        if (response.status === this.$settings.RESPONSE_STATUS.OK) {
+          this.$store.commit('history/removeRoute',this.$route);
+          this.$router.go(-1);
           Toast.create.positive(response.data.detail)
         } else {
           Toast.create.negative(response.data.detail)

@@ -60,32 +60,32 @@ const errorMessages = {
   maxValue(field, max) {
     return `${field} can not greater than ${max}`
   },
-}
+};
 
 function getErrorMessage({validator,name}) {
-  const valid = deepGetter({object:validator,name})
-  const messages = []
+  const valid = deepGetter({object:validator,name});
+  const messages = [];
   for (let value of Object.values(valid.$params)) {
     if (!valid[value.type]) {
       switch(value.type){
         case 'minLength':
-          messages.push(errorMessages[value.type](name,value.min))
-              break
+          messages.push(errorMessages[value.type](name,value.min));
+              break;
         case 'maxLength':
-          messages.push(errorMessages[value.type](name,value.max))
-              break
+          messages.push(errorMessages[value.type](name,value.max));
+              break;
         case 'minValue':
-          messages.push(errorMessages[value.type](name,value.min))
-              break
+          messages.push(errorMessages[value.type](name,value.min));
+              break;
         case 'maxValue':
-          messages.push(errorMessages[value.type](name,value.max))
-              break
+          messages.push(errorMessages[value.type](name,value.max));
+              break;
         case 'between':
-          messages.push(errorMessages[value.type](name,value.min,value.max))
-              break
+          messages.push(errorMessages[value.type](name,value.min,value.max));
+              break;
         case 'sameAs':
-          messages.push(errorMessages[value.type](name,value.eq))
-              break
+          messages.push(errorMessages[value.type](name,value.eq));
+              break;
         default:
           messages.push(errorMessages[value.type](name))
       }
@@ -95,7 +95,7 @@ function getErrorMessage({validator,name}) {
 }
 
 function mapErrorMessage(names) {
-  const map = {}
+  const map = {};
   for (let name of names) {
     map[`${name.split('/').join('__')}_err`] = function () {
       return getErrorMessage({validator:this.$v, name})

@@ -10,7 +10,7 @@
       :after="[
         { icon: 'send', handler: sendTalk, error: false },
       ]"
-    ></q-input>
+    />
   </q-field>
 </template>
 
@@ -47,9 +47,9 @@
             type: 'talk',
             to_user: this.user_id,
             content: this.message,
-          }
+          };
           if (this.socket) {
-            this.socket.send(JSON.stringify(data))
+            this.socket.send(JSON.stringify(data));
             const talk = {
               from_user_id: this.$store.state.user.id,
               to_user_id: this.user_id,
@@ -61,9 +61,9 @@
               status: "success",
               create_time: new Date().toISOString(),
               readed: true
-            }
-            this.$store.commit('user/addTalk', talk)
-            this.$store.commit('user/readUserTalks', this.user_id)
+            };
+            this.$store.commit('user/addTalk', talk);
+            this.$store.commit('user/readUserTalks', this.user_id);
             this.message = null
           } else {
             Toast.create.negative('socket is missed,please connect again')

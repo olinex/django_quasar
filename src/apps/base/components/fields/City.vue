@@ -7,6 +7,8 @@
     float-label="city"
     :request="getCityRequest"
     @input="inputHandler($event)"
+    :error="$v.city.$error"
+    :error-label="city_err"
   />
 </template>
 
@@ -18,7 +20,7 @@
   export default {
     name: "city",
     props: {
-      value: {type: Number, required: true},
+      value: {type: Number},
       helper: {type: String, required: true},
       required: {type: Boolean, required: false},
       province: {type: Number, required: false}
@@ -41,7 +43,7 @@
     },
     methods: {
       inputHandler($event) {
-        this.city = $event
+        this.city = $event;
         this.$emit('input',$event)
       },
       selected({value,label}) {

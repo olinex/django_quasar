@@ -7,11 +7,11 @@ const http = {
   MAIL_NOTICE_URL: () => '/base/user/mail_notice/',
   ONLINE_NOTICE_URL: () => '/base/user/online_notice/',
   ONLINE_USERS_URL: () => '/base/user/online_user/',
-}
+};
 
 const socket = {
   base: () => `/`
-}
+};
 
 export {
   http, socket

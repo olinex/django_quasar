@@ -6,9 +6,10 @@
   >
     <q-select
       :value="value" float-label="Country"
+      :filter="true" :autofocus-filter="true"
       :options="options" @blur="$v.country.$touch"
       @input="inputHandler($event)"
-    ></q-select>
+    />
   </q-field>
 </template>
 
@@ -19,7 +20,7 @@
   export default {
     name: "country",
     props: {
-      value: {type: Number, required: true},
+      value: {type: Number},
       helper: {type: String, required: true},
       required: {type: Boolean, required: false}
     },
@@ -46,7 +47,7 @@
     },
     methods: {
       inputHandler($event) {
-        this.country = $event
+        this.country = $event;
         this.$emit('input', $event)
       }
     }

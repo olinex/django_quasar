@@ -4,7 +4,7 @@ export default {
   name: 'base:Base',
   path: '/base',
   component: load('apps/base/views/Base'),
-  meta: {right: 'all', link: true, verboseName: 'base'},
+  meta: {right: 'all', link: false, verboseName: 'base'},
   redirect: {name: 'base:ProvinceList'},
   children: [
     // province
@@ -101,11 +101,31 @@ export default {
       component: load('apps/base/views/GroupForm'),
       meta: {right: 'all', link: true, verboseName:'group form'},
     },
+    // permission
+    {
+      name: 'base:PermissionList',
+      path: 'permission',
+      component: load('apps/base/views/PermissionList'),
+      meta: {right: 'all', link: true, verboseName: 'permission list'},
+    },
+    // content type
+    {
+      name: 'base:ContentTypeList',
+      path: 'content-type',
+      component: load('apps/base/views/ContentTypeList'),
+      meta: {right: 'all', link: true, verboseName: 'content type'},
+    },
     {
       name: 'base:UserEdit',
       path: 'user',
       component: load('apps/base/views/UserEdit'),
       meta: {right: 'all', link: true, verboseName: 'user edit'}
+    },
+    {
+      name: 'base:MessageList',
+      path: 'message list',
+      component: load('apps/base/views/MessageList'),
+      meta: {right: 'all', link: true, verboseName: 'message list'}
     },
   ]
 }

@@ -14,13 +14,12 @@
 </template>
 
 <script>
-  import {HOME_NAME,HOME_PATH} from 'src/settings'
   export default {
     name: "router-breadcrumb",
     data() {
       return {
-        homeName: HOME_NAME,
-        homePath: HOME_PATH
+        homeName: this.$settings.HOME_NAME,
+        homePath: this.$settings.HOME_PATH
       }
     },
     computed: {

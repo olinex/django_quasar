@@ -1,7 +1,8 @@
 <template>
-  <base-table title="Province" :columns="columns" :url="url"
-              create="base:ProvinceCreate"
-              detail="base:ProvinceForm" confirm active lock remove
+  <base-table
+    title="Province" :columns="columns" :url="url"
+    create="base:ProvinceCreate"
+    detail="base:ProvinceForm" confirm active lock remove
   />
 </template>
 

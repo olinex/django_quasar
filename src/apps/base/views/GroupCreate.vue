@@ -2,14 +2,8 @@
   <div>
     <q-card>
       <q-card-title class="text-black">
-        province
+        city
         <span slot="subtitle">create</span>
-        <div slot="right">
-          <states-breadcrumb
-            current="draft"
-            :states="['draft','confirmed']"
-          />
-        </div>
       </q-card-title>
       <q-card-main>
         <div class="row">
@@ -18,12 +12,9 @@
           </q-btn>
         </div>
         <div class="row">
-          <!-- country -->
-          <country class="col-6" v-model="country" helper="required" required />
-
           <!-- name -->
           <q-field
-            class="col-6" :error="$v.name.$error"
+            class="col-12" :error="$v.name.$error"
             :error-label="name_err"
             helper="required"
           >
@@ -33,18 +24,11 @@
             />
           </q-field>
 
-          <!-- sequence -->
-          <q-field
-            class="col-6" :error="$v.sequence.$error"
-            :error-label="sequence_err"
-            helper="required"
-          >
-            <q-input
-              type="number"
-              float-label="sequence" clearable
-              v-model="sequence" @blur="$v.sequence.$touch"
-            />
-          </q-field>
+          <!-- permissions -->
+          <many-to-many-field
+            class="col-12" v-model="permissions"
+            label="permissions" :request="permissionSearchRequest"
+          />
         </div>
       </q-card-main>
     </q-card>
@@ -53,42 +37,36 @@
 
 <script>
   import {Toast} from 'quasar'
-  import {createRequest} from "../services/province"
-  import {required,numeric,minValue} from 'vuelidate/lib/validators'
+  import {createRequest} from "../services/group"
+  import {searchRequest} from "../services/permission"
+  import {required} from 'vuelidate/lib/validators'
   import {mapErrorMessage} from 'src/utils/error-messages'
-  import Country from '../components/fields/Country'
 
   export default {
-    components: {Country},
-    mounted() {
-      console.log(this.$v)
-    },
     data() {
       return {
         name: '',
-        country: 'China',
-        sequence: 0,
+        permissions: []
       }
     },
     validations: {
-      name: {required},
-      sequence: {required,numeric,minValue:minValue(0)}
+      name: {required}
     },
     computed: {
-      ...mapErrorMessage([
-        'name','sequence'
-      ])
+      ...mapErrorMessage(['name']),
+      permissionSearchRequest() {
+        return searchRequest
+      }
     },
     methods: {
       async save() {
         const response = await createRequest({
           name: this.name,
-          country: this.country,
-          sequence: this.sequence
+          permissions: this.permissions
         });
         if (response.status === this.$settings.RESPONSE_STATUS.CREATED) {
           const id = response.data.id;
-          this.$router.push({name:'base:ProvinceForm',params: {id}});
+          this.$router.push({name:'base:GroupForm',params: {id}});
           Toast.create.positive("update successfully")
         } else {
           Toast.create.negative(response.data.detail)

@@ -1,4 +1,4 @@
-const namespaced = true
+const namespaced = true;
 
 function initial() {
   return {
@@ -16,6 +16,7 @@ function initial() {
     address: null,
     address_detail: {region: null, name: null},
     permissions: [],
+    new_messages_count: 0,
     groups: [],
     groups_detail: [],
     socket: null,
@@ -24,32 +25,32 @@ function initial() {
   }
 }
 
-const state = initial()
+const state = initial();
 
 const getters = {
-  fullName: state => `${state.first_name} ${state.last_name}`,
+  fullName: state => `${state.first_name || '*'} ${state.last_name || '*'}`,
   initialData: () => initial()
-}
+};
 
 const mutations = {
   refreshTalkers(state, talkers) {
     state.talkers = [...talkers]
   },
   addTalker(state, talker) {
-    const oldTalkers = new Set(state.talkers)
-    oldTalkers.add(talker)
+    const oldTalkers = new Set(state.talkers);
+    oldTalkers.add(talker);
     state.talkers = [...oldTalkers]
   },
   removeTalker(state, talker) {
-    const oldTalkers = new Set(state.talkers)
-    oldTalkers.delete(talker)
+    const oldTalkers = new Set(state.talkers);
+    oldTalkers.delete(talker);
     state.talkers = [...oldTalkers]
   },
   clearTalkers(state) {
     state.talkers = []
   },
   addTalk(state, talk) {
-    state.talks.push(talk)
+    state.talks.push(talk);
     state.talks = [...state.talks]
   },
   clearUserTalks(state, user_id) {
@@ -62,7 +63,7 @@ const mutations = {
       talk => talk.from_user_id === user_id && talk.to_user_id === state.id
     ).map(
       talk => talk.readed = true
-    )
+    );
     state.talks = [...state.talks]
   },
   clearAllTalks(state) {
@@ -83,9 +84,9 @@ const mutations = {
     }
   },
   clear(state) {
-    const initial = initial()
-    for (let key of Object.keys(initial)) {
-      state[key] = initial[key]
+    const init = initial();
+    for (let key of Object.keys(init)) {
+      state[key] = init[key]
     }
   },
   joinSocket(state, socket) {
@@ -97,7 +98,7 @@ const mutations = {
   login(state) {
     state.login = true
   },
-}
+};
 
 export default {
   namespaced,

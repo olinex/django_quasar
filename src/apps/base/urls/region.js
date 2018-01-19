@@ -1,9 +1,9 @@
 const http = {
   LIST_URL: () => `/base/region/`,
   DETAIL_URL: (id) => `/base/region/${id}/`
-}
+};
 
-const socket = {}
+const socket = {};
 
 export {
   http, socket

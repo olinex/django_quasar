@@ -14,7 +14,7 @@ const searchName = {
   pageSize: PAGE_SIZE_KEY,
   page: PAGE_KEY,
   ordering: ORDERING_KEY
-}
+};
 
 
 // the serialize helper for develop
@@ -26,10 +26,10 @@ const serializer = (response) => {
     headers: response.headers,
     config: response.config,
   })
-}
+};
 
-axios.defaults.xsrfCookieName = XSRFCOOKIENAME
-axios.defaults.xsrfHeaderName = XSRFHEADERNAME
+axios.defaults.xsrfCookieName = XSRFCOOKIENAME;
+axios.defaults.xsrfHeaderName = XSRFHEADERNAME;
 
 axios.interceptors.response.use(
   (response) => {
@@ -44,7 +44,7 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log(error)
+    console.log(error);
     if (error.response.status >= RESPONSE_STATUS.BAD_REQUEST) {
       if (LOG_LEVEL >= LEVELS.ERROR) {
         Toast.create.negative(error.response.data.detail);
@@ -56,7 +56,7 @@ axios.interceptors.response.use(
     }
     return Promise.reject(error)
   }
-)
+);
 
 /**
  * Requests a URL, returning a promise.
@@ -105,7 +105,7 @@ const request = async ({url, options = {}}) => {
       }
     }
   )
-}
+};
 
 const corsRequest = async ({url, options = {}}) => {
   const coptions = {
@@ -113,27 +113,27 @@ const corsRequest = async ({url, options = {}}) => {
     data: options.data && JSON.stringify(options.data),
     headers: {...options.headers, 'Content-Type': 'application/json'},
     withCredentials: true,
-  }
+  };
   return await request({url, options: coptions})
-}
+};
 
 let open_handler = () => {
   if (LOG_LEVEL >= LEVELS.INFO) {
     message.info('new socket opened!')
   }
-}
+};
 
 let error_handler = () => {
   if (LOG_LEVEL >= LEVELS.ERROR) {
     message.error('socket connect error!')
   }
-}
+};
 
 let close_handler = () => {
   if (LOG_LEVEL >= LEVELS.INFO) {
     message.info('socket closed!')
   }
-}
+};
 
 // factory method for create a single socket
 const newSocket = ({url, message, open = open_handler, error = error_handler, close = close_handler}) => {
@@ -141,17 +141,17 @@ const newSocket = ({url, message, open = open_handler, error = error_handler, cl
   if (DEBUG) {
     console.log('web socket client:', uri)
   }
-  const socket = new WebSocket(uri)
-  socket.onopen = open
-  socket.onmessage = message
-  socket.onerror = error
-  socket.onclose = close
+  const socket = new WebSocket(uri);
+  socket.onopen = open;
+  socket.onmessage = message;
+  socket.onerror = error;
+  socket.onclose = close;
   return socket
-}
+};
 
 function listRequestCreater(url) {
   return async ({field, terms, pageSize, page, direct, ordering}) => {
-    const search = field ? {[searchName.exact(field)]: terms} : {}
+    const search = field ? {[searchName.exact(field)]: terms} : {};
     return await corsRequest({
       url: url,
       options: {

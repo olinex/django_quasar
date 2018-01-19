@@ -2,7 +2,7 @@
   <ul class="breadcrumb">
     <li v-for="state in states" :key="state">
       <a>
-        <q-icon :name="getIcon(state)"></q-icon>
+        <q-icon :name="getIcon(state)"/>
         {{state}}
       </a>
     </li>

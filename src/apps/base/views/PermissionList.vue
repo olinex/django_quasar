@@ -1,16 +1,13 @@
 <template>
   <base-table
-    create="base:GroupCreate"
-    detail="base:GroupForm"
-    remove
-    title="Group"
+    title="Permission"
     :columns="columns"
     :url="url"
   />
 </template>
 
 <script>
-  import {http} from '../urls/group'
+  import {http} from '../urls/permission'
 
   export default {
     data() {
@@ -19,6 +16,7 @@
         columns: [
           {label: 'id', field: 'id', width: '40px', filter: true, sort: true, type: 'number'},
           {label: 'name', field: 'name', width: '200px', filter: true, sort: true, type: 'string'},
+          {label: 'code name', field: 'codename', width: '200px', filter: true, sort: true, type: 'string'},
         ]
       }
     },

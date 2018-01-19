@@ -1,11 +1,11 @@
-import {Toast,Dialog} from 'quasar'
+import {Toast} from 'quasar'
 
 function getColor(status) {
   switch (status) {
     case 'success':
-      return 'positive'
+      return 'positive';
     case 'error':
-      return 'negative'
+      return 'negative';
     default:
       return status
   }
@@ -14,26 +14,27 @@ function getColor(status) {
 function getIcon(status) {
   switch (status) {
     case 'success':
-      return 'done'
+      return 'done';
     default:
       return status
   }
 }
 
 function createResponse(data) {
-  const color = getColor(data.status)
-  const icon = getIcon(data.status)
+  const color = getColor(data.status);
+  const icon = getIcon(data.status);
   switch (data.type) {
     case 'response':
       return Toast.create[color]({
         icon: icon,
         html: data.detail,
-      })
+      });
     case 'notice':
-      return Dialog.create({
-        title: data.detail,
-        message: data.content,
-        position: 'right'
+      // {user_id,username, avatar, type, detail, content, status, create_time}
+      return Toast.create.info({
+        image: data.avatar,
+        timeout: 6000,
+        html: `${data.username} ${data.content}`
       })
   }
 }

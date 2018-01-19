@@ -7,7 +7,7 @@ var
   baseWebpackConfig = require('./webpack.base.conf'),
   ExtractTextPlugin = require('extract-text-webpack-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
-  OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+  OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = merge(baseWebpackConfig, {
   module: {
@@ -75,4 +75,4 @@ module.exports = merge(baseWebpackConfig, {
       chunks: ['vendor']
     })
   ]
-})
+});

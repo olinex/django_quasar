@@ -1,5 +1,5 @@
 <template>
-  <div class="row items-center">
+  <div class="row items-center bg-light">
     <div class="col-11">
       <div class="row no-wrap scroll">
         <q-chip
@@ -9,7 +9,10 @@
           :color="route.name === $route.name ? 'positive' : 'faded'"
           @click="$router.replace({name:route.name,params:route.params})"
         >
-          {{route.meta.verboseName}}
+          <span class="ellipsis" style="width: 30px">{{route.meta.verboseName}}</span>
+          <q-tooltip anchor="bottom middle" self="top middle" :delay="1000" :offset="[10,10]">
+            {{route.meta.verboseName}}
+          </q-tooltip>
         </q-chip>
       </div>
     </div>
@@ -18,10 +21,10 @@
         <q-popover ref="popover">
           <q-list link class="no-border">
             <q-item @click="clearOthers(),$refs.popover.close()">
-              <q-item-main label="clear others"></q-item-main>
+              <q-item-main label="clear others"/>
             </q-item>
             <q-item @click="clearAll(),$refs.popover.close()">
-              <q-item-main label="clear all"></q-item-main>
+              <q-item-main label="clear all"/>
             </q-item>
           </q-list>
         </q-popover>
@@ -31,35 +34,10 @@
 </template>
 
 <script>
-  import {MAIN_NAME} from "src/settings";
 
   export default {
     name: "",
     props: {},
-    beforeCreate() {
-      // after initial,before data observer and event/watcher
-    },
-    created() {
-      // after data boserver/event/watcher/computed/method,before render
-    },
-    beforeMount() {
-      // after render,before mount to virtial-DOM
-    },
-    mounted() {
-      // after mount to virtual-DOM,before destory
-    },
-    beforeUpdate() {
-      // always called when data changes,after mouted,before destory
-    },
-    updated() {
-      // always called when data changes,after beforeUpdate
-    },
-    beforeDestroy() {
-      // after vm.$destroy is called
-    },
-    destroyed() {
-      // after element was destroy
-    },
     data() {
       return {}
     },
@@ -70,20 +48,19 @@
     },
     methods: {
       clearAll() {
-        this.$store.commit('history/clearRoutes')
-        this.$router.replace({name:MAIN_NAME})
+        this.$store.commit('history/clearRoutes');
+        this.$router.replace({name:this.$settings.MAIN_NAME})
       },
       clearOthers() {
-        this.$store.commit('history/clearRoutes')
+        this.$store.commit('history/clearRoutes');
         this.$store.commit('history/addRoute',this.$route)
       },
       closeHandler(route) {
-        console.log(route)
-        this.$store.commit('history/removeRoute',route)
+        this.$store.commit('history/removeRoute',route);
         const next = (
           (this.$store.state.history.routes && {...this.$store.state.history.routes[0]}) ||
           {name:MAIN_NAME}
-          )
+          );
         this.$router.replace(next)
       }
     },

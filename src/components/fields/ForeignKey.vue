@@ -7,25 +7,22 @@
       @blur="blurHandler"
       :after="[ { icon: 'more_horiz', more: false, handler: moreToggler } ]"
     >
-      <q-autocomplete @search="search" :min-characters="1" @selected="selected" :debounce="800"></q-autocomplete>
+      <q-autocomplete @search="search" :min-characters="1" @selected="selected" :debounce="800"/>
       <q-modal highlight v-model="more" :content-css="{minWidth: '40vw', minHeight: '80vh'}">
         <q-modal-layout>
           <q-toolbar slot="header">
-            <q-btn flat @click="moreToggler" icon="keyboard_arrow_left"></q-btn>
-            <div class="q-toolbar-title">{{ placeholder }} List</div>
+            <q-btn flat small @click="moreToggler" icon="keyboard_arrow_left"/>
+            <div class="q-toolbar-title">{{ floatLabel }} List</div>
           </q-toolbar>
           <div class="layout-padding row justify-center">
             <q-list class="col-12" separator highlight no-border>
-              <q-item v-for="option in options" :key="option.id">
+              <q-item v-for="option in options" :key="option.id" @click="selectHandler(option)">
                 <q-item-main>
                   <q-item-tile label>{{ option.name }}</q-item-tile>
                 </q-item-main>
-                <q-item-side right>
-                  <q-btn color="blue-6" flat icon="done" @click="selectHandler(option)"></q-btn>
-                </q-item-side>
               </q-item>
             </q-list>
-            <q-pagination v-model="page" :max="maxPage"></q-pagination>
+            <q-pagination v-model="page" :max="maxPage"/>
           </div>
         </q-modal-layout>
       </q-modal>
@@ -34,7 +31,7 @@
 </template>
 
 <script>
-  import {RESPONSE_STATUS, DEFAULT_SEARCH_SIZE} from 'src/settings'
+  import {DEFAULT_PAGE_SIZE} from 'src/settings'
 
   export default {
     name: 'foreign-key',
@@ -58,14 +55,14 @@
     },
     computed: {
       maxPage() {
-        return Math.ceil(this.count / DEFAULT_SEARCH_SIZE)
+        return Math.ceil(this.count / DEFAULT_PAGE_SIZE)
       }
     },
     methods: {
       inputHandler($event) {
         // handle the input event,pass the key value to the parent model
-        this.label = $event
-        const option = this.options.find(option => option.label === $event)
+        this.label = $event;
+        const option = this.options.find(option => option.label === $event);
         this.$emit('input', option && option.value)
       },
       blurHandler() {
@@ -77,25 +74,25 @@
         this.more = !this.more
       },
       selectHandler(option) {
-        this.label = option.name
-        this.$emit('input', option.id)
+        this.label = option.name;
+        this.$emit('input', option.id);
         this.moreToggler()
       },
       async getOptions({name, page}) {
-        const response = await this.$props.request({name, page})
-        if (response.status === RESPONSE_STATUS.OK) {
-          this.options = response.data.results
-          this.count = response.data.count
+        const response = await this.$props.request({name, page});
+        if (response.status === this.$settings.RESPONSE_STATUS.OK) {
+          this.options = response.data.results;
+          this.count = response.data.count;
           this.page = page
         } else {
-          this.options = []
-          this.count = 0
+          this.options = [];
+          this.count = 0;
           this.page = 1
         }
       },
       async search(name, done) {
         // make a request to the pass in api and refresh the options
-        await this.getOptions({name, page: 1})
+        await this.getOptions({name, page: 1});
         done(this.options.map(item => {
           return {
             value: item.id || item.pk,
@@ -104,7 +101,7 @@
         }))
       },
       selected(item) {
-        this.label = item.label
+        this.label = item.label;
         this.$emit('input', item.value)
       }
     },
@@ -116,8 +113,8 @@
       },
       async more(val) {
         if (val) {
-          this.page = 1
-          this.count = 0
+          this.page = 1;
+          this.count = 0;
           await this.getOptions({page: 1})
         }
       }

@@ -5,17 +5,17 @@
         :color="socket ? 'positive':'faded'"
         icon="insert_link"
         @click="socketToggler"
-      ></q-fab-action>
+      />
       <q-fab-action
         :color="mail_notice ? 'positive':'faded'"
         icon="mail"
         @click="mailNoticeTrigger"
-      ></q-fab-action>
+      />
       <q-fab-action
         :color="online_notice ? 'positive':'faded'"
         icon="swap_vertical_circle"
         @click="onlineNoticeTrigger"
-      ></q-fab-action>
+      />
     </q-fab>
   </q-fixed-position>
 </template>
@@ -23,7 +23,6 @@
 <script>
   import {Toast} from 'quasar'
   import {mapState} from 'vuex'
-  import {RESPONSE_STATUS} from 'src/settings'
   import {baseSocket,onlineNoticeRequest,mailNoticeRequest} from "src/apps/base/services/user"
   import {createResponse} from "src/utils/response"
 
@@ -39,9 +38,9 @@
     ),
     methods: {
       async mailNoticeTrigger() {
-        const response = await mailNoticeRequest({mail_notice:!this.mail_notice})
-        if (response.status === RESPONSE_STATUS.OK) {
-          this.$store.commit('user/mailNoticeToggle')
+        const response = await mailNoticeRequest({mail_notice:!this.mail_notice});
+        if (response.status === this.$settings.RESPONSE_STATUS.OK) {
+          this.$store.commit('user/mailNoticeToggle');
           if (this.mail_notice) {
             Toast.create.positive('mail notice on')
           } else {
@@ -52,9 +51,9 @@
         }
       },
       async onlineNoticeTrigger() {
-        const response = await onlineNoticeRequest({online_notice:!this.online_notice})
-        if (response.status === RESPONSE_STATUS.OK) {
-          this.$store.commit('user/onlineNoticeToggle')
+        const response = await onlineNoticeRequest({online_notice:!this.online_notice});
+        if (response.status === this.$settings.RESPONSE_STATUS.OK) {
+          this.$store.commit('user/onlineNoticeToggle');
           if (this.online_notice) {
             Toast.create.positive('online notice on')
           } else {
@@ -66,18 +65,18 @@
       },
       async socketToggler() {
         if (this.socket) {
-          this.socket.close()
+          this.socket.close();
           this.$store.commit('user/leaveSocket')
         } else {
-          const socket = await baseSocket(this.socketMessageHandler)
+          const socket = await baseSocket(this.socketMessageHandler);
           this.$store.commit('user/joinSocket',socket)
         }
       },
       socketMessageHandler(event) {
-        const data = JSON.parse(event.data)
-        const user_id = data.from_user_id
+        const data = JSON.parse(event.data);
+        const user_id = data.from_user_id;
         if (data.type === 'talk') {
-          this.$store.commit('user/addTalk',data)
+          this.$store.commit('user/addTalk',data);
           this.$store.commit('user/addTalker',user_id)
         } else {
           createResponse(data)

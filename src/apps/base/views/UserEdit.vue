@@ -13,7 +13,7 @@
             :error-label="first_name_err"
             helper="length must greater than 1 and less than 3"
           >
-            <q-input clearable float-label="first name" v-model="first_name" @blur="$v.first_name.$touch"></q-input>
+            <q-input clearable float-label="first name" v-model="first_name" @blur="$v.first_name.$touch"/>
           </q-field>
           <!-- last name -->
           <q-field
@@ -21,7 +21,7 @@
             :error-label="last_name_err"
             helper="length must greater than 1 and less than 13"
           >
-            <q-input clearable float-label="last name" v-model="last_name" @blur="$v.last_name.$touch"></q-input>
+            <q-input clearable float-label="last name" v-model="last_name" @blur="$v.last_name.$touch"/>
           </q-field>
           <!-- emial -->
           <q-field
@@ -29,7 +29,7 @@
             :error-label="email_err"
             helper="email address"
           >
-            <q-input type="email" clearable float-label="email" v-model="email" @blur="$v.email.$touch"></q-input>
+            <q-input type="email" clearable float-label="email" v-model="email" @blur="$v.email.$touch"/>
           </q-field>
           <!-- phone -->
           <q-field
@@ -37,7 +37,7 @@
             :error-label="phone_err"
             helper="phone number"
           >
-            <q-input type="number" clearable float-label="phone" v-model="phone" @blur="$v.phone.$touch"></q-input>
+            <q-input type="number" clearable float-label="phone" v-model="phone" @blur="$v.phone.$touch"/>
           </q-field>
           <!-- avatar -->
           <q-uploader
@@ -45,7 +45,7 @@
             method="PATCH" class="col-12"
             :url="uploadUrl" name="avatar"
             extensions=".gif,.jpg,.jpeg,.png"
-          ></q-uploader>
+          />
           <location
             v-model="address_detail.region"
             :error="$v.address_detail.region.$error"
@@ -60,7 +60,7 @@
               clearable float-label="address name"
               v-model="address_detail.name"
               @blur="$v.address_detail.name.$touch"
-            ></q-input>
+            />
           </q-field>
           <q-btn color="primary" @click="changeUserData" class="self-center col-3" :disable="!userDataValid">
             confirm
@@ -78,7 +78,7 @@
             <q-input
               type="password" clearable float-label="old password" v-model="old_password"
               @blur="$v.old_password.$touch"
-            ></q-input>
+            />
           </q-field>
           <!-- new password -->
           <q-field
@@ -89,7 +89,7 @@
             <q-input
               type="password" clearable float-label="new password" v-model="password1"
               @blur="$v.password1.$touch"
-            ></q-input>
+            />
           </q-field>
           <!-- new password repeat -->
           <q-field
@@ -100,7 +100,7 @@
             <q-input
               type="password" clearable float-label="repeat password" v-model="password2"
               @blur="$v.password2.$touch"
-            ></q-input>
+            />
           </q-field>
           <q-btn color="primary" @click="changePassword" class="self-center col-3" :disable="!passwordValid">
             change password
@@ -115,7 +115,6 @@
   import {Toast} from 'quasar'
   import {mapErrorMessage} from 'src/utils/error-messages'
   import {http} from "../urls/user"
-  import {RESPONSE_STATUS} from 'src/settings'
   import {passwordRequest, updateRequest} from '../services/user'
   import Location from '../components/Location'
   import {
@@ -184,8 +183,8 @@
     },
     methods: {
       clearPassowrd() {
-        this.old_password = ''
-        this.password1 = ''
+        this.old_password = '';
+        this.password1 = '';
         this.password2 = ''
       },
       async changePassword() {
@@ -196,9 +195,9 @@
               password1: this.password1,
               password2: this.password2
             }
-          })
-          if (response.status === RESPONSE_STATUS.OK) {
-            this.clearPassowrd()
+          });
+          if (response.status === this.$settings.RESPONSE_STATUS.OK) {
+            this.clearPassowrd();
             Toast.create.positive('password changed successfully')
           } else {
             Toast.create.negative(response.data.detail)
@@ -212,13 +211,13 @@
             last_name: this.last_name,
             email: this.email,
             phone: this.phone,
-          }
+          };
           const response = await updateRequest(
             {id: this.$store.state.user.id},
             data
-          )
-          if (response.status === RESPONSE_STATUS.OK) {
-            this.$store.commit('user/refresh', data)
+          );
+          if (response.status === this.$settings.RESPONSE_STATUS.OK) {
+            this.$store.commit('user/refresh', data);
             Toast.create.positive('user data changed successfully')
           } else {
             Toast.create.negative(response.data.detail)

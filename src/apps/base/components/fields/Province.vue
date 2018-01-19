@@ -7,6 +7,8 @@
     float-label="province"
     :request="getProvinceRequest"
     @input="inputHandler($event)"
+    :error="$v.province.$error"
+    :error-label="province_err"
   />
 </template>
 
@@ -18,7 +20,7 @@
   export default {
     name: "province",
     props: {
-      value: {type: Number, required: true},
+      value: {type: Number},
       helper: {type: String, required: true},
       required: {type: Boolean, required: false},
       country: {type: String, required: false}
@@ -41,7 +43,7 @@
     },
     methods: {
       inputHandler($event) {
-        this.province = $event
+        this.province = $event;
         this.$emit('input',$event)
       },
       selected({value,label}) {
