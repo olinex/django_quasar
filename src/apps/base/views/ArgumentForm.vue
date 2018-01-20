@@ -7,7 +7,7 @@
       </q-card-title>
       <q-card-main>
         <div class="row items-center justify-start">
-          <q-btn icon="save" color="primary" :disable="$v.$error" @click="update">
+          <q-btn v-perm="'test_get'" icon="save" color="primary" :disable="$v.$error" @click="update">
             <i>update</i>
           </q-btn>
         </div>

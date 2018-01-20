@@ -1,37 +1,35 @@
 <template>
-  <div>
-    <q-list>
-      <q-collapsible icon="message" label="Message" @open="initial">
-        <div class="row justify-between">
-          <div class="col-10">
-            <q-btn small flat round icon="create" color="primary" @click="$refs.messageCreate.open()"/>
-          </div>
-          <div class="col-2">
-            <q-btn small flat round icon="refresh" color="primary" @click="refresh"/>
-            <q-btn small flat round
-                   :icon="followed ? 'notifications' : 'notifications_off'"
-                   :color="followed ? 'positive' : 'negative'"
-                   @click="followTrigger"
-            />
-          </div>
+  <q-list class="no-border">
+    <q-collapsible icon="message" label="Message" @open="initial">
+      <div class="row justify-between">
+        <div class="col-10">
+          <q-btn small flat round icon="create" color="primary" @click="$refs.messageCreate.open()"/>
         </div>
-        <q-list multiline no-border separator>
-          <q-item v-for="message in messages" :key="message.id">
-            <q-item-side :avatar="message.creater__avatar">
-              <q-item-tile label>
-                {{`${message.creater__first_name || '*'} ${message.creater__last_name || '*'}`}}
-              </q-item-tile>
-            </q-item-side>
-            <q-item-main
-              :label="message.title" label-lines="1"
-              :sublabel="message.text"
-            />
-            <q-item-side right :stamp="new Date(message.create_time).toLocaleString()"/>
-          </q-item>
-        </q-list>
-      </q-collapsible>
-      <slot/>
-    </q-list>
+        <div class="col-2">
+          <q-btn small flat round icon="refresh" color="primary" @click="refresh"/>
+          <q-btn small flat round
+                 :icon="followed ? 'notifications' : 'notifications_off'"
+                 :color="followed ? 'positive' : 'negative'"
+                 @click="followTrigger"
+          />
+        </div>
+      </div>
+      <q-list multiline no-border separator>
+        <q-item v-for="message in messages" :key="message.id">
+          <q-item-side :avatar="message.creater__avatar">
+            <q-item-tile label>
+              {{`${message.creater__first_name || '*'} ${message.creater__last_name || '*'}`}}
+            </q-item-tile>
+          </q-item-side>
+          <q-item-main
+            :label="message.title" label-lines="1"
+            :sublabel="message.text"
+          />
+          <q-item-side right :stamp="new Date(message.create_time).toLocaleString()"/>
+        </q-item>
+      </q-list>
+    </q-collapsible>
+    <slot/>
     <q-modal ref="messageCreate" highlight :content-css="{minWidth: '40vw', minHeight: '80vh'}">
       <q-modal-layout>
         <q-toolbar slot="header">
@@ -67,13 +65,13 @@
         </div>
       </q-modal-layout>
     </q-modal>
-  </div>
+  </q-list>
 </template>
 
 <script>
   import {Toast} from 'quasar'
   import {corsRequest} from "src/utils/request"
-  import {required,minLength} from 'vuelidate/lib/validators'
+  import {required, minLength} from 'vuelidate/lib/validators'
   import {mapErrorMessage} from 'src/utils/error-messages'
 
   export default {
@@ -90,11 +88,11 @@
       }
     },
     validations: {
-      title: {required,minLength:minLength(3)},
-      text: {required,minLength:minLength(8)}
+      title: {required, minLength: minLength(3)},
+      text: {required, minLength: minLength(8)}
     },
     computed: {
-      ...mapErrorMessage(['title','text']),
+      ...mapErrorMessage(['title', 'text']),
       followed() {
         return this.$props.value.includes(this.$store.state.user.id)
       }
@@ -137,7 +135,7 @@
           url: `${this.$props.url}create_message/`,
           options: {
             method: 'POST',
-            data: {title: this.title,text: this.text}
+            data: {title: this.title, text: this.text}
           }
         });
         if (response.status === this.$settings.RESPONSE_STATUS.CREATED) {

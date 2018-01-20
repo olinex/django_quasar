@@ -120,6 +120,20 @@ Quasar.start(() => {
   })
 });
 
+function getPermissions() {
+  return store.state.user.permissions
+}
+
+Vue.directive('perm',{
+  update: function (el,binding) {
+    if (!hasPerm(binding.value, getPermissions())) {
+      el.classList.add('hidden')
+    } else {
+      el.classList.remove('hidden')
+    }
+  }
+});
+
 function title(verboseName) {
   if (verboseName) {
     return `${verboseName}-${SETTINGS.PROJECT_NAME}`
@@ -129,7 +143,7 @@ function title(verboseName) {
 
 // check all the permission of ther route
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(route => route.meta && hasPerm(route.meta.right, store.state.user.permissions))) {
+  if (to.matched.some(route => route.meta && hasPerm(route.meta.right, getPermissions()))) {
     store.commit('history/addRoute',to);
     document.title = title(to.meta.verboseName);
     next()
