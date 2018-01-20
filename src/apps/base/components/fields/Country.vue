@@ -9,6 +9,7 @@
       :filter="true" :autofocus-filter="true"
       :options="options" @blur="$v.country.$touch"
       @input="inputHandler($event)"
+      :color="color" :inverted="inverted"
     />
   </q-field>
 </template>
@@ -22,7 +23,9 @@
     props: {
       value: {type: Number},
       helper: {type: String, required: true},
-      required: {type: Boolean, required: false}
+      required: {type: Boolean, required: false},
+      color: {type: String},
+      inverted: {type: Boolean, default: false}
     },
     validations: {
       country: {

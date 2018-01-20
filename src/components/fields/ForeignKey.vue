@@ -1,22 +1,23 @@
 <template>
   <q-field :error="error" :error-label="errorLabel" :helper="helper">
     <q-input
-      :value="label"
-      :float-label="floatLabel"
-      @input="inputHandler($event)"
-      @blur="blurHandler"
+      :value="label" :float-label="floatLabel" :inverted="inverted"
+      @input="inputHandler($event)" @blur="blurHandler" :color="color"
       :after="[ { icon: 'more_horiz', more: false, handler: moreToggler } ]"
     >
       <q-autocomplete @search="search" :min-characters="1" @selected="selected" :debounce="800"/>
       <q-modal highlight v-model="more" :content-css="{minWidth: '40vw', minHeight: '80vh'}">
         <q-modal-layout>
           <q-toolbar slot="header">
-            <q-btn flat small @click="moreToggler" icon="keyboard_arrow_left"/>
+            <q-btn flat small round @click="moreToggler" icon="keyboard_arrow_left"/>
             <div class="q-toolbar-title">{{ floatLabel }} List</div>
           </q-toolbar>
           <div class="layout-padding row justify-center">
             <q-list class="col-12" separator highlight no-border>
-              <q-item v-for="option in options" :key="option.id" @click="selectHandler(option)">
+              <q-item
+                class="cursor-pointer" v-for="option in options"
+                :key="option.id" @click="selectHandler(option)"
+              >
                 <q-item-main>
                   <q-item-tile label>{{ option.name }}</q-item-tile>
                 </q-item-main>
@@ -52,6 +53,8 @@
       request: {type: Function, required: true},
       field: {type: String, required: true},
       value: {type: Number},
+      color: {type: String},
+      inverted: {type: Boolean, default: false}
     },
     computed: {
       maxPage() {

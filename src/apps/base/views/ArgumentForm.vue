@@ -7,19 +7,19 @@
       </q-card-title>
       <q-card-main>
         <div class="row items-center justify-start">
-          <q-btn v-perm="'test_get'" icon="save" color="primary" :disable="$v.$error" @click="update">
+          <q-btn icon="save" color="primary" :disable="$v.$invalid" @click="update">
             <i>update</i>
           </q-btn>
         </div>
         <div class="row">
           <!-- value -->
           <q-field
-            class="col-12" :error="$v.value.$error"
+            class="col-12" :error="$v.value.$invalid"
             :error-label="value_err"
             :helper="help_text"
           >
             <q-input
-              v-if="form === 'int'" color=""
+              v-if="form === 'int'"
               type="number" clearable float-label="value"
               v-model="value" @blur="$v.value.$touch"
             />
@@ -42,7 +42,7 @@
 
           <!-- sequence -->
           <q-field
-            class="col-6" :error="$v.sequence.$error"
+            class="col-6" :error="$v.sequence.$invalid"
             :error-label="sequence_err"
             helper="required"
           >
@@ -55,13 +55,13 @@
           <q-field class="col-3" helper="readonly">
             <q-datetime
               float-label="create time"
-              v-model="create_time" :disable="true" type="datetime"
+              v-model="create_time" readonly type="datetime"
             />
           </q-field>
           <q-field class="col-3" helper="readonly">
             <q-datetime
               float-label="last modify time"
-              v-model="last_modify_time" :disable="true" type="datetime"
+              v-model="last_modify_time" readonly type="datetime"
             />
           </q-field>
         </div>
@@ -102,7 +102,7 @@
     },
     validations: {
       value: {required},
-      sequence: {required,numeric,minValue:minValue(1)}
+      sequence: {required,numeric,minValue:minValue(0)}
     },
     computed: {
       ...mapErrorMessage([

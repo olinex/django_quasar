@@ -7,14 +7,14 @@
       </q-card-title>
       <q-card-main>
         <div class="row">
-          <q-btn icon="save" color="primary" :disable="$v.$error" @click="save">
+          <q-btn icon="save" color="primary" :disable="$v.$invalid" @click="save">
             <i>save</i>
           </q-btn>
         </div>
         <div class="row">
           <!-- name -->
           <q-field
-            class="col-12" :error="$v.name.$error"
+            class="col-12" :error="$v.name.$invalid"
             :error-label="name_err"
             helper="required"
           >

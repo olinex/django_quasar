@@ -13,7 +13,7 @@
       </q-card-title>
       <q-card-main>
         <div class="row">
-          <q-btn icon="save" color="primary" :disable="$v.$error" @click="save">
+          <q-btn icon="save" color="primary" :disable="$v.$invalid" @click="save">
             <i>save</i>
           </q-btn>
         </div>
@@ -23,7 +23,7 @@
 
           <!-- name -->
           <q-field
-            class="col-6" :error="$v.name.$error"
+            class="col-6" :error="$v.name.$invalid"
             :error-label="name_err"
             helper="required"
           >
@@ -35,7 +35,7 @@
 
           <!-- sequence -->
           <q-field
-            class="col-6" :error="$v.sequence.$error"
+            class="col-6" :error="$v.sequence.$invalid"
             :error-label="sequence_err"
             helper="required"
           >

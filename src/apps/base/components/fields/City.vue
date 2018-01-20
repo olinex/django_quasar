@@ -9,6 +9,7 @@
     @input="inputHandler($event)"
     :error="$v.city.$error"
     :error-label="city_err"
+    :color="color" :inverted="inverted"
   />
 </template>
 
@@ -23,7 +24,9 @@
       value: {type: Number},
       helper: {type: String, required: true},
       required: {type: Boolean, required: false},
-      province: {type: Number, required: false}
+      province: {type: Number, required: false},
+      color: {type: String},
+      inverted: {type: Boolean, default: false}
     },
     data() {
       return {

@@ -16,7 +16,7 @@
           :id="id" :url="url" @action="getData()"
           :is-active="is_active" :is-draft="is_draft"
         >
-          <q-btn icon="save" color="primary" :disable="$v.$error" @click="update">
+          <q-btn icon="save" color="primary" :disable="$v.$invalid" @click="update">
             <i>update</i>
           </q-btn>
         </button-group>
@@ -46,7 +46,7 @@
 
           <!-- name -->
           <q-field
-            class="col-6" :error="$v.name.$error"
+            class="col-6" :error="$v.name.$invalid"
             :error-label="name_err"
             helper="required"
           >
@@ -58,7 +58,7 @@
 
           <!-- sequence -->
           <q-field
-            class="col-6" :error="$v.sequence.$error"
+            class="col-6" :error="$v.sequence.$invalid"
             :error-label="sequence_err"
             helper="required"
           >
@@ -71,13 +71,13 @@
           <q-field class="col-3" helper="readonly">
             <q-datetime
               float-label="create time"
-              v-model="create_time" :disable="true" type="datetime"
+              v-model="create_time" readonly type="datetime"
             />
           </q-field>
           <q-field class="col-3" helper="readonly">
             <q-datetime
               float-label="last modify time"
-              v-model="last_modify_time" :disable="true" type="datetime"
+              v-model="last_modify_time" readonly type="datetime"
             />
           </q-field>
         </div>
@@ -121,7 +121,7 @@
     },
     validations: {
       name: {required},
-      sequence: {required,numeric,minValue:minValue(1)}
+      sequence: {required,numeric,minValue:minValue(0)}
     },
     computed: {
       ...mapErrorMessage([

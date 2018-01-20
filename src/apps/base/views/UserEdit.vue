@@ -9,7 +9,7 @@
         <div class="row justify-center">
           <!-- first name -->
           <q-field
-            class="col-6" :error="$v.first_name.$error"
+            class="col-6" :error="$v.first_name.$invalid"
             :error-label="first_name_err"
             helper="length must greater than 1 and less than 3"
           >
@@ -17,7 +17,7 @@
           </q-field>
           <!-- last name -->
           <q-field
-            class="col-6" :error="$v.last_name.$error"
+            class="col-6" :error="$v.last_name.$invalid"
             :error-label="last_name_err"
             helper="length must greater than 1 and less than 13"
           >
@@ -25,7 +25,7 @@
           </q-field>
           <!-- emial -->
           <q-field
-            class="col-12" :error="$v.email.$error"
+            class="col-12" :error="$v.email.$invalid"
             :error-label="email_err"
             helper="email address"
           >
@@ -33,7 +33,7 @@
           </q-field>
           <!-- phone -->
           <q-field
-            class="col-12" :error="$v.phone.$error"
+            class="col-12" :error="$v.phone.$invalid"
             :error-label="phone_err"
             helper="phone number"
           >
@@ -48,11 +48,11 @@
           />
           <location
             v-model="address_detail.region"
-            :error="$v.address_detail.region.$error"
+            :error="$v.address_detail.region.$invalid"
             :error_label="address_detail__region_err"
           />
           <q-field
-            class="col-12" :error="$v.address_detail.name.$error"
+            class="col-12" :error="$v.address_detail.name.$invalid"
             :error-label="address_detail__name_err"
             helper="address name"
           >
@@ -71,7 +71,7 @@
         <div class="row justify-center">
           <!-- old password -->
           <q-field
-            class="col-12" :error="$v.old_password.$error"
+            class="col-12" :error="$v.old_password.$invalid"
             :error-label="old_password_err"
             helper="the last password user used to login"
           >
@@ -82,7 +82,7 @@
           </q-field>
           <!-- new password -->
           <q-field
-            class="col-6" :error="$v.password1.$error"
+            class="col-6" :error="$v.password1.$invalid"
             :error-label="password1_err"
             helper="the new password"
           >
@@ -93,7 +93,7 @@
           </q-field>
           <!-- new password repeat -->
           <q-field
-            class="col-6" :error="$v.password2.$error"
+            class="col-6" :error="$v.password2.$invalid"
             :error-label="password2_err"
             helper="repeat new password"
           >
@@ -167,17 +167,17 @@
       ]),
       passwordValid() {
         return (
-          !this.$v.old_password.$error &&
-          !this.$v.password1.$error &&
-          !this.$v.password2.$error
+          !this.$v.old_password.$invalid &&
+          !this.$v.password1.$invalid &&
+          !this.$v.password2.$invalid
         )
       },
       userDataValid() {
         return (
-          !this.$v.first_name.$error &&
-          !this.$v.last_name.$error &&
-          !this.$v.email.$error &&
-          !this.$v.phone.$error
+          !this.$v.first_name.$invalid &&
+          !this.$v.last_name.$invalid &&
+          !this.$v.email.$invalid &&
+          !this.$v.phone.$invalid
         )
       }
     },

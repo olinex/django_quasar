@@ -8,7 +8,7 @@
       <q-card-main>
         <div class="row items-center justify-start">
           <div class="col-11">
-            <q-btn icon="save" color="primary" :disable="$v.$error" @click="update">
+            <q-btn icon="save" color="primary" :disable="$v.$invalid" @click="update">
               <i>update</i>
             </q-btn>
             <q-btn icon="delete" color="negative" @click="deleteHandler()">
@@ -19,7 +19,7 @@
         <div class="row">
           <!-- name -->
           <q-field
-            class="col-12" :error="$v.name.$error"
+            class="col-12" :error="$v.name.$invalid"
             :error-label="name_err"
             helper="required"
           >

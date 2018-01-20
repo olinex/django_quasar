@@ -1,14 +1,9 @@
 <template>
   <foreign-key
-    ref="province"
-    :value="value"
-    field="name"
-    :helper="helper"
-    float-label="province"
-    :request="getProvinceRequest"
-    @input="inputHandler($event)"
-    :error="$v.province.$error"
-    :error-label="province_err"
+    ref="province" :value="value" field="name" :helper="helper"
+    float-label="province" :request="getProvinceRequest"
+    @input="inputHandler($event)" :error="$v.province.$error"
+    :error-label="province_err" :color="color" :inverted="inverted"
   />
 </template>
 
@@ -23,7 +18,9 @@
       value: {type: Number},
       helper: {type: String, required: true},
       required: {type: Boolean, required: false},
-      country: {type: String, required: false}
+      country: {type: String, required: false},
+      color: {type: String},
+      inverted: {type: Boolean, default: false}
     },
     data() {
       return {

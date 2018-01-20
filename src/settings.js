@@ -15,6 +15,7 @@ const PAGE_SIZE_KEY = 'page_size';
 const ORDERING_KEY = 'ordering';
 
 const DEFAULT_PAGE_SIZE = 10;
+const REQUIRE_INPUT_COLOR = 'light-blue-3';
 
 // message levels of this framework
 const LEVELS = {
@@ -142,5 +143,6 @@ export default {
   PAGE_KEY,
   PAGE_SIZE_KEY,
   ORDERING_KEY,
-  DEFAULT_PAGE_SIZE
+  DEFAULT_PAGE_SIZE,
+  REQUIRE_INPUT_COLOR
 }
