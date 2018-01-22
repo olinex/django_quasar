@@ -1,7 +1,7 @@
 // the status of the debug
 const DEBUG = process.env.NODE_ENV !== 'production';
 
-const PROJECT_NAME = 'django vue';
+const PROJECT_NAME = 'django quasar';
 
 // the most import route: home and main
 const HOME_NAME = 'Home';
@@ -36,10 +36,10 @@ const XSRFHEADERNAME = 'X-CSRFToken';
 const LOG_LEVEL = LEVELS.WARNING;
 
 // the http location of the server side for program
-const HTTP_HOST = DEBUG ? 'http://127.0.0.1:8000' : 'http://127.0.0.1:8000';
+const HTTP_HOST = DEBUG ? 'http://127.0.0.1:8000' : process.env.DJANGO_QUASAR_HOST;
 
 // the socket location for program
-const SOCKET_HOST = DEBUG ? 'ws://127.0.0.1:8000' : 'ws://127.0.0.1:8000';
+const SOCKET_HOST = DEBUG ? 'ws://127.0.0.1:8000' : process.env.DJANGO_QUASAR_SOCKET;
 
 // the status of socket connections
 const SOCKET_STATUS = {

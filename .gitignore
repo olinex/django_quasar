@@ -5,6 +5,7 @@
 
 # production
 /static/*
+/templates/index.html
 /package-lock.json
 
 # misc
