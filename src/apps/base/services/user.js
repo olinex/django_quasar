@@ -62,12 +62,12 @@ const onlineUserRequest = async () => {
   })
 };
 
-const updateRequest = async ({id}, {first_name, last_name, email, phone}) => {
+const updateRequest = async ({id}, {first_name, last_name, email, phone, region, address}) => {
   return await corsRequest({
     url: http.DETAIL_URL(id),
     options: {
       method: 'PATCH',
-      data: {first_name, last_name, email, phone}
+      data: {first_name, last_name, email, phone, region, address}
     }
   })
 };

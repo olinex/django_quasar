@@ -8,7 +8,7 @@
       <q-card-main>
         <div class="row items-center justify-start">
           <div class="col-11">
-            <q-btn icon="save" color="primary" :disable="$v.$invalid" @click="update">
+            <q-btn icon="save" color="primary" :disable="$v.$invalid && !$v.$dirty" @click="update">
               <i>update</i>
             </q-btn>
             <q-btn icon="delete" color="negative" @click="deleteHandler()">

@@ -37,7 +37,7 @@
     <history-breadcrumb/>
     <router-view/>
     <chat-modal ref="chatModal"/>
-    <fixed-button ref="fixedButton"/>
+    <fixed-button/>
   </q-layout>
 </template>
 
@@ -47,7 +47,7 @@
   import {FixedButton} from './buttons'
   import {HistoryBreadcrumb} from './breadcrumbs'
   import {ChatModal} from './modals'
-  import {logoutRequest, refreshRequest} from 'src/apps/base/services/user'
+  import {logoutRequest} from 'src/apps/base/services/user'
 
   export default {
     data() {
@@ -68,16 +68,6 @@
         newMessagesCount: state => state.new_messages_count
       }),
       ...mapGetters('user',['fullName'])
-    },
-    async mounted() {
-      const response = await refreshRequest();
-      if (response.status === this.$settings.RESPONSE_STATUS.OK) {
-        this.$store.commit('user/refresh', response.data);
-        this.$refs.fixedButton.socketToggler()
-      } else {
-        this.$router.replace({name: 'Login'});
-        Toast.create.negative(response.data.detail)
-      }
     },
     methods: {
       async logout() {

@@ -163,7 +163,6 @@
         }
       },
       printPDF({rows}) {
-        console.log(this.$refs.table);
         const rowIds = rows.map(row => row.id)
       },
       async actionHandler({action, rows}) {

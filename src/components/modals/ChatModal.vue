@@ -82,7 +82,7 @@
         if (this.open) {
           const response = await onlineUserRequest();
           if (response.status === this.$settings.RESPONSE_STATUS.OK) {
-            this.users = response.data.result
+            this.users = response.data
           }
         }
       },
@@ -92,7 +92,10 @@
       },
       getUserName(user_id) {
         const user = this.users.find(user => user.id === user_id);
-        return `${user.first_name || '*'} ${user.last_name || '*'}`
+        if (user) {
+          return `${user.first_name || '*'} ${user.last_name || '*'}`
+        }
+        return 'unknown'
       },
       readTalks(user_id) {
         this.$store.commit('user/readUserTalks',user_id)

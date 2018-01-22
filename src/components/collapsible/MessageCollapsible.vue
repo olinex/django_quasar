@@ -104,7 +104,6 @@
           options: {method: 'GET'}
         });
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
-          console.log(response.data);
           this.messages = response.data
         }
       },

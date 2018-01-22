@@ -2,7 +2,6 @@ import rights from '../permissions'
 
 export default function hasPerm(right,permissions) {
   // if strict is true,the server permissions must contain all of the permissions in config in the permission
-  console.log([right,permissions])
   if (right === 'all' || permissions.includes('__all__')) {
     return true
   }

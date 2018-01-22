@@ -1,3 +1,9 @@
+import settings from 'src/settings';
+import {Toast} from "quasar";
+import {baseSocket} from "../services/user";
+import {refreshRequest} from "../services/user";
+import store from "../../../stores";
+
 const namespaced = true;
 
 function initial() {
@@ -8,13 +14,18 @@ function initial() {
     first_name: null,
     last_name: null,
     is_active: false,
-    avatar: '',
+    avatar: null,
     email: null,
     phone: null,
     mail_notice: false,
     online_notice: false,
+    region: null,
+    region__name: null,
+    region__city: null,
+    region__city__name: null,
+    region__city__province: null,
+    region__city__province__name: null,
     address: null,
-    address_detail: {region: null, name: null},
     permissions: [],
     new_messages_count: 0,
     groups: [],
@@ -22,6 +33,26 @@ function initial() {
     socket: null,
     talkers: [],
     talks: [],
+  }
+}
+
+function getColor(status) {
+  switch (status) {
+    case 'success':
+      return 'positive';
+    case 'error':
+      return 'negative';
+    default:
+      return status
+  }
+}
+
+function getIcon(status) {
+  switch (status) {
+    case 'success':
+      return 'done';
+    default:
+      return status
   }
 }
 
@@ -33,6 +64,12 @@ const getters = {
 };
 
 const mutations = {
+  setNewMessagesCount(state, count) {
+    state.new_messages_count = count
+  },
+  decrNewMessagesCount(state) {
+    state.new_messages_count -= 1
+  },
   refreshTalkers(state, talkers) {
     state.talkers = [...talkers]
   },
@@ -97,7 +134,65 @@ const mutations = {
   },
   login(state) {
     state.login = true
+  }
+};
+
+const actions = {
+  async refreshAction({commit}) {
+    const response = await refreshRequest();
+    if (response.status === settings.RESPONSE_STATUS.OK) {
+      commit('refresh', response.data);
+      commit('login');
+    } else {
+      commit('clear')
+    }
   },
+  async socketToggleAction({commit, state, dispatch}) {
+    if (state.socket) {
+      state.socket.close();
+      commit('leaveSocket')
+    } else {
+      const socket = await baseSocket(
+      async function(event) {
+        const data = JSON.parse(event.data);
+        await dispatch('socketResponseAction',data);
+      }
+      );
+      commit('joinSocket',socket)
+    }
+  },
+  socketResponseAction({commit,state},data) {
+    const color = getColor(data.status);
+    const icon = getIcon(data.status);
+    switch (data.type) {
+      case 'talk':
+        commit('addTalk',data);
+        commit('addTalker',data.from_user_id);
+        break;
+      case 'response':
+        Toast.create[color]({
+          icon: icon,
+          html: data.detail,
+        });
+        break;
+      case 'notice':
+        // {user_id,username, avatar, type, detail, content, status, create_time}
+        Toast.create.info({
+          image: data.avatar,
+          timeout: 6000,
+          html: `NOTICE: ${data.username} ${data.content}`
+        });
+        break;
+      case 'message':
+        store.commit('setNewMessagesCount',data.count);
+        Toast.create.info({
+          image: data.avatar,
+          timeout: 6000,
+          html: `MESSAGE: ${data.username} ${data.text}`
+        });
+        break;
+  }
+}
 };
 
 export default {
@@ -105,4 +200,5 @@ export default {
   state,
   getters,
   mutations,
+  actions
 }

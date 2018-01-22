@@ -1,40 +1,24 @@
 <template>
   <div class="row">
     <foreign-key
-      v-model="province"
-      class="col-4"
-      field="name"
-      :error="$v.province.$error"
-      :error-label="province_err"
-      helper="the province of the address"
-      float-label="province"
-      :request="getProvinceRequest"
-      @blur="$v.province.$touch"
+      ref="province" v-model="province" class="col-4" field="name"
+      :error="$v.province.$error" :error-label="province_err"
+      helper="the province of the address" float-label="province"
+      :request="getProvinceRequest" @blur="$v.province.$touch"
     />
 
     <foreign-key
-      v-model="city"
-      class="col-4"
-      field="name"
-      :error="$v.city.$error"
-      :error-label="city_err"
-      helper="the city of the address"
-      float-label="city"
-      :request="getCityRequest"
-      @blur="$v.city.$touch"
+      ref="city" v-model="city" class="col-4" field="name"
+      :error="$v.city.$error" :error-label="city_err"
+      helper="the city of the address" float-label="city"
+      :request="getCityRequest" @blur="$v.city.$touch"
     />
 
     <foreign-key
-      :value="value"
-      class="col-4"
-      field="name"
-      :error="error"
-      :error-label="error_label"
-      helper="the region of the address"
-      float-label="region"
-      :request="getRegionRequest"
-      @blur="blurHandler"
-      @input="inputHandler"
+      ref="region" :value="value" class="col-4" field="name"
+      :error="error" :error-label="error_label"
+      helper="the region of the address" float-label="region"
+      :request="getRegionRequest" @blur="blurHandler" @input="inputHandler"
     />
   </div>
 </template>
@@ -93,7 +77,16 @@
       },
       inputHandler($event) {
         this.$emit('input',$event)
-      }
+      },
+      provinceSelected({label,value}) {
+        this.$refs.province.selected({label, value})
+      },
+      citySelected({label,value}) {
+        this.$refs.city.selected({label, value})
+      },
+      regionSelected({label,value}) {
+        this.$refs.region.selected({label, value})
+      },
     }
   }
 </script>

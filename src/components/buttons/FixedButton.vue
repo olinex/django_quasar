@@ -4,7 +4,7 @@
       <q-fab-action
         :color="socket ? 'positive':'faded'"
         icon="insert_link"
-        @click="socketToggler"
+        @click="$store.dispatch('user/socketToggleAction')"
       />
       <q-fab-action
         :color="mail_notice ? 'positive':'faded'"
@@ -23,8 +23,7 @@
 <script>
   import {Toast} from 'quasar'
   import {mapState} from 'vuex'
-  import {baseSocket,onlineNoticeRequest,mailNoticeRequest} from "src/apps/base/services/user"
-  import {createResponse} from "src/utils/response"
+  import {onlineNoticeRequest,mailNoticeRequest} from "src/apps/base/services/user"
 
   export default {
     name: "fixed-button",
@@ -61,25 +60,6 @@
           }
         } else {
           Toast.create.negative(response.data.detail)
-        }
-      },
-      async socketToggler() {
-        if (this.socket) {
-          this.socket.close();
-          this.$store.commit('user/leaveSocket')
-        } else {
-          const socket = await baseSocket(this.socketMessageHandler);
-          this.$store.commit('user/joinSocket',socket)
-        }
-      },
-      socketMessageHandler(event) {
-        const data = JSON.parse(event.data);
-        const user_id = data.from_user_id;
-        if (data.type === 'talk') {
-          this.$store.commit('user/addTalk',data);
-          this.$store.commit('user/addTalker',user_id)
-        } else {
-          createResponse(data)
         }
       }
     }

@@ -47,19 +47,19 @@
             extensions=".gif,.jpg,.jpeg,.png"
           />
           <location
-            v-model="address_detail.region"
-            :error="$v.address_detail.region.$invalid"
-            :error_label="address_detail__region_err"
+            ref='location' v-model="region"
+            :error="$v.region.$invalid"
+            :error_label="region_err"
           />
           <q-field
-            class="col-12" :error="$v.address_detail.name.$invalid"
-            :error-label="address_detail__name_err"
-            helper="address name"
+            class="col-12" :error="$v.address.$invalid"
+            :error-label="address_err"
+            helper="address"
           >
             <q-input
-              clearable float-label="address name"
-              v-model="address_detail.name"
-              @blur="$v.address_detail.name.$touch"
+              clearable float-label="address"
+              v-model="address"
+              @blur="$v.address.$touch"
             />
           </q-field>
           <q-btn color="primary" @click="changeUserData" class="self-center col-3" :disable="!userDataValid">
@@ -124,16 +124,28 @@
 
   export default {
     components: {Location},
+    mounted() {
+      this.$refs.location.provinceSelected({
+        label:this.$store.state.user.region__city__province__name,
+        value:this.$store.state.user.region__city__province
+      });
+      this.$refs.location.citySelected({
+        label:this.$store.state.user.region__city__name,
+        value:this.$store.state.user.region__city
+      });
+      this.$refs.location.regionSelected({
+        label:this.$store.state.user.region__name,
+        value:this.$store.state.user.region
+      })
+    },
     data() {
       return {
         first_name: this.$store.state.user.first_name,
         last_name: this.$store.state.user.last_name,
         email: this.$store.state.user.email,
         phone: this.$store.state.user.phone,
-        address_detail: {
-          region: this.$store.state.user.address_detail.region,
-          name: this.$store.state.user.address_detail.name
-        },
+        region: this.$store.state.user.region,
+        address: this.$store.state.user.address,
         avatar: this.$store.state.user.avatar,
         old_password: '',
         password1: '',
@@ -145,10 +157,8 @@
       last_name: {minLength: minLength(1), maxLength: maxLength(12)},
       email: {email, minLength: minLength(6), maxLength: maxLength(25)},
       phone: {numeric, minLength: minLength(8), maxLength: maxLength(11)},
-      address_detail: {
-        region: {numeric, minLength: minLength(1)},
-        name: {minLength: minLength(3), maxLength: maxLength(64)},
-      },
+      region: {numeric, minLength: minLength(1)},
+      address: {minLength: minLength(3), maxLength: maxLength(190)},
       old_password: {required, minLength: minLength(6)},
       password1: {requiredIf: requiredIf('password2'), sameAs: sameAs('password2'), minLength: minLength(6)},
       password2: {requiredIf: requiredIf('password1'), sameAs: sameAs('password1'), minLength: minLength(6)},
@@ -162,7 +172,7 @@
       },
       ...mapErrorMessage([
         'first_name', 'last_name', 'email', 'phone',
-        'address_detail/region', 'address_detail/name',
+        'region', 'address',
         'old_password', 'password1', 'password2'
       ]),
       passwordValid() {
@@ -211,6 +221,8 @@
             last_name: this.last_name,
             email: this.email,
             phone: this.phone,
+            region: this.region,
+            address: this.address
           };
           const response = await updateRequest(
             {id: this.$store.state.user.id},

@@ -38,9 +38,9 @@
 </template>
 
 <script>
-  import { format } from 'quasar'
   import {http} from '../urls/message'
   import {corsRequest} from "src/utils/request"
+  import goto from 'src/utils/goto'
 
   export default {
     async mounted() {
@@ -68,31 +68,21 @@
         });
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.messages = this.messages.filter(message => message.id !== id)
-        }
-      },
-      async remove(id) {
-        const response = await corsRequest({
-          url: `${http.DETAIL_URL(id)}remove/`,
-          options: {method:'PATCH'}
-        });
-        if (response.status === this.$settings.RESPONSE_STATUS.OK) {
-          this.messages = this.messages.filter(message => message.id !== id)
+          this.$store.commit('user/decrNewMessagesCount')
         }
       },
       async clear() {
         const response = await corsRequest({
-          url: `${http.LIST_URL}clear/`,
+          url: `${http.LIST_URL()}clear/`,
           options: {method:'PATCH'}
         });
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.messages = []
+          this.$store.commit('user/setNewMessagesCount',0)
         }
       },
       goto({content_type,object_id}) {
-        this.$router.replace({
-          name: `${content_type.app_label.split('_')[1]}:${format.capitalize(content_type.model)}Form`,
-          params: {id:object_id}
-        })
+        goto({content_type,object_id})
       }
     }
   }

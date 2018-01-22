@@ -7,7 +7,7 @@
       </q-card-title>
       <q-card-main>
         <div class="row items-center justify-start">
-          <q-btn icon="save" color="primary" :disable="$v.$invalid" @click="update">
+          <q-btn icon="save" color="primary" :disable="$v.$invalid && !$v.$dirty" @click="update">
             <i>update</i>
           </q-btn>
         </div>
@@ -55,13 +55,13 @@
           <q-field class="col-3" helper="readonly">
             <q-datetime
               float-label="create time"
-              v-model="create_time" readonly type="datetime"
+              v-model="create_time" disable type="datetime"
             />
           </q-field>
           <q-field class="col-3" helper="readonly">
             <q-datetime
               float-label="last modify time"
-              v-model="last_modify_time" readonly type="datetime"
+              v-model="last_modify_time" disable type="datetime"
             />
           </q-field>
         </div>

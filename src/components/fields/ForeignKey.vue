@@ -3,7 +3,7 @@
     <q-input
       :value="label" :float-label="floatLabel" :inverted="inverted"
       @input="inputHandler($event)" @blur="blurHandler" :color="color"
-      :after="[ { icon: 'more_horiz', more: false, handler: moreToggler } ]"
+      :after="[{ icon: 'more_horiz', more: false, handler: moreToggler }]"
     >
       <q-autocomplete @search="search" :min-characters="1" @selected="selected" :debounce="800"/>
       <q-modal highlight v-model="more" :content-css="{minWidth: '40vw', minHeight: '80vh'}">

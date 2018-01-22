@@ -13,7 +13,7 @@
       </q-card-title>
       <q-card-main>
         <div class="row">
-          <q-btn icon="save" color="primary" :disable="$v.$invalid" @click="save">
+          <q-btn icon="save" color="primary" :disable="$v.$invalid && !$v.$dirty" @click="save">
             <i>save</i>
           </q-btn>
         </div>

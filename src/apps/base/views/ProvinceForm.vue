@@ -16,7 +16,7 @@
           :id="id" :url="url" @action="getData()"
           :is-active="is_active" :is-draft="is_draft"
         >
-          <q-btn icon="save" color="primary" :disable="$v.$invalid" @click="update">
+          <q-btn icon="save" color="primary" :disable="$v.$invalid && !$v.$dirty" @click="update">
             <i>update</i>
           </q-btn>
         </button-group>
@@ -51,13 +51,13 @@
           <q-field class="col-3" helper="readonly">
             <q-datetime
               float-label="create time"
-              v-model="create_time" readonly type="datetime"
+              v-model="create_time" disable type="datetime"
             />
           </q-field>
           <q-field class="col-3" helper="readonly">
             <q-datetime
               float-label="last modify time"
-              v-model="last_modify_time" readonly type="datetime"
+              v-model="last_modify_time" disable type="datetime"
             />
           </q-field>
         </div>

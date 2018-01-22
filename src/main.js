@@ -21,8 +21,8 @@ import Quasar, {
   QLayout, QToolbar, QToolbarTitle, QSideLink,
   QList, QListHeader, QItem, QItemMain, QItemSide, QItemTile,
   QCard, QCardTitle, QCardSeparator, QCardMain, QCardActions, QCardMedia,
-  QField, QInput, QCollapsible, QAutocomplete, QSearch, QSelect, QToggle, QDatetime,
-  QModal, QModalLayout,
+  QField, QInput, QAutocomplete, QSearch, QSelect, QToggle, QDatetime, QDialogSelect,
+  QModal, QModalLayout, QCollapsible,
   QTabs, QRouteTab, QTab, QTabPane,
   QFab, QFabAction,
   QPagination, QAjaxBar, QBtn, QIcon, QFixedPosition, QPopover, QTooltip,
@@ -30,8 +30,7 @@ import Quasar, {
   QScrollArea,
   QDataTable,
   QStepper, QStep,
-  QDialogSelect,
-  QSpinner
+  QSpinner, Toast
 } from 'quasar'
 import router from './router'
 import store from './stores'
@@ -110,23 +109,16 @@ import 'quasar-extras/material-icons'
 // import 'quasar-extras/fontawesome'
 // import 'quasar-extras/animate'
 
-Quasar.start(() => {
-  /* eslint-disable no-new */
-  new Vue({
-    el: '#q-app',
-    router,
-    store,
-    render: h => h(require('./App').default)
-  })
-});
-
-function getPermissions() {
-  return store.state.user.permissions
+function title(verboseName) {
+  if (verboseName) {
+    return `${verboseName} - ${SETTINGS.PROJECT_NAME}`
+  }
+  return SETTINGS.PROJECT_NAME
 }
 
 Vue.directive('perm',{
   update: function (el,binding) {
-    if (!hasPerm(binding.value, getPermissions())) {
+    if (!hasPerm(binding.value, store.state.user.permissions)) {
       el.classList.add('hidden')
     } else {
       el.classList.remove('hidden')
@@ -134,16 +126,9 @@ Vue.directive('perm',{
   }
 });
 
-function title(verboseName) {
-  if (verboseName) {
-    return `${verboseName}-${SETTINGS.PROJECT_NAME}`
-  }
-  return SETTINGS.PROJECT_NAME
-}
-
 // check all the permission of ther route
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(route => route.meta && hasPerm(route.meta.right, getPermissions()))) {
+  if (to.matched.some(route => route.meta && hasPerm(route.meta.right, store.state.user.permissions))) {
     store.commit('history/addRoute',to);
     document.title = title(to.meta.verboseName);
     next()
@@ -151,4 +136,24 @@ router.beforeEach((to, from, next) => {
     document.title = title('401');
     next({name: 'Error401'})
   }
+});
+
+Quasar.start(async () => {
+  /* eslint-disable no-new */
+
+  //initial action
+  await store.dispatch('user/refreshAction');
+  if (store.state.user.login) {
+    await store.dispatch('user/socketToggleAction');
+  } else {
+    router.replace({name: 'Login'});
+    Toast.create.negative("authenticate failed")
+  }
+
+  new Vue({
+    el: '#q-app',
+    router,
+    store,
+    render: h => h(require('./App').default)
+  })
 });
