@@ -1,3 +1,5 @@
+import PRIVATES from "src/privates";
+
 // the status of the debug
 const DEBUG = process.env.NODE_ENV !== 'production';
 
@@ -36,10 +38,10 @@ const XSRFHEADERNAME = 'X-CSRFToken';
 const LOG_LEVEL = LEVELS.WARNING;
 
 // the http location of the server side for program
-const HTTP_HOST = DEBUG ? 'http://127.0.0.1:8000' : process.env.DJANGO_QUASAR_HOST;
+const HTTP_HOST = DEBUG ? 'http://127.0.0.1:8000' : PRIVATES.HTTP;
 
 // the socket location for program
-const SOCKET_HOST = DEBUG ? 'ws://127.0.0.1:8000' : process.env.DJANGO_QUASAR_SOCKET;
+const SOCKET_HOST = DEBUG ? 'ws://127.0.0.1:8000' : PRIVATES.SOCKET;
 
 // the status of socket connections
 const SOCKET_STATUS = {

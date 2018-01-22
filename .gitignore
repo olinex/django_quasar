@@ -5,7 +5,6 @@
 
 # production
 /static/*
-/templates/index.html
 /package-lock.json
 
 # misc
@@ -23,3 +22,5 @@ Desktop.ini
 __pycache__/
 *.py[cod]
 *$py.class
+/src/privates.js
+/templates/index.html
