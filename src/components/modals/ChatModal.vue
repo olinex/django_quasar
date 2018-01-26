@@ -54,7 +54,7 @@
 <script>
   import {mapState} from 'vuex'
   import {QChatMessage} from 'quasar'
-  import ChatTextField from '../fields/ChatTextField'
+  import {ChatTextField} from 'src/components/fields'
   import {onlineUserRequest} from "src/apps/base/services/user"
 
   export default {

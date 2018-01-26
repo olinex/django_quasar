@@ -21,23 +21,8 @@
           {label: 'name', field: 'name', width: '100px', filter: true, sort: true, type: 'string'},
           {label: 'draft status', field: 'is_draft', width: '50px', filter: true, sort: true, type: 'boolean'},
           {label: 'active status', field: 'is_active', width: '50px', filter: true, sort: true, type: 'boolean'},
-          {
-            label: 'create time', field: 'create_time', width: '50px', filter: false, sort: true, type: 'string',
-            format(value) {
-              return new Date(value).toLocaleString()
-            }
-          },
-          {
-            label: 'last modify time',
-            field: 'last_modify_time',
-            width: '50px',
-            filter: false,
-            sort: true,
-            type: 'string',
-            format(value) {
-              return new Date(value).toLocaleString()
-            }
-          },
+          {label: 'create time', field: 'create_time', width: '50px', filter: false, sort: true, type: 'datetime'},
+          {label: 'last modify time', field: 'last_modify_time', width: '50px', filter: false, sort: true, type: 'datetime'},
         ]
       }
     },

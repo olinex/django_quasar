@@ -12,16 +12,16 @@ require(`quasar/dist/quasar.${__THEME}.css`);
 
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
-import {ForeignKey,ManyToManyField} from './components/fields'
+import {ForeignKey,ManyToManyField, DictField} from './components/fields'
 import {BaseTable} from './components/tables'
 import {ButtonGroup} from './components/forms'
 import {StatesBreadcrumb} from './components/breadcrumbs'
 import {MessageCollapsible} from './components/collapsible'
 import Quasar, {
   QLayout, QToolbar, QToolbarTitle, QSideLink,
-  QList, QListHeader, QItem, QItemMain, QItemSide, QItemTile,
+  QList, QListHeader, QItem, QItemMain, QItemSide, QItemTile, QItemSeparator,
   QCard, QCardTitle, QCardSeparator, QCardMain, QCardActions, QCardMedia,
-  QField, QInput, QAutocomplete, QSearch, QSelect, QToggle, QDatetime, QDialogSelect,
+  QField, QInput, QAutocomplete, QSearch, QSelect, QToggle, QDatetime, QDialogSelect, QChipsInput,
   QModal, QModalLayout, QCollapsible,
   QTabs, QRouteTab, QTab, QTabPane,
   QFab, QFabAction,
@@ -45,6 +45,7 @@ Vue.use(Quasar); // Install Quasar Framework
 
 Vue.component(ForeignKey.name,ForeignKey);
 Vue.component(ManyToManyField.name,ManyToManyField);
+Vue.component(DictField.name,DictField);
 Vue.component(BaseTable.name,BaseTable);
 Vue.component(StatesBreadcrumb.name,StatesBreadcrumb);
 Vue.component(ButtonGroup.name,ButtonGroup);
@@ -61,6 +62,7 @@ Vue.component(QItem.name,QItem);
 Vue.component(QItemMain.name,QItemMain);
 Vue.component(QItemSide.name,QItemSide);
 Vue.component(QItemTile.name,QItemTile);
+Vue.component(QItemSeparator.name,QItemSeparator);
 Vue.component(QCard.name,QCard);
 Vue.component(QCardTitle.name,QCardTitle);
 Vue.component(QCardSeparator.name,QCardSeparator);
@@ -75,6 +77,8 @@ Vue.component(QSearch.name,QSearch);
 Vue.component(QSelect.name,QSelect);
 Vue.component(QToggle.name,QToggle);
 Vue.component(QDatetime.name,QDatetime);
+Vue.component(QDialogSelect.name,QDialogSelect);
+Vue.component(QChipsInput.name,QChipsInput);
 Vue.component(QModal.name,QModal);
 Vue.component(QModalLayout.name,QModalLayout);
 Vue.component(QTabs.name,QTabs);
@@ -97,7 +101,6 @@ Vue.component(QScrollArea.name,QScrollArea);
 Vue.component(QDataTable.name,QDataTable);
 Vue.component(QStepper.name,QStepper);
 Vue.component(QStep.name,QStep);
-Vue.component(QDialogSelect.name,QDialogSelect);
 Vue.component(QSpinner.name,QSpinner);
 
 
@@ -143,17 +146,18 @@ Quasar.start(async () => {
 
   //initial action
   await store.dispatch('user/refreshAction');
+
+  await new Vue({
+    el: '#q-app',
+    router,
+    store,
+    render: h => h(require('./App').default)
+  });
+
   if (store.state.user.login) {
     await store.dispatch('user/socketToggleAction');
   } else {
     router.replace({name: 'Login'});
     Toast.create.negative("authenticate failed")
   }
-
-  new Vue({
-    el: '#q-app',
-    router,
-    store,
-    render: h => h(require('./App').default)
-  })
 });

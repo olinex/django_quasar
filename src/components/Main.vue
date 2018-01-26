@@ -28,6 +28,11 @@
 
     <div slot="left">
       <q-list no-border link inset-delimiter>
+        <q-side-link item :to="{name:'product:Base'}">
+          <q-item-side icon="apps"/>
+          <q-item-main label="Products"/>
+        </q-side-link>
+
         <q-side-link item :to="{name:'base:Base'}">
           <q-item-side icon="settings"/>
           <q-item-main label="Settings"/>

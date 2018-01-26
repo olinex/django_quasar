@@ -12,30 +12,26 @@
           </q-btn>
         </div>
         <div class="row">
+          <!-- name -->
+          <q-field
+            class="col-6" :error="$v.name.$invalid"
+            :error-label="name_err"
+            helper="required"
+          >
+            <q-input
+              float-label="name" clearable
+              v-model="name" @blur="$v.name.$touch"
+            />
+          </q-field>
+
           <!-- value -->
           <q-field
             class="col-12" :error="$v.value.$invalid"
             :error-label="value_err"
-            :helper="help_text"
+            helper="required"
           >
-            <q-input
-              v-if="form === 'int'"
-              type="number" clearable float-label="value"
-              v-model="value" @blur="$v.value.$touch"
-            />
-
-            <q-input
-              v-else-if="form === 'str'" clearable float-label="value"
-              v-model="value" @blur="$v.value.$touch"
-            />
-
-            <q-toggle
-              v-else-if="form === 'bool'" clearable float-label="value"
-              v-model="value" @blur="$v.value.$touch"
-            />
-
-            <q-input
-              v-else clearable float-label="value"
+            <q-chips-input
+              float-label="value" clearable
               v-model="value" @blur="$v.value.$touch"
             />
           </q-field>
@@ -72,9 +68,9 @@
 
 <script>
   import {Toast} from 'quasar'
-  import {http} from "../urls/argument"
-  import {detailRequest,updateRequest} from "../services/argument"
-  import {required,numeric,minValue} from 'vuelidate/lib/validators'
+  import {http} from "../urls/attribute"
+  import {detailRequest,updateRequest} from "../services/attribute"
+  import {required,numeric,minValue,minLength} from 'vuelidate/lib/validators'
   import {mapErrorMessage} from 'src/utils/error-messages'
 
   export default {
@@ -87,40 +83,31 @@
     data() {
       return {
         name: '',
-        form: null,
-        value: true,
-        help_text: true,
         sequence: 0,
+        value: [],
         create_time: '',
-        last_modify_time: '',
-        followers: []
+        last_modify_time: ''
       }
     },
     validations: {
-      value: {required},
+      name: {required},
+      value: {required,minLength:minLength(1)},
       sequence: {required,numeric,minValue:minValue(0)}
     },
     computed: {
       ...mapErrorMessage([
-        'value','sequence'
+        'name','value','sequence'
       ]),
       url() {
         return http.LIST_URL()
-      },
-      detailUrl() {
-        return http.DETAIL_URL(this.$props.id)
       }
     },
     methods: {
       refresh(data) {
         this.create_time = data.create_time;
         this.last_modify_time = data.last_modify_time;
-        this.form = data.form;
-        this.value = data.value;
-        this.help_text = data.help_text;
         this.name = data.name;
-        this.sequence = data.sequence;
-        this.followers = data.followers
+        this.value = data.value;
       },
       async getData() {
         const response = await detailRequest(this.$props.id);
@@ -133,6 +120,7 @@
       async update() {
         const response = await updateRequest({
           id: this.$props.id,
+          name: this.name,
           value: this.value,
           sequence: this.sequence
         });

@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="row">
+    <div class="row" style="margin: 10px;">
       <q-btn v-if="create" icon="create" color="primary" @click="$router.push({name:create})">
         <i>create</i>
       </q-btn>
@@ -11,11 +11,12 @@
         ref="table"
         :data="data"
         :config="config"
-        :columns="columns"
+        :columns="formatColumns"
         @refresh="refreshHandler"
         @selection="selectHandler"
         @rowclick="rowclickHandler"
       >
+        <slot/>
         <template slot="selection" scope="selection">
           <q-btn small flat round icon="picture_as_pdf" color="primary"
                  @click="printPDF(selection)">
@@ -74,6 +75,27 @@
   import {Loading, Toast} from 'quasar'
   import {listRequestCreater, corsRequest} from "src/utils/request"
 
+  function datetimeFormat(value) {
+    return new Date(value).toLocaleString()
+  }
+
+  function booleanFormat(value) {
+    const color = value ? 'text-positive' : 'text-negative';
+    const icon = value ? 'check_circle' : 'cancel';
+    return `<i class="q-icon material-icons ${color}">${icon}</i>`
+  }
+
+  function listFormat(value) {
+    const warpClass = `class="col row items-center group q-input-chips"`;
+    const itemClass = `class="q-chip row no-wrap inline items-center small text-white bg-primary"`;
+    const items = value.map(item => `<div ${itemClass}><div class="q-chip-main"> ${item} </div></div>`);
+    return `<div ${warpClass}>${items.join('')}</div>`
+  }
+
+  function dictFormat(value) {
+    return listFormat(Object.entries(value).map(entry => `${entry.key}: ${entry.value}`))
+  }
+
   export default {
     name: 'base-table',
     props: {
@@ -126,6 +148,28 @@
     computed: {
       maxPage() {
         return Math.ceil(this.count / this.pageSize)
+      },
+      formatColumns() {
+        const columns = [];
+        for (let column of this.$props.columns) {
+          switch (column.type) {
+            case 'boolean':
+              columns.push({...column,format:booleanFormat});
+              break;
+            case 'datetime':
+              columns.push({...column,format:datetimeFormat,type:'string'});
+              break;
+            case 'list':
+              columns.push({...column,format:listFormat,type:'string'});
+              break;
+            case 'dict':
+              columns.push({...column,format:dictFormat,type:'string'});
+              break;
+            default:
+              columns.push(column)
+          }
+        }
+        return columns
       }
     },
     methods: {
