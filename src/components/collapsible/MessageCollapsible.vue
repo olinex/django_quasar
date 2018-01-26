@@ -25,7 +25,7 @@
             :label="message.title" label-lines="1"
             :sublabel="message.text"
           />
-          <q-item-side right :stamp="new Date(message.create_time).toLocaleString()"/>
+          <q-item-side right :stamp="toNow(message.create_time)"/>
         </q-item>
       </q-list>
     </q-collapsible>
@@ -69,10 +69,11 @@
 </template>
 
 <script>
-  import {Toast} from 'quasar'
-  import {corsRequest} from "src/utils/request"
-  import {required, minLength} from 'vuelidate/lib/validators'
-  import {mapErrorMessage} from 'src/utils/error-messages'
+  import {Toast} from 'quasar';
+  import {toNowFormat} from "src/utils/format";
+  import {corsRequest} from "src/utils/request";
+  import {required, minLength} from 'vuelidate/lib/validators';
+  import {mapErrorMessage} from 'src/utils/error-messages';
 
   export default {
     name: "message-collapsible",
@@ -98,6 +99,9 @@
       }
     },
     methods: {
+      toNow(value) {
+        return toNowFormat(value)
+      },
       async refresh() {
         const response = await corsRequest({
           url: `${this.$props.url}message/`,

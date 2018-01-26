@@ -1,5 +1,26 @@
-const appName = path.dirname(__filename);
+import load from "src/utils/route-loader";
+
+const appName = 'base';
+
+function routeName(name) {
+  return `${appName}:${name}`
+}
+
+function view(name) {
+  return load(`apps/${appName}/views/${name}`)
+}
+
+function viewRoute({name, path, meta, props, redirect, children}) {
+  return {
+    name: routeName(name),
+    component: view(name),
+    path, meta, props, redirect, children
+  }
+}
 
 export {
-  appName
+  appName,
+  routeName,
+  view,
+  viewRoute
 }

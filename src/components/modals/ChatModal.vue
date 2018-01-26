@@ -37,7 +37,7 @@
                 v-for="(talk,index) in talks"
                 v-if="(talk.from_user_id === user_id) || talk.to_user_id === user_id"
                 :avatar="talk.avatar" :key="index" :name="talk.from_username"
-                :stamp="(new Date(talk.create_time).toLocaleString())"
+                :stamp="time(talk.create_time)"
                 :sent="talk.from_user_id === id" :text="[talk.content]"
               />
             </q-scroll-area>
@@ -52,10 +52,11 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
-  import {QChatMessage} from 'quasar'
-  import {ChatTextField} from 'src/components/fields'
-  import {onlineUserRequest} from "src/apps/base/services/user"
+  import {mapState} from 'vuex';
+  import {QChatMessage} from 'quasar';
+  import {timeFormat} from "src/utils/format";
+  import {ChatTextField} from 'src/components/fields';
+  import {onlineUserRequest} from "src/apps/base/services/user";
 
   export default {
     name: "chat-modal",
@@ -77,6 +78,9 @@
       }
     ),
     methods: {
+      time(value) {
+        return timeFormat(value)
+      },
       async trigger() {
         this.open = !this.open;
         if (this.open) {

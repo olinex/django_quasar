@@ -37,6 +37,7 @@
 
 <script>
   import {Toast} from 'quasar'
+  import {routeName} from "../apps";
   import {createRequest} from "../services/group"
   import {searchRequest} from "../services/permission"
   import {required} from 'vuelidate/lib/validators'
@@ -66,7 +67,7 @@
         });
         if (response.status === this.$settings.RESPONSE_STATUS.CREATED) {
           const id = response.data.id;
-          this.$router.push({name:'base:GroupForm',params: {id}});
+          this.$router.push({name:routeName('GroupForm'),params: {id}});
           Toast.create.positive("update successfully")
         } else {
           Toast.create.negative(response.data.detail)

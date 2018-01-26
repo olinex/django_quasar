@@ -1,30 +1,25 @@
-import load from 'src/utils/route-loader'
+import {viewRoute, routeName} from "./apps";
 
-export default {
-  name: 'product:Base',
-  path: '/product',
-  component: load('apps/product/views/Base'),
-  meta: {right: 'all', link: true, verboseName: 'base'},
-  redirect: {name: 'product:AttributeList'},
-  children: [
-    {
-      name: 'product:AttributeList',
-      path: 'attribute',
-      component: load('apps/product/views/AttributeList'),
-      meta: {right: 'all', link: true, verboseName: 'attribute list'},
-    },
-    {
-      name: 'product:AttributeCreate',
-      path: 'attribute/create',
-      component: load('apps/product/views/AttributeCreate'),
-      meta: {right: 'all', link: true, verboseName: 'attribute create'},
-    },
-    {
-      name: 'product:AttributeForm',
-      path: 'attribute/:id',
-      props: true,
-      component: load('apps/product/views/AttributeForm'),
-      meta: {right: 'all', link: true, verboseName:'attribute form'},
-    },
-  ]
-}
+export default [
+  viewRoute({
+    name: 'Base',
+    path: '/product',
+    meta: {right: 'all', link: true, verboseName: 'base'},
+    redirect: {name: routeName('AttributeList')},
+    children: [
+      // attribute
+      viewRoute({
+        name: 'AttributeList', path: 'attribute',
+        meta: {right: 'all', link: true, verboseName: 'attribute list'},
+      }),
+      viewRoute({
+        name: 'AttributeCreate', path: 'attribute/create',
+        meta: {right: 'all', link: true, verboseName: 'attribute create'},
+      }),
+      viewRoute({
+        name: 'AttributeForm', path: 'attribute/:id', props: true,
+        meta: {right: 'all', link: true, verboseName: 'attribute form'},
+      }),
+    ]
+  })
+]

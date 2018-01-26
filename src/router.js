@@ -2,10 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import {MAIN_NAME, MAIN_PATH, HOME_NAME, HOME_PATH} from './settings'
 import load from 'src/utils/route-loader'
-import baseRoutes from 'src/apps/base/routes'
-import productRoutes from 'src/apps/product/routes'
+import baseRoute from 'src/apps/base/routes';
+import productRoute from 'src/apps/product/routes';
 
 Vue.use(VueRouter);
+
 
 export default new VueRouter({
   /*
@@ -31,8 +32,7 @@ export default new VueRouter({
       meta: {right: 'all', link: false},
       redirect: {name:HOME_NAME},
       children: [
-        baseRoutes,
-        productRoutes
+        ...baseRoute, ...productRoute
       ],
     },
     {

@@ -1,131 +1,99 @@
-import load from 'src/utils/route-loader'
+import {viewRoute, routeName} from "./apps";
 
-export default {
-  name: 'base:Base',
-  path: '/base',
-  component: load('apps/base/views/Base'),
-  meta: {right: 'all', link: false, verboseName: 'base'},
-  redirect: {name: 'base:ProvinceList'},
-  children: [
-    // province
-    {
-      name: 'base:ProvinceList',
-      path: 'province',
-      component: load('apps/base/views/ProvinceList'),
-      meta: {right: 'all', link: true, verboseName: 'province list'},
-    },
-    {
-      name: 'base:ProvinceCreate',
-      path: 'province/create',
-      component: load('apps/base/views/ProvinceCreate'),
-      meta: {rgiht: 'all', link: true, verboseName: 'province create'}
-    },
-    {
-      name: 'base:ProvinceForm',
-      path: 'province/:id',
-      props: true,
-      component: load('apps/base/views/ProvinceForm'),
-      meta: {right: 'all', link: true, verboseName:'province form'},
-    },
-    // city
-    {
-      name: 'base:CityList',
-      path: 'city',
-      component: load('apps/base/views/CityList'),
-      meta: {right: 'all', link: true, verboseName: 'city list'},
-    },
-    {
-      name: 'base:CityCreate',
-      path: 'city/create',
-      component: load('apps/base/views/CityCreate'),
-      meta: {rgiht: 'all', link: true, verboseName: 'city create'}
-    },
-    {
-      name: 'base:CityForm',
-      path: 'city/:id',
-      props: true,
-      component: load('apps/base/views/CityForm'),
-      meta: {right: 'all', link: true, verboseName:'city form'},
-    },
-    // region
-    {
-      name: 'base:RegionList',
-      path: 'region',
-      component: load('apps/base/views/RegionList'),
-      meta: {right: 'all', link: true, verboseName: 'region list'},
-    },
-    {
-      name: 'base:RegionCreate',
-      path: 'region/create',
-      component: load('apps/base/views/RegionCreate'),
-      meta: {rgiht: 'all', link: true, verboseName: 'region create'}
-    },
-    {
-      name: 'base:RegionForm',
-      path: 'region/:id',
-      props: true,
-      component: load('apps/base/views/RegionForm'),
-      meta: {right: 'all', link: true, verboseName:'region form'},
-    },
-    // argument
-    {
-      name: 'base:ArgumentList',
-      path: 'argument',
-      component: load('apps/base/views/ArgumentList'),
-      meta: {right: 'all', link: true, verboseName: 'argument list'},
-    },
-    {
-      name: 'base:ArgumentForm',
-      path: 'argument/:id',
-      props: true,
-      component: load('apps/base/views/ArgumentForm'),
-      meta: {right: 'all', link: true, verboseName:'argument form'},
-    },
-    // group
-    {
-      name: 'base:GroupList',
-      path: 'group',
-      component: load('apps/base/views/GroupList'),
-      meta: {right: 'all', link: true, verboseName: 'group list'},
-    },
-    {
-      name: 'base:GroupCreate',
-      path: 'group/create',
-      component: load('apps/base/views/GroupCreate'),
-      meta: {rgiht: 'all', link: true, verboseName: 'group create'}
-    },
-    {
-      name: 'base:GroupForm',
-      path: 'group/:id',
-      props: true,
-      component: load('apps/base/views/GroupForm'),
-      meta: {right: 'all', link: true, verboseName:'group form'},
-    },
-    // permission
-    {
-      name: 'base:PermissionList',
-      path: 'permission',
-      component: load('apps/base/views/PermissionList'),
-      meta: {right: 'all', link: true, verboseName: 'permission list'},
-    },
-    // content type
-    {
-      name: 'base:ContentTypeList',
-      path: 'content-type',
-      component: load('apps/base/views/ContentTypeList'),
-      meta: {right: 'all', link: true, verboseName: 'content type'},
-    },
-    {
-      name: 'base:UserEdit',
-      path: 'user',
-      component: load('apps/base/views/UserEdit'),
-      meta: {right: 'all', link: true, verboseName: 'user edit'}
-    },
-    {
-      name: 'base:MessageList',
-      path: 'message list',
-      component: load('apps/base/views/MessageList'),
-      meta: {right: 'all', link: true, verboseName: 'message list'}
-    },
-  ]
-}
+export default [
+  viewRoute({
+    name: 'Base', path: '/base',
+    meta: {right: 'all', link: false, verboseName: 'base'},
+    redirect: {name: routeName('ProvinceList')},
+    children: [
+      // province
+      viewRoute({
+        name: 'ProvinceList', path: 'province',
+        meta: {right: 'all', link: true, verboseName: 'province list'},
+      }),
+      viewRoute({
+        name: 'ProvinceCreate', path: 'province/create',
+        meta: {right: 'all', link: true, verboseName: 'province create'},
+      }),
+      viewRoute({
+        name: 'ProvinceForm', path: 'province/:id', props: true,
+        meta: {right: 'all', link: true, verboseName: 'province form'},
+      }),
+
+      // city
+      viewRoute({
+        name: 'CityList', path: 'city',
+        meta: {right: 'all', link: true, verboseName: 'city list'},
+      }),
+      viewRoute({
+        name: 'CityCreate', path: 'city/create',
+        meta: {right: 'all', link: true, verboseName: 'city create'},
+      }),
+      viewRoute({
+        name: 'CityForm', path: 'city/:id', props: true,
+        meta: {right: 'all', link: true, verboseName: 'city form'},
+      }),
+
+      // region
+      viewRoute({
+        name: 'RegionList', path: 'region',
+        meta: {right: 'all', link: true, verboseName: 'region list'},
+      }),
+      viewRoute({
+        name: 'RegionCreate', path: 'region/create',
+        meta: {right: 'all', link: true, verboseName: 'region create'},
+      }),
+      viewRoute({
+        name: 'RegionForm', path: 'region/:id', props: true,
+        meta: {right: 'all', link: true, verboseName: 'region form'},
+      }),
+
+      // argument
+      viewRoute({
+        name: 'ArgumentList', path: 'argument',
+        meta: {right: 'all', link: true, verboseName: 'argument list'},
+      }),
+      viewRoute({
+        name: 'ArgumentForm', path: 'argument/:id', props: true,
+        meta: {right: 'all', link: true, verboseName: 'argument form'},
+      }),
+
+      // group
+      viewRoute({
+        name: 'GroupList', path: 'group',
+        meta: {right: 'all', link: true, verboseName: 'group list'},
+      }),
+      viewRoute({
+        name: 'GroupCreate', path: 'group/create',
+        meta: {right: 'all', link: true, verboseName: 'group create'},
+      }),
+      viewRoute({
+        name: 'GroupForm', path: 'group/:id', props: true,
+        meta: {right: 'all', link: true, verboseName: 'group form'},
+      }),
+
+      // permission
+      viewRoute({
+        name: 'PermissionList', path: 'permission',
+        meta: {right: 'all', link: true, verboseName: 'permission list'},
+      }),
+
+      // content type
+      viewRoute({
+        name: 'ContentTypeList', path: 'content-type',
+        meta: {right: 'all', link: true, verboseName: 'content type list'},
+      }),
+    ]
+  }),
+  // user
+  viewRoute({
+    name: 'UserEdit', path: 'user',
+    meta: {right: 'all', link: true, verboseName: 'user edit'},
+  }),
+
+  // message
+  viewRoute({
+    name: 'MessageList', path: 'message',
+    meta: {right: 'all', link: true, verboseName: 'message list'},
+  }),
+]

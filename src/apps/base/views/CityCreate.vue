@@ -60,12 +60,13 @@
 </template>
 
 <script>
-  import {Toast} from 'quasar'
-  import {createRequest} from "../services/city"
-  import {required,numeric,minValue} from 'vuelidate/lib/validators'
-  import {mapErrorMessage} from 'src/utils/error-messages'
-  import Country from "../components/fields/Country"
-  import Province from "../components/fields/Province"
+  import {Toast} from 'quasar';
+  import {routeName} from "../apps";
+  import {createRequest} from "../services/city";
+  import {required,numeric,minValue} from 'vuelidate/lib/validators';
+  import {mapErrorMessage} from 'src/utils/error-messages';
+  import Country from "../components/fields/Country";
+  import Province from "../components/fields/Province";
 
   export default {
     components: {
@@ -98,7 +99,7 @@
         });
         if (response.status === this.$settings.RESPONSE_STATUS.CREATED) {
           const id = response.data.id;
-          this.$router.push({name:'base:CityForm',params: {id}});
+          this.$router.push({name:routeName('CityForm'),params: {id}});
           Toast.create.positive("update successfully")
         } else {
           Toast.create.negative(response.data.detail)

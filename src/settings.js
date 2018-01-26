@@ -1,5 +1,10 @@
 import PRIVATES from "src/privates";
 
+const INSTALLED_APPS = [
+  'apps/base',
+  'apps/product',
+];
+
 // the status of the debug
 const DEBUG = process.env.NODE_ENV !== 'production';
 
@@ -109,6 +114,7 @@ const RESPONSE_STATUS = {
 export {
   DEBUG,
   PROJECT_NAME,
+  INSTALLED_APPS,
   HOME_NAME,
   HOME_PATH,
   MAIN_NAME,
@@ -130,6 +136,7 @@ export {
 export default {
   DEBUG,
   PROJECT_NAME,
+  INSTALLED_APPS,
   HOME_NAME,
   HOME_PATH,
   MAIN_NAME,

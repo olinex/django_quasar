@@ -73,6 +73,7 @@
 
 <script>
   import {Toast} from 'quasar'
+  import {routeName} from "../apps";
   import {createRequest} from "../services/region"
   import {required,numeric,minValue} from 'vuelidate/lib/validators'
   import {mapErrorMessage} from 'src/utils/error-messages'
@@ -112,7 +113,7 @@
         });
         if (response.status === this.$settings.RESPONSE_STATUS.CREATED) {
           const id = response.data.id;
-          this.$router.push({name:'base:RegionForm',params: {id}});
+          this.$router.push({name:routeName('RegionForm'),params: {id}});
           Toast.create.positive("update successfully")
         } else {
           Toast.create.negative(response.data.detail)

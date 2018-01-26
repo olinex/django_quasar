@@ -1,15 +1,13 @@
-import load from 'src/utils/route-loader'
+import {viewRoute, routeName} from "./apps";
 
-export default {
-  name: 'demo:Base',
-  path: '/base',
-  component: load('apps/base/views/Base'),
-  meta: {
-    right: 'all',
-    link: true,
-    verboseName: 'base'
-  },
-  children: [
+export default [
+  viewRoute({
+    name: 'Base',
+    path: '/product',
+    meta: {right: 'all', link: true, verboseName: 'base'},
+    redirect: {name: routeName('AttributeList')},
+    children: [
 
-  ]
-}
+    ]
+  })
+]

@@ -72,12 +72,9 @@
 </template>
 
 <script>
-  import {Loading, Toast} from 'quasar'
-  import {listRequestCreater, corsRequest} from "src/utils/request"
-
-  function datetimeFormat(value) {
-    return new Date(value).toLocaleString()
-  }
+  import {Loading, Toast, date} from 'quasar';
+  import {listRequestCreater, corsRequest} from "src/utils/request";
+  import {dateFormat,datetimeFormat,timeFormat,toNowFormat} from "src/utils/format";
 
   function booleanFormat(value) {
     const color = value ? 'text-positive' : 'text-negative';
@@ -86,8 +83,8 @@
   }
 
   function listFormat(value) {
-    const warpClass = `class="col row items-center group q-input-chips"`;
-    const itemClass = `class="q-chip row no-wrap inline items-center small text-white bg-primary"`;
+    const warpClass = 'class="col row items-center group q-input-chips"';
+    const itemClass = 'class="q-chip row no-wrap inline items-center small text-white bg-primary"';
     const items = value.map(item => `<div ${itemClass}><div class="q-chip-main"> ${item} </div></div>`);
     return `<div ${warpClass}>${items.join('')}</div>`
   }
@@ -158,6 +155,15 @@
               break;
             case 'datetime':
               columns.push({...column,format:datetimeFormat,type:'string'});
+              break;
+            case 'date':
+              columns.push({...column,format:dateFormat,type:'string'});
+              break;
+            case 'time':
+              columns.push({...column,format:dateFormat,type:'string'});
+              break;
+            case 'tonow':
+              columns.push({...column,format:toNowFormat,type:'string'});
               break;
             case 'list':
               columns.push({...column,format:listFormat,type:'string'});
