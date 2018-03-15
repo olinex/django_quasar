@@ -4,9 +4,14 @@
 </template>
 
 <script>
+  import {routeName} from "../apps";
+
   export default {
     data() {
       return {}
+    },
+    methods: {
+      routeName
     }
   }
 </script>

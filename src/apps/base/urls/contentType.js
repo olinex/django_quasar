@@ -1,6 +1,6 @@
 const http = {
-  LIST_URL: () => `/base/content_type/`,
-  DETAIL_URL: (id) => `/base/content_type/${id}/`
+  LIST_URL: () => `/base/content-type/`,
+  DETAIL_URL: (id) => `/base/content-type/${id}/`
 };
 
 const socket = {};

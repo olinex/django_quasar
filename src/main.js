@@ -10,13 +10,13 @@ require(`quasar/dist/quasar.${__THEME}.css`);
 // require(`quasar/dist/quasar.ie`)
 // require(`quasar/dist/quasar.ie.${__THEME}.css`)
 
-import Vue from 'vue'
-import Vuelidate from 'vuelidate'
-import {ForeignKey,ManyToManyField, DictField} from './components/fields'
-import {BaseTable} from './components/tables'
-import {ButtonGroup} from './components/forms'
-import {StatesBreadcrumb} from './components/breadcrumbs'
-import {MessageCollapsible} from './components/collapsible'
+import Vue from "vue";
+import Vuelidate from "vuelidate";
+import {ForeignKey,ManyToManyField, DictField} from "./components/fields";
+import {BaseTable, HistoryTable} from "./components/tables";
+import {ButtonGroup} from "./components/forms";
+import {StatesBreadcrumb} from "./components/breadcrumbs";
+import {MessageCollapsible} from "./components/collapsible";
 import Quasar, {
   QLayout, QToolbar, QToolbarTitle, QSideLink,
   QList, QListHeader, QItem, QItemMain, QItemSide, QItemTile, QItemSeparator,
@@ -30,13 +30,24 @@ import Quasar, {
   QScrollArea,
   QDataTable,
   QStepper, QStep,
-  QSpinner, Toast
-} from 'quasar'
-import router from './router'
-import store from './stores'
-import hasPerm from './utils/has-perm'
-import SETTINGS from "./settings"
+  QSpinner, QInnerLoading, QSpinnerOval,
+  Toast
+} from "quasar";
+import router from "./router";
+import store from "./stores";
+import hasPerm from "./utils/has-perm";
+import SETTINGS from "./settings";
 
+if (__THEME === "mat") {
+  require("quasar-extras/roboto-font")
+}
+import "quasar-extras/material-icons"
+// import "quasar-extras/ionicons"
+// import "quasar-extras/fontawesome"
+import "quasar-extras/animate"
+
+
+//regist env settings
 Vue.config.productionTip = SETTINGS.DEBUG;
 Vue.prototype.$settings = SETTINGS;
 
@@ -47,6 +58,7 @@ Vue.component(ForeignKey.name,ForeignKey);
 Vue.component(ManyToManyField.name,ManyToManyField);
 Vue.component(DictField.name,DictField);
 Vue.component(BaseTable.name,BaseTable);
+Vue.component(HistoryTable.name,HistoryTable);
 Vue.component(StatesBreadcrumb.name,StatesBreadcrumb);
 Vue.component(ButtonGroup.name,ButtonGroup);
 Vue.component(MessageCollapsible.name,MessageCollapsible);
@@ -102,15 +114,8 @@ Vue.component(QDataTable.name,QDataTable);
 Vue.component(QStepper.name,QStepper);
 Vue.component(QStep.name,QStep);
 Vue.component(QSpinner.name,QSpinner);
-
-
-if (__THEME === 'mat') {
-  require('quasar-extras/roboto-font')
-}
-import 'quasar-extras/material-icons'
-// import 'quasar-extras/ionicons'
-// import 'quasar-extras/fontawesome'
-// import 'quasar-extras/animate'
+Vue.component(QInnerLoading.name,QInnerLoading);
+Vue.component(QSpinnerOval.name,QSpinnerOval);
 
 function title(verboseName) {
   if (verboseName) {
@@ -119,25 +124,27 @@ function title(verboseName) {
   return SETTINGS.PROJECT_NAME
 }
 
-Vue.directive('perm',{
+Vue.directive("perm",{
   update: function (el,binding) {
     if (!hasPerm(binding.value, store.state.user.permissions)) {
-      el.classList.add('hidden')
+      el.classList.add("hidden")
     } else {
-      el.classList.remove('hidden')
+      el.classList.remove("hidden")
     }
   }
 });
 
 // check all the permission of ther route
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(route => route.meta && hasPerm(route.meta.right, store.state.user.permissions))) {
-    store.commit('history/addRoute',to);
+  if (to.matched.every(route => route.meta && hasPerm(route.meta.right, store.state.user.permissions))) {
+    if (to.meta.link) {
+      store.commit("history/addRoute",to);
+    }
     document.title = title(to.meta.verboseName);
     next()
   } else {
-    document.title = title('401');
-    next({name: 'Error401'})
+    document.title = title("401");
+    next({name: "Error401"})
   }
 });
 
@@ -145,19 +152,21 @@ Quasar.start(async () => {
   /* eslint-disable no-new */
 
   //initial action
-  await store.dispatch('user/refreshAction');
+  await store.dispatch("user/refreshAction");
 
   await new Vue({
-    el: '#q-app',
+    el: "#q-app",
     router,
     store,
-    render: h => h(require('./App').default)
+    render: h => h(require("./App").default)
   });
 
+  // check the status of the user's authentications
+  // if user is logined,open web socket,otherwise redirect to login page
   if (store.state.user.login) {
-    await store.dispatch('user/socketToggleAction');
+    await store.dispatch("user/socketToggleAction");
   } else {
-    router.replace({name: 'Login'});
+    router.replace({name: "Login"});
     Toast.create.negative("authenticate failed")
   }
 });

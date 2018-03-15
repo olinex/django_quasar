@@ -48,20 +48,20 @@
     },
     methods: {
       clearAll() {
-        this.$store.commit('history/clearRoutes');
+        this.$store.commit("history/clearRoutes");
         this.$router.replace({name:this.$settings.MAIN_NAME})
       },
       clearOthers() {
-        this.$store.commit('history/clearRoutes');
-        this.$store.commit('history/addRoute',this.$route)
+        this.$store.commit("history/clearRoutes");
+        this.$store.commit("history/addRoute",this.$route)
       },
       closeHandler(route) {
-        this.$store.commit('history/removeRoute',route);
-        const next = (
-          (this.$store.state.history.routes && {...this.$store.state.history.routes[0]}) ||
-          {name:MAIN_NAME}
-          );
-        this.$router.replace(next)
+        this.$store.commit("history/removeRoute",route);
+        if (this.$store.state.history.routes.length !== 0) {
+          this.$router.replace({...this.$store.state.history.routes[0]})
+        } else {
+          this.$router.replace({name:this.$settings.MAIN_NAME})
+        }
       }
     },
     watch: {},

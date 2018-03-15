@@ -1,47 +1,35 @@
 <template>
   <foreign-key
     ref="province" :value="value" field="name" :helper="helper"
-    float-label="province" :request="getProvinceRequest"
-    @input="inputHandler($event)" :error="$v.province.$error"
-    :error-label="province_err" :color="color" :inverted="inverted"
+    :float-label="floatLabel" :request="getProvinceRequest"
+    @input="inputHandler($event)" :error="error" :error-label="errorLabel"
   />
 </template>
 
 <script>
-  import {mapErrorMessage} from "src/utils/error-messages"
-  import {countryLimitSearchRequest} from "../../services/province"
-  import {requiredIf,numeric,minValue} from 'vuelidate/lib/validators'
+  import {countryLimitSearchRequest} from "../../services/province";
 
   export default {
     name: "province",
     props: {
       value: {type: Number},
       helper: {type: String, required: true},
-      required: {type: Boolean, required: false},
       country: {type: String, required: false},
-      color: {type: String},
-      inverted: {type: Boolean, default: false}
-    },
-    data() {
-      return {
-        province: null
-      }
-    },
-    validations: {
-      province: {numeric,minValue:minValue(1),required:requiredIf(function () {
-          return this.$props.required
-        }),}
+      error: {type: Boolean, required: false},
+      errorLabel: {type: [String,Function], required: false},
+      floatLabel: {type: String, required: false}
     },
     computed: {
-      ...mapErrorMessage(['province']),
       getProvinceRequest() {
         return countryLimitSearchRequest(this.$props.country)
       }
     },
     methods: {
       inputHandler($event) {
-        this.province = $event;
-        this.$emit('input',$event)
+        this.$emit("input",$event)
+      },
+      blurHandler($event) {
+        this.$emit("blur", $event)
       },
       selected({value,label}) {
         this.$refs.province.selected({

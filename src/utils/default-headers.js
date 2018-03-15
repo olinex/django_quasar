@@ -1,5 +1,5 @@
-import { Cookies } from 'quasar'
-import {XSRFHEADERNAME,XSRFCOOKIENAME} from "src/settings"
+import { Cookies } from "quasar";
+import {XSRFHEADERNAME,XSRFCOOKIENAME} from "src/settings";
 
 export default function () {
   return {

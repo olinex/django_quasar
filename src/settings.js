@@ -1,28 +1,28 @@
 import PRIVATES from "src/privates";
 
 const INSTALLED_APPS = [
-  'apps/base',
-  'apps/product',
+  "apps/base",
+  "apps/product",
 ];
 
 // the status of the debug
-const DEBUG = process.env.NODE_ENV !== 'production';
+const DEBUG = process.env.NODE_ENV !== "production";
 
-const PROJECT_NAME = 'django quasar';
+const PROJECT_NAME = "django quasar";
 
 // the most import route: home and main
-const HOME_NAME = 'Home';
-const HOME_PATH = '/home';
-const MAIN_NAME = 'Main';
-const MAIN_PATH = '';
+const HOME_NAME = "Home";
+const HOME_PATH = "/home";
+const MAIN_NAME = "Main";
+const MAIN_PATH = "";
 
 // search param settings
-const PAGE_KEY = 'page';
-const PAGE_SIZE_KEY = 'page_size';
-const ORDERING_KEY = 'ordering';
+const PAGE_KEY = "page";
+const PAGE_SIZE_KEY = "page_size";
+const ORDERING_KEY = "ordering";
 
 const DEFAULT_PAGE_SIZE = 10;
-const REQUIRE_INPUT_COLOR = 'light-blue-3';
+const REQUIRE_INPUT_COLOR = "light-blue-3";
 
 // message levels of this framework
 const LEVELS = {
@@ -34,19 +34,19 @@ const LEVELS = {
 };
 
 // the name of the csrftoken cookie for request
-const XSRFCOOKIENAME = 'csrftoken';
+const XSRFCOOKIENAME = "csrftoken";
 
 // the name of the csrftoken header for request
-const XSRFHEADERNAME = 'X-CSRFToken';
+const XSRFHEADERNAME = "X-CSRFToken";
 
 // the level for framework to determine which log will be print
 const LOG_LEVEL = LEVELS.WARNING;
 
 // the http location of the server side for program
-const HTTP_HOST = DEBUG ? 'http://127.0.0.1:8000' : PRIVATES.HTTP;
+const HTTP_HOST = DEBUG ? "http://127.0.0.1:8000" : PRIVATES.HTTP;
 
 // the socket location for program
-const SOCKET_HOST = DEBUG ? 'ws://127.0.0.1:8000' : PRIVATES.SOCKET;
+const SOCKET_HOST = DEBUG ? "ws://127.0.0.1:8000" : PRIVATES.SOCKET;
 
 // the status of socket connections
 const SOCKET_STATUS = {

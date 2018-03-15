@@ -15,10 +15,10 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
-  import {Toast} from 'quasar'
-  import {mapErrorMessage} from "src/utils/error-messages"
-  import {minLength, maxLength} from 'vuelidate/lib/validators'
+  import {mapState} from "vuex";
+  import {Toast} from "quasar";
+  import {mapErrorMessage} from "src/utils/error-messages";
+  import {minLength, maxLength} from "vuelidate/lib/validators";
 
   export default {
     name: "chat-text-field",
@@ -34,9 +34,9 @@
       message: {minLength: minLength(5), maxLength: maxLength(256)}
     },
     computed: {
-      ...mapErrorMessage(['message']),
+      ...mapErrorMessage(["message"]),
       ...mapState(
-        'user',
+        "user",
         {socket: state => state.socket}
       )
     },
@@ -44,7 +44,7 @@
       async sendTalk() {
         if (!this.$v.message.$error) {
           const data = {
-            type: 'talk',
+            type: "talk",
             to_user: this.user_id,
             content: this.message,
           };
@@ -62,14 +62,14 @@
               create_time: new Date().toISOString(),
               readed: true
             };
-            this.$store.commit('user/addTalk', talk);
-            this.$store.commit('user/readUserTalks', this.user_id);
+            this.$store.commit("user/addTalk", talk);
+            this.$store.commit("user/readUserTalks", this.user_id);
             this.message = null
           } else {
-            Toast.create.negative('socket is missed,please connect again')
+            Toast.create.negative("socket is missed,please connect again")
           }
         } else {
-          Toast.create.negative('error message!')
+          Toast.create.negative("error message!")
         }
       }
     },

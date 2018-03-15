@@ -129,13 +129,11 @@
             this.$emit('input', [...this.$props.value, this.$store.state.user.id])
           }
           Toast.create.positive(response.data.detail)
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       },
       async sendMessage() {
         const response = await corsRequest({
-          url: `${this.$props.url}create_message/`,
+          url: `${this.$props.url}create-message/`,
           options: {
             method: 'POST',
             data: {title: this.title, text: this.text}
@@ -146,8 +144,6 @@
           this.title = '';
           this.text = '';
           Toast.create.positive(response.data.detail)
-        } else {
-          Toast.create.negative(response.data.detail)
         }
         this.$refs.messageCreate.close()
       }

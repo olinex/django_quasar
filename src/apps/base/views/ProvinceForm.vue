@@ -22,11 +22,15 @@
         </button-group>
         <div class="row">
           <!-- country -->
-          <country class="col-6" v-model="country" helper="required" required />
+          <country
+            float-label="country" class="col-6" v-model="country"
+            :error="$v.country.$error" @blur="$v.country.$touch"
+            :error-label="country_err" helper="required"
+          />
 
           <!-- name -->
           <q-field
-            class="col-6" :error="$v.name.$invalid"
+            class="col-6" :error="$v.name.$error"
             :error-label="name_err"
             helper="required"
           >
@@ -38,7 +42,7 @@
 
           <!-- sequence -->
           <q-field
-            class="col-6" :error="$v.sequence.$invalid"
+            class="col-6" :error="$v.sequence.$error"
             :error-label="sequence_err"
             helper="required"
           >
@@ -67,12 +71,12 @@
 </template>
 
 <script>
-  import {Toast} from 'quasar'
+  import {Toast} from "quasar"
   import {http} from "../urls/province"
   import {detailRequest,updateRequest} from "../services/province"
-  import {required,numeric,minValue} from 'vuelidate/lib/validators'
-  import {mapErrorMessage} from 'src/utils/error-messages'
-  import Country from '../components/fields/Country'
+  import {required,numeric,minValue} from "vuelidate/lib/validators"
+  import {mapErrorMessage} from "src/utils/error-messages"
+  import Country from "../components/fields/Country"
 
   export default {
     components: {Country},
@@ -84,22 +88,23 @@
     },
     data() {
       return {
-        name: '',
-        country: 'China',
+        name: "",
+        country: "China",
         is_draft: true,
         is_active: true,
         sequence: 0,
-        create_time: '',
-        last_modify_time: '',
+        create_time: "",
+        last_modify_time: "",
       }
     },
     validations: {
       name: {required},
+      country: {required},
       sequence: {required,numeric,minValue:minValue(0)}
     },
     computed: {
       ...mapErrorMessage([
-        'name','sequence'
+        "name", "country", "sequence"
       ]),
       url() {
         return http.LIST_URL()
@@ -119,8 +124,6 @@
         const response = await detailRequest(this.$props.id);
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.refresh(response.data)
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       },
       async update() {
@@ -133,8 +136,6 @@
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.refresh(response.data);
           Toast.create.positive("update successfully")
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       }
     }

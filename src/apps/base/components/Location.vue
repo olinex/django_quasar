@@ -26,8 +26,8 @@
 <script>
   import {
     minLength, numeric, requiredIf, required
-  } from 'vuelidate/lib/validators'
-  import {mapErrorMessage} from 'src/utils/error-messages'
+  } from "vuelidate/lib/validators";
+  import {mapErrorMessage} from "src/utils/error-messages";
   import {searchRequest as provinceRequest} from "../services/province";
   import {provinceLimitSearchRequest} from "../services/city";
   import {cityLimitSearchRequest} from "../services/region";
@@ -49,12 +49,12 @@
       province: {
         numeric,
         minLength: minLength(1),
-        requreidIf:requiredIf('city'),
+        requreidIf:requiredIf("city"),
       },
       city: {
         numeric,
         minLength: minLength(1),
-        requreidIf:requiredIf('region'),
+        requreidIf:requiredIf("region"),
       }
     },
     computed: {
@@ -68,15 +68,15 @@
         return cityLimitSearchRequest(this.city)
       },
       ...mapErrorMessage([
-        'province','city'
+        "province","city"
       ])
     },
     methods: {
       blurHandler() {
-        this.$emit('blur')
+        this.$emit("blur")
       },
       inputHandler($event) {
-        this.$emit('input',$event)
+        this.$emit("input",$event)
       },
       provinceSelected({label,value}) {
         this.$refs.province.selected({label, value})

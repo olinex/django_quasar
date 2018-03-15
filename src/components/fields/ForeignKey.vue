@@ -32,13 +32,13 @@
 </template>
 
 <script>
-  import {DEFAULT_PAGE_SIZE} from 'src/settings'
+  import {DEFAULT_PAGE_SIZE} from "src/settings";
 
   export default {
-    name: 'foreign-key',
+    name: "foreign-key",
     data() {
       return {
-        label: '',
+        label: "",
         more: false,
         page: 1,
         count: 0,
@@ -65,20 +65,22 @@
       inputHandler($event) {
         // handle the input event,pass the key value to the parent model
         this.label = $event;
-        const option = this.options.find(option => option.label === $event);
-        this.$emit('input', option && option.value)
+        const option = this.options.find(option => option[this.$props.field] === $event);
+        this.$emit("selection", option);
+        this.$emit("input", option && (option.id || option.pk))
       },
       blurHandler() {
         // bind the blur method with parent,untill the user lost focus to the field,
         // then valid the value
-        this.$emit('blur')
+        this.$emit("blur")
       },
       moreToggler() {
         this.more = !this.more
       },
       selectHandler(option) {
-        this.label = option.name;
-        this.$emit('input', option.id);
+        this.label = option[this.$props.field];
+        this.$emit("selection", option);
+        this.$emit("input", option.id || option.pk);
         this.moreToggler()
       },
       async getOptions({name, page}) {
@@ -105,7 +107,8 @@
       },
       selected(item) {
         this.label = item.label;
-        this.$emit('input', item.value)
+        this.$emit("selection", this.options.find(option => option[this.$props.field] === item.label));
+        this.$emit("input", item.value)
       }
     },
     watch: {

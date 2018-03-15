@@ -1,4 +1,4 @@
-import DefaultBackGround from './DefaultBackGround.vue'
+import DefaultBackGround from "./DefaultBackGround.vue";
 
 export {
   DefaultBackGround

@@ -14,7 +14,7 @@
         <div class="row">
           <!-- value -->
           <q-field
-            class="col-12" :error="$v.value.$invalid"
+            class="col-12" :error="$v.value.$error"
             :error-label="value_err"
             :helper="help_text"
           >
@@ -42,7 +42,7 @@
 
           <!-- sequence -->
           <q-field
-            class="col-6" :error="$v.sequence.$invalid"
+            class="col-6" :error="$v.sequence.$error"
             :error-label="sequence_err"
             helper="required"
           >
@@ -71,11 +71,11 @@
 </template>
 
 <script>
-  import {Toast} from 'quasar'
+  import {Toast} from "quasar"
   import {http} from "../urls/argument"
   import {detailRequest,updateRequest} from "../services/argument"
-  import {required,numeric,minValue} from 'vuelidate/lib/validators'
-  import {mapErrorMessage} from 'src/utils/error-messages'
+  import {required,numeric,minValue} from "vuelidate/lib/validators"
+  import {mapErrorMessage} from "src/utils/error-messages"
 
   export default {
     props: {
@@ -86,14 +86,13 @@
     },
     data() {
       return {
-        name: '',
+        name: "",
         form: null,
         value: true,
         help_text: true,
         sequence: 0,
-        create_time: '',
-        last_modify_time: '',
-        followers: []
+        create_time: "",
+        last_modify_time: "",
       }
     },
     validations: {
@@ -102,14 +101,11 @@
     },
     computed: {
       ...mapErrorMessage([
-        'value','sequence'
+        "value","sequence"
       ]),
       url() {
         return http.LIST_URL()
       },
-      detailUrl() {
-        return http.DETAIL_URL(this.$props.id)
-      }
     },
     methods: {
       refresh(data) {
@@ -120,14 +116,11 @@
         this.help_text = data.help_text;
         this.name = data.name;
         this.sequence = data.sequence;
-        this.followers = data.followers
       },
       async getData() {
         const response = await detailRequest(this.$props.id);
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.refresh(response.data)
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       },
       async update() {
@@ -139,8 +132,6 @@
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.refresh(response.data);
           Toast.create.positive("update successfully")
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       }
     }

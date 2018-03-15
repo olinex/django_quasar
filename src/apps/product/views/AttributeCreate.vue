@@ -2,7 +2,7 @@
   <div>
     <q-card>
       <q-card-title class="text-black">
-        city
+        attribute
         <span slot="subtitle">create</span>
       </q-card-title>
       <q-card-main>
@@ -14,7 +14,7 @@
         <div class="row">
           <!-- name -->
           <q-field
-            class="col-12" :error="$v.name.$invalid"
+            class="col-12" :error="$v.name.$error"
             :error-label="name_err"
             helper="required"
           >
@@ -26,7 +26,7 @@
 
           <!-- value -->
           <q-field
-            class="col-12" :error="$v.value.$invalid"
+            class="col-12" :error="$v.value.$error"
             :error-label="value_err"
             helper="required"
           >
@@ -38,7 +38,7 @@
 
           <!-- sequence -->
           <q-field
-            class="col-6" :error="$v.sequence.$invalid"
+            class="col-6" :error="$v.sequence.$error"
             :error-label="sequence_err"
             helper="required"
           >
@@ -55,15 +55,16 @@
 </template>
 
 <script>
-  import {Toast} from 'quasar'
+  import {Toast} from "quasar"
+  import {routeName} from "../apps";
   import {createRequest} from "../services/attribute"
-  import {required,numeric,minValue,minLength} from 'vuelidate/lib/validators'
-  import {mapErrorMessage} from 'src/utils/error-messages'
+  import {required,numeric,minValue,minLength} from "vuelidate/lib/validators"
+  import {mapErrorMessage} from "src/utils/error-messages"
 
   export default {
     data() {
       return {
-        name: '',
+        name: "",
         value: [],
         sequence: 0,
       }
@@ -75,7 +76,7 @@
     },
     computed: {
       ...mapErrorMessage([
-        'name','value','sequence'
+        "name","value","sequence"
       ])
     },
     methods: {
@@ -87,10 +88,8 @@
         });
         if (response.status === this.$settings.RESPONSE_STATUS.CREATED) {
           const id = response.data.id;
-          this.$router.push({name:'base:AttributeForm',params: {id}});
-          Toast.create.positive("update successfully")
-        } else {
-          Toast.create.negative(response.data.detail)
+          this.$router.push({name:routeName("AttributeForm"),params: {id}});
+          Toast.create.positive("create successfully")
         }
       }
     },

@@ -1,4 +1,4 @@
-import ChatModal from './ChatModal'
+import ChatModal from "./ChatModal";
 
 export {
   ChatModal

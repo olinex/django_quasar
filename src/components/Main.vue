@@ -5,7 +5,9 @@
         <q-icon name="menu"/>
       </q-btn>
       <q-toolbar-title>
-        django quasar
+        <router-link :to="{name:$settings.HOME_NAME}" class="text-white">
+          {{$settings.PROJECT_NAME}}
+        </router-link>
       </q-toolbar-title>
       <q-btn flat round small @click="fullScreenToggler">
         <q-icon :name="fullScreen ? 'fullscreen_exit' : 'fullscreen'"/>
@@ -37,6 +39,11 @@
           <q-item-side icon="settings"/>
           <q-item-main label="Settings"/>
         </q-side-link>
+
+        <q-side-link item :to="{name:'base:Help'}">
+          <q-item-side icon="help"/>
+          <q-item-main label="help"/>
+        </q-side-link>
       </q-list>
     </div>
     <history-breadcrumb/>
@@ -47,12 +54,12 @@
 </template>
 
 <script>
-  import {mapState, mapGetters} from 'vuex'
-  import {Toast,AppFullscreen} from 'quasar'
-  import {FixedButton} from './buttons'
-  import {HistoryBreadcrumb} from './breadcrumbs'
-  import {ChatModal} from './modals'
-  import {logoutRequest} from 'src/apps/base/services/user'
+  import {mapState, mapGetters} from "vuex";
+  import {Toast,AppFullscreen} from "quasar";
+  import {FixedButton} from "./buttons";
+  import {HistoryBreadcrumb} from "./breadcrumbs";
+  import {ChatModal} from "./modals";
+  import {logoutRequest} from "src/apps/base/services/user";
 
   export default {
     data() {
@@ -66,23 +73,21 @@
       HistoryBreadcrumb
     },
     computed: {
-      ...mapState('user', {
+      ...mapState("user", {
         talks: state => state.talks,
         avatar: state => state.avatar,
         allNewCount: state => state.talks.filter(talk => !talk.readed).length,
         newMessagesCount: state => state.new_messages_count
       }),
-      ...mapGetters('user',['fullName'])
+      ...mapGetters("user",["fullName"])
     },
     methods: {
       async logout() {
         const response = await logoutRequest();
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
-          this.$store.commit('user/clear');
-          this.$router.replace({name: 'Login'});
+          this.$store.commit("user/clear");
+          this.$router.replace({name: "Login"});
           Toast.create.positive(response.data.detail)
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       },
       fullScreenToggler() {

@@ -31,8 +31,8 @@
 </template>
 
 <script>
-  import {corsRequest} from "src/utils/request"
-  import {Toast} from "quasar"
+  import {corsRequest} from "src/utils/request";
+  import {Toast} from "quasar";
 
   export default {
     name: "button-group",
@@ -56,15 +56,13 @@
         const response = await corsRequest({
           url,
           options: {
-            method: 'PATCH',
+            method: "PATCH",
             data: {ids: [this.$props.id]}
           }
         });
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
-          await this.$emit('action');
+          await this.$emit("action");
           Toast.create.positive(response.data.detail)
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       },
       async deleteHandler() {
@@ -72,16 +70,14 @@
         const response = await corsRequest({
           url,
           options: {
-            method: 'PATCH',
+            method: "PATCH",
             data: {ids: [this.$props.id]}
           }
         });
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
-          this.$store.commit('history/removeRoute',this.$route);
+          this.$store.commit("history/removeRoute",this.$route);
           this.$router.go(-1);
           Toast.create.positive(response.data.detail)
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       }
     }

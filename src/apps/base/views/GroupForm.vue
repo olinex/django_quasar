@@ -19,7 +19,7 @@
         <div class="row">
           <!-- name -->
           <q-field
-            class="col-12" :error="$v.name.$invalid"
+            class="col-12" :error="$v.name.$error"
             :error-label="name_err"
             helper="required"
           >
@@ -42,13 +42,13 @@
 </template>
 
 <script>
-  import {Toast} from 'quasar'
-  import {http} from "../urls/group"
-  import {corsRequest} from "src/utils/request"
-  import {searchRequest} from "../services/permission"
-  import {detailRequest,updateRequest} from "../services/group"
-  import {required,minLength} from 'vuelidate/lib/validators'
-  import {mapErrorMessage} from 'src/utils/error-messages'
+  import {Toast} from "quasar";
+  import {http} from "../urls/group";
+  import {corsRequest} from "src/utils/request";
+  import {searchRequest} from "../services/permission";
+  import {detailRequest,updateRequest} from "../services/group";
+  import {required,minLength} from "vuelidate/lib/validators";
+  import {mapErrorMessage} from "src/utils/error-messages";
 
   export default {
     props: {
@@ -59,7 +59,7 @@
     },
     data() {
       return {
-        name: '',
+        name: "",
         permissions: []
       }
     },
@@ -68,7 +68,7 @@
     },
     computed: {
       ...mapErrorMessage([
-        'name'
+        "name"
       ]),
       url() {
         return http.LIST_URL()
@@ -86,8 +86,6 @@
         const response = await detailRequest(this.$props.id);
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.refresh(response.data)
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       },
       async update() {
@@ -99,8 +97,6 @@
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.refresh(response.data);
           Toast.create.positive("update successfully")
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       },
       async deleteHandler() {
@@ -108,16 +104,14 @@
         const response = await corsRequest({
           url,
           options: {
-            method: 'PATCH',
+            method: "PATCH",
             data: {ids: [this.$props.id]}
           }
         });
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
-          this.$store.commit('history/removeRoute',this.$route);
+          this.$store.commit("history/removeRoute",this.$route);
           this.$router.go(-1);
           Toast.create.positive(response.data.detail)
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       }
     }

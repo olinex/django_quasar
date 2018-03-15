@@ -1,4 +1,4 @@
-import MessageCollapsible from './MessageCollapsible'
+import MessageCollapsible from "./MessageCollapsible";
 
 export {
   MessageCollapsible

@@ -17,7 +17,7 @@
                 >
                   <q-item-main>
                     <q-item-tile label>
-                      {{ `${user.first_name || '*'} ${user.last_name || '*'}` }}
+                      {{ `${user.first_name || "*"} ${user.last_name || "*"}` }}
                     </q-item-tile>
                   </q-item-main>
                 </q-item>
@@ -52,10 +52,10 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex';
-  import {QChatMessage} from 'quasar';
+  import {mapState} from "vuex";
+  import {QChatMessage} from "quasar";
   import {timeFormat} from "src/utils/format";
-  import {ChatTextField} from 'src/components/fields';
+  import {ChatTextField} from "src/components/fields";
   import {onlineUserRequest} from "src/apps/base/services/user";
 
   export default {
@@ -70,7 +70,7 @@
       }
     },
     computed: mapState(
-      'user',
+      "user",
       {
         id: state => state.id,
         talkers: state => state.talkers,
@@ -91,26 +91,26 @@
         }
       },
       createTalker(user_id) {
-        this.$store.commit('user/addTalker',user_id);
+        this.$store.commit("user/addTalker",user_id);
         this.$refs.tabs.selectTab(user_id)
       },
       getUserName(user_id) {
         const user = this.users.find(user => user.id === user_id);
         if (user) {
-          return `${user.first_name || '*'} ${user.last_name || '*'}`
+          return `${user.first_name || "*"} ${user.last_name || "*"}`
         }
-        return 'unknown'
+        return "unknown"
       },
       readTalks(user_id) {
-        this.$store.commit('user/readUserTalks',user_id)
+        this.$store.commit("user/readUserTalks",user_id)
       },
       closeUserTalks(user_id) {
-        this.$store.commit('user/clearUserTalks',user_id);
-        this.$store.commit('user/removeTalker',user_id);
-        this.$refs.tabs.selectTab('users')
+        this.$store.commit("user/clearUserTalks",user_id);
+        this.$store.commit("user/removeTalker",user_id);
+        this.$refs.tabs.selectTab("users")
       },
       clearUserTalks(user_id) {
-        this.$store.commit('user/clearUserTalks',user_id)
+        this.$store.commit("user/clearUserTalks",user_id)
       }
     }
   }

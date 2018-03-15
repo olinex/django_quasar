@@ -4,50 +4,38 @@
     :value="value"
     field="name"
     :helper="helper"
-    float-label="city"
+    :float-label="floatLabel"
     :request="getCityRequest"
     @input="inputHandler($event)"
-    :error="$v.city.$error"
-    :error-label="city_err"
-    :color="color" :inverted="inverted"
+    :error="error"
+    :error-label="errorLabel"
   />
 </template>
 
 <script>
-  import {mapErrorMessage} from "src/utils/error-messages"
   import {provinceLimitSearchRequest} from "../../services/city"
-  import {requiredIf,numeric,minValue} from 'vuelidate/lib/validators'
 
   export default {
     name: "city",
     props: {
       value: {type: Number},
       helper: {type: String, required: true},
-      required: {type: Boolean, required: false},
       province: {type: Number, required: false},
-      color: {type: String},
-      inverted: {type: Boolean, default: false}
-    },
-    data() {
-      return {
-        city:null
-      }
-    },
-    validations: {
-      city: {numeric,minValue:minValue(1),required:requiredIf(function () {
-          return this.$props.required
-        }),}
+      error: {type: Boolean, required: false},
+      errorLabel: {type: [String,Function], required: false},
+      floatLabel: {type: String, required: false}
     },
     computed: {
-      ...mapErrorMessage(['city']),
       getCityRequest() {
         return provinceLimitSearchRequest(this.$props.province)
       }
     },
     methods: {
       inputHandler($event) {
-        this.city = $event;
-        this.$emit('input',$event)
+        this.$emit("input",$event)
+      },
+      blurHandler($event) {
+        this.$emit("blur", $event)
       },
       selected({value,label}) {
         this.$refs.city.selected({

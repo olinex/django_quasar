@@ -1,57 +1,39 @@
 <template>
   <q-field
-    :error="$v.country.$error"
-    :error-label="country_err"
+    :error="error"
+    :error-label="errorLabel"
     :helper="helper"
   >
     <q-select
-      :value="value" float-label="Country"
-      :filter="true" :autofocus-filter="true"
-      :options="options" @blur="$v.country.$touch"
-      @input="inputHandler($event)"
-      :color="color" :inverted="inverted"
+      :value="value" :float-label="floatLabel" filter autofocus-filter
+      :options="options" @blur="blurHandler($event)" @input="inputHandler($event)"
     />
   </q-field>
 </template>
 
 <script>
-  import {mapErrorMessage} from "src/utils/error-messages"
-  import {requiredIf, alpha} from 'vuelidate/lib/validators'
+  import {COUNTRIES} from "../../options";
 
   export default {
     name: "country",
     props: {
-      value: {type: Number},
+      value: {type: String},
       helper: {type: String, required: true},
-      required: {type: Boolean, required: false},
-      color: {type: String},
-      inverted: {type: Boolean, default: false}
-    },
-    validations: {
-      country: {
-        alpha, required: requiredIf(function () {
-          return this.$props.required
-        })
-      }
-    },
-    data() {
-      return {
-        country: 'China'
-      }
+      error: {type: Boolean, required: false},
+      errorLabel: {type: [String,Function], required: false},
+      floatLabel: {type: String, required: false}
     },
     computed: {
-      ...mapErrorMessage(['country']),
       options() {
-        return [
-          {value: 'China', label: 'China'},
-          {value: 'French', label: 'French'},
-        ]
+        return COUNTRIES
       }
     },
     methods: {
       inputHandler($event) {
-        this.country = $event;
-        this.$emit('input', $event)
+        this.$emit("input", $event)
+      },
+      blurHandler($event) {
+        this.$emit("blur", $event)
       }
     }
   }

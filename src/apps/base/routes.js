@@ -2,98 +2,115 @@ import {viewRoute, routeName} from "./apps";
 
 export default [
   viewRoute({
-    name: 'Base', path: '/base',
-    meta: {right: 'all', link: false, verboseName: 'base'},
-    redirect: {name: routeName('ProvinceList')},
+    name: "Base", path: "base",
+    meta: {right: "all", link: false, verboseName: "base"},
+    redirect: {name: routeName("ProvinceList")},
     children: [
       // province
       viewRoute({
-        name: 'ProvinceList', path: 'province',
-        meta: {right: 'all', link: true, verboseName: 'province list'},
+        name: "ProvinceList", path: "province",
+        meta: {right: "all", link: true, verboseName: "province list"},
       }),
       viewRoute({
-        name: 'ProvinceCreate', path: 'province/create',
-        meta: {right: 'all', link: true, verboseName: 'province create'},
+        name: "ProvinceCreate", path: "province/create",
+        meta: {right: "all", link: true, verboseName: "province create"},
       }),
       viewRoute({
-        name: 'ProvinceForm', path: 'province/:id', props: true,
-        meta: {right: 'all', link: true, verboseName: 'province form'},
+        name: "ProvinceForm", path: "province/:id", props: true,
+        meta: {right: "all", link: true, verboseName: "province form"},
       }),
 
       // city
       viewRoute({
-        name: 'CityList', path: 'city',
-        meta: {right: 'all', link: true, verboseName: 'city list'},
+        name: "CityList", path: "city",
+        meta: {right: "all", link: true, verboseName: "city list"},
       }),
       viewRoute({
-        name: 'CityCreate', path: 'city/create',
-        meta: {right: 'all', link: true, verboseName: 'city create'},
+        name: "CityCreate", path: "city/create",
+        meta: {right: "all", link: true, verboseName: "city create"},
       }),
       viewRoute({
-        name: 'CityForm', path: 'city/:id', props: true,
-        meta: {right: 'all', link: true, verboseName: 'city form'},
+        name: "CityForm", path: "city/:id", props: true,
+        meta: {right: "all", link: true, verboseName: "city form"},
       }),
 
       // region
       viewRoute({
-        name: 'RegionList', path: 'region',
-        meta: {right: 'all', link: true, verboseName: 'region list'},
+        name: "RegionList", path: "region",
+        meta: {right: "all", link: true, verboseName: "region list"},
       }),
       viewRoute({
-        name: 'RegionCreate', path: 'region/create',
-        meta: {right: 'all', link: true, verboseName: 'region create'},
+        name: "RegionCreate", path: "region/create",
+        meta: {right: "all", link: true, verboseName: "region create"},
       }),
       viewRoute({
-        name: 'RegionForm', path: 'region/:id', props: true,
-        meta: {right: 'all', link: true, verboseName: 'region form'},
+        name: "RegionForm", path: "region/:id", props: true,
+        meta: {right: "all", link: true, verboseName: "region form"},
       }),
 
       // argument
       viewRoute({
-        name: 'ArgumentList', path: 'argument',
-        meta: {right: 'all', link: true, verboseName: 'argument list'},
+        name: "ArgumentList", path: "argument",
+        meta: {right: "all", link: true, verboseName: "argument list"},
       }),
       viewRoute({
-        name: 'ArgumentForm', path: 'argument/:id', props: true,
-        meta: {right: 'all', link: true, verboseName: 'argument form'},
+        name: "ArgumentForm", path: "argument/:id", props: true,
+        meta: {right: "all", link: true, verboseName: "argument form"},
       }),
 
       // group
       viewRoute({
-        name: 'GroupList', path: 'group',
-        meta: {right: 'all', link: true, verboseName: 'group list'},
+        name: "GroupList", path: "group",
+        meta: {right: "all", link: true, verboseName: "group list"},
       }),
       viewRoute({
-        name: 'GroupCreate', path: 'group/create',
-        meta: {right: 'all', link: true, verboseName: 'group create'},
+        name: "GroupCreate", path: "group/create",
+        meta: {right: "all", link: true, verboseName: "group create"},
       }),
       viewRoute({
-        name: 'GroupForm', path: 'group/:id', props: true,
-        meta: {right: 'all', link: true, verboseName: 'group form'},
+        name: "GroupForm", path: "group/:id", props: true,
+        meta: {right: "all", link: true, verboseName: "group form"},
       }),
 
       // permission
       viewRoute({
-        name: 'PermissionList', path: 'permission',
-        meta: {right: 'all', link: true, verboseName: 'permission list'},
+        name: "PermissionList", path: "permission",
+        meta: {right: "all", link: true, verboseName: "permission list"},
       }),
 
       // content type
       viewRoute({
-        name: 'ContentTypeList', path: 'content-type',
-        meta: {right: 'all', link: true, verboseName: 'content type list'},
+        name: "ContentTypeList", path: "content-type",
+        meta: {right: "all", link: true, verboseName: "content type list"},
       }),
     ]
   }),
+  // help
+  viewRoute({
+    name: "Help", path: "help",
+    meta: {right: "all", link: false, verboseName: "help"},
+    redirect: {name: routeName("AboutUs")},
+    children: [
+      viewRoute({
+        name: "AboutUs", path: "about-us",
+        meta: {right: "all", link: true, verboseName: "about us"},
+      }),
+      viewRoute({
+        name: "Support", path: "support",
+        meta: {right: "all", link: true, verboseName: "support"},
+      }),
+    ]
+  }),
+
   // user
   viewRoute({
-    name: 'UserEdit', path: 'user',
-    meta: {right: 'all', link: true, verboseName: 'user edit'},
+    name: "UserEdit", path: "user",
+    meta: {right: "all", link: false, verboseName: "user edit"},
   }),
 
   // message
   viewRoute({
-    name: 'MessageList', path: 'message',
-    meta: {right: 'all', link: true, verboseName: 'message list'},
+    name: "MessageList", path: "message",
+    meta: {right: "all", link: false, verboseName: "message list"},
   }),
 ]

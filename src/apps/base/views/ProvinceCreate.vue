@@ -19,11 +19,15 @@
         </div>
         <div class="row">
           <!-- country -->
-          <country class="col-6" v-model="country" helper="required" required />
+          <country
+            float-label="country" class="col-6" v-model="country"
+            :error="$v.country.$error" @blur="$v.country.$touch"
+            :error-label="country_err" helper="required"
+          />
 
           <!-- name -->
           <q-field
-            class="col-6" :error="$v.name.$invalid"
+            class="col-6" :error="$v.name.$error"
             :error-label="name_err"
             helper="required"
           >
@@ -35,7 +39,7 @@
 
           <!-- sequence -->
           <q-field
-            class="col-6" :error="$v.sequence.$invalid"
+            class="col-6" :error="$v.sequence.$error"
             :error-label="sequence_err"
             helper="required"
           >
@@ -52,29 +56,30 @@
 </template>
 
 <script>
-  import {Toast} from 'quasar'
+  import {Toast} from "quasar"
   import {routeName} from "../apps";
   import {createRequest} from "../services/province"
-  import {required,numeric,minValue} from 'vuelidate/lib/validators'
-  import {mapErrorMessage} from 'src/utils/error-messages'
-  import Country from '../components/fields/Country'
+  import {required,numeric,minValue} from "vuelidate/lib/validators"
+  import {mapErrorMessage} from "src/utils/error-messages"
+  import Country from "../components/fields/Country"
 
   export default {
     components: {Country},
     data() {
       return {
-        name: '',
-        country: 'China',
+        name: "",
+        country: "China",
         sequence: 0,
       }
     },
     validations: {
       name: {required},
+      country: {required},
       sequence: {required,numeric,minValue:minValue(0)}
     },
     computed: {
       ...mapErrorMessage([
-        'name','sequence'
+        "name", "country", "sequence"
       ])
     },
     methods: {
@@ -86,10 +91,8 @@
         });
         if (response.status === this.$settings.RESPONSE_STATUS.CREATED) {
           const id = response.data.id;
-          this.$router.push({name:routeName('ProvinceForm'),params: {id}});
-          Toast.create.positive("update successfully")
-        } else {
-          Toast.create.negative(response.data.detail)
+          this.$router.push({name:routeName("ProvinceForm"),params: {id}});
+          Toast.create.positive("create successfully")
         }
       }
     },

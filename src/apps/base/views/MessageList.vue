@@ -13,7 +13,7 @@
       <q-item v-for="message in messages" :key="message.id">
         <q-item-side :avatar="message.creater__avatar">
           <q-item-tile label>
-            {{`${message.creater__first_name || '*'} ${message.creater__last_name || '*'}`}}
+            {{`${message.creater__first_name || "*"} ${message.creater__last_name || "*"}`}}
           </q-item-tile>
         </q-item-side>
         <q-item-main
@@ -38,9 +38,9 @@
 </template>
 
 <script>
-  import {http} from '../urls/message'
-  import {corsRequest} from "src/utils/request"
-  import goto from 'src/utils/goto'
+  import {http} from "../urls/message";
+  import {corsRequest} from "src/utils/request";
+  import goto from "src/utils/goto";
 
   export default {
     async mounted() {
@@ -55,7 +55,7 @@
       async refresh() {
         const response = await corsRequest({
           url: `${http.LIST_URL()}new/`,
-          options:{method:'GET'}
+          options:{method:"GET"}
         });
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.messages = response.data
@@ -64,21 +64,21 @@
       async remove(id) {
         const response = await corsRequest({
           url: `${http.DETAIL_URL(id)}remove/`,
-          options: {method:'PATCH'}
+          options: {method:"PATCH"}
         });
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.messages = this.messages.filter(message => message.id !== id)
-          this.$store.commit('user/decrNewMessagesCount')
+          this.$store.commit("user/decrNewMessagesCount")
         }
       },
       async clear() {
         const response = await corsRequest({
           url: `${http.LIST_URL()}clear/`,
-          options: {method:'PATCH'}
+          options: {method:"PATCH"}
         });
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.messages = []
-          this.$store.commit('user/setNewMessagesCount',0)
+          this.$store.commit("user/setNewMessagesCount",0)
         }
       },
       goto({content_type,object_id}) {

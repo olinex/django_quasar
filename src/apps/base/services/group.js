@@ -7,10 +7,10 @@ const searchRequest = async ({name, pageSize, page, ordering}) => {
     url: http.LIST_URL(),
     options: {
       params: {
-        [searchName.startswith('name')]: name,
+        [searchName.startswith("name")]: name,
         [searchName.pageSize]: pageSize || DEFAULT_PAGE_SIZE,
         [searchName.page]: page || 1,
-        [searchName.ordering]: ordering || '-id',
+        [searchName.ordering]: ordering || "-id",
       }
     }
   })
@@ -19,7 +19,7 @@ const searchRequest = async ({name, pageSize, page, ordering}) => {
 const detailRequest = async (id) => {
   return await corsRequest({
     url: http.DETAIL_URL(id),
-    options: {method: 'GET'}
+    options: {method: "GET"}
   })
 };
 
@@ -27,7 +27,7 @@ const updateRequest = async ({id,name,permissions}) => {
   return await corsRequest({
     url: http.DETAIL_URL(id),
     options: {
-      method: 'PATCH',
+      method: "PATCH",
       data: {
         name,permissions
       }
@@ -39,7 +39,7 @@ const createRequest = async ({name,permissions}) => {
   return await corsRequest({
     url: http.LIST_URL(),
     options: {
-      method: 'POST',
+      method: "POST",
       data: {
         name,permissions
       }

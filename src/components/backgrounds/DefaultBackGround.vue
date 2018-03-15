@@ -8,6 +8,6 @@
 
 <script>
   export default {
-    name: 'default-back-ground'
+    name: "default-back-ground"
   }
 </script>

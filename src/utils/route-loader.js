@@ -1,5 +1,5 @@
 function load (path) {
-  // '@' is aliased to src/components
+  // "@" is aliased to src/components
   return () => import(`src/${path}.vue`)
 }
 

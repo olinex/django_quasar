@@ -22,15 +22,18 @@
                  @click="printPDF(selection)">
             <i>PDF</i>
           </q-btn>
-          <q-btn v-if="confirm" small flat icon="done" color="primary"
+          <q-btn v-if="confirm && selection.rows.map(row => row.data).every(data => data.is_draft)"
+                 small flat icon="done" color="primary"
                  @click="actionHandler({action: 'confirm', rows:selection.rows})">
             <i>confirm</i>
           </q-btn>
-          <q-btn v-if="active" small flat icon="lock_open" color="primary"
+          <q-btn v-if="active && selection.rows.map(row => row.data).every(data => !data.is_active && !data.is_draft)"
+                 small flat icon="lock_open" color="primary"
                  @click="actionHandler({action: 'active', rows:selection.rows})">
             <i>active</i>
           </q-btn>
-          <q-btn v-if="lock" small flat icon="lock" color="warning"
+          <q-btn v-if="lock && selection.rows.map(row => row.data).every(data => data.is_active && !data.is_draft)"
+                 small flat icon="lock" color="warning"
                  @click="actionHandler({action: 'lock', rows:selection.rows})">
             <i>lock</i>
           </q-btn>
@@ -38,7 +41,8 @@
                  @click="actionHandler({action: 'cancel', rows:selection.rows})">
             <i>cancel</i>
           </q-btn>
-          <q-btn v-if="remove" small flat icon="delete" color="negative"
+          <q-btn v-if="remove && selection.rows.map(row => row.data).every(data => data.is_draft)"
+                 small flat icon="delete" color="negative"
                  @click="actionHandler({action: 'delete', rows:selection.rows})">
             <i>remove</i>
           </q-btn>
@@ -67,34 +71,22 @@
       />
       <q-pagination v-model="page" :max="maxPage"/>
     </div>
-
+    <q-inner-loading :visible="loading">
+      <q-spinner-oval size="50px" color="primary"/>
+    </q-inner-loading>
   </div>
 </template>
 
 <script>
-  import {Loading, Toast, date} from 'quasar';
+  import {Toast, date} from "quasar";
   import {listRequestCreater, corsRequest} from "src/utils/request";
-  import {dateFormat,datetimeFormat,timeFormat,toNowFormat} from "src/utils/format";
-
-  function booleanFormat(value) {
-    const color = value ? 'text-positive' : 'text-negative';
-    const icon = value ? 'check_circle' : 'cancel';
-    return `<i class="q-icon material-icons ${color}">${icon}</i>`
-  }
-
-  function listFormat(value) {
-    const warpClass = 'class="col row items-center group q-input-chips"';
-    const itemClass = 'class="q-chip row no-wrap inline items-center small text-white bg-primary"';
-    const items = value.map(item => `<div ${itemClass}><div class="q-chip-main"> ${item} </div></div>`);
-    return `<div ${warpClass}>${items.join('')}</div>`
-  }
-
-  function dictFormat(value) {
-    return listFormat(Object.entries(value).map(entry => `${entry.key}: ${entry.value}`))
-  }
+  import {
+    dateFormat, datetimeFormat, timeFormat,
+    toNowFormat, listFormat, dictFormat, booleanFormat
+  } from "src/utils/format";
 
   export default {
-    name: 'base-table',
+    name: "base-table",
     props: {
       title: {type: String, required: true},
       create: {type: String, required: false},
@@ -117,26 +109,26 @@
       return {
         loading: false, page: 1, count: 0, pageSize: 10,
         config: {
-          rowHeight: '50px',
+          rowHeight: "50px",
           title: this.$props.title,
           refresh: true,
           columnPicker: true,
-          selection: 'multiple',
+          selection: "multiple",
           messages: {
-            noData: '<i>warning !</i> No data available to show.',
-            noDataAfterFiltering: '<i>warning !</i> No results. Please refine your search terms.'
+            noData: "<i>warning !</i> No data available to show.",
+            noDataAfterFiltering: "<i>warning !</i> No results. Please refine your search terms."
           },
           labels: {
-            columns: 'columns',
-            allCols: 'allCols',
-            rows: 'rows',
+            columns: "columns",
+            allCols: "allCols",
+            rows: "rows",
             selected: {
-              singular: 'item selected.',
-              plural: 'items selected.'
+              singular: "item selected.",
+              plural: "items selected."
             },
-            clear: 'clear',
-            search: 'search',
-            all: 'all'
+            clear: "clear",
+            search: "search",
+            all: "all"
           }
         },
         data: []
@@ -150,26 +142,26 @@
         const columns = [];
         for (let column of this.$props.columns) {
           switch (column.type) {
-            case 'boolean':
+            case "boolean":
               columns.push({...column,format:booleanFormat});
               break;
-            case 'datetime':
-              columns.push({...column,format:datetimeFormat,type:'string'});
+            case "datetime":
+              columns.push({...column,format:datetimeFormat,type:"string"});
               break;
-            case 'date':
-              columns.push({...column,format:dateFormat,type:'string'});
+            case "date":
+              columns.push({...column,format:dateFormat,type:"string"});
               break;
-            case 'time':
-              columns.push({...column,format:dateFormat,type:'string'});
+            case "time":
+              columns.push({...column,format:timeFormat,type:"string"});
               break;
-            case 'tonow':
-              columns.push({...column,format:toNowFormat,type:'string'});
+            case "tonow":
+              columns.push({...column,format:toNowFormat,type:"string"});
               break;
-            case 'list':
-              columns.push({...column,format:listFormat,type:'string'});
+            case "list":
+              columns.push({...column,format:listFormat,type:"string"});
               break;
-            case 'dict':
-              columns.push({...column,format:dictFormat,type:'string'});
+            case "dict":
+              columns.push({...column,format:dictFormat,type:"string"});
               break;
             default:
               columns.push(column)
@@ -180,7 +172,7 @@
     },
     methods: {
       async getData({field, terms, page, pageSize, direct, ordering} = {}) {
-        Loading.show();
+        this.loading = true;
         const table = this.$refs.table;
         const request = listRequestCreater(this.$props.url);
         const response = await request({
@@ -198,14 +190,13 @@
           this.data = [];
           this.count = 0
         }
-        Loading.hide()
+        this.loading = false;
       },
       async refreshHandler(done) {
         await this.getData({});
         done()
       },
       selectHandler(count) {
-        console.log(count)
       },
       rowclickHandler(row) {
         if (this.$props.detail) {
@@ -220,15 +211,13 @@
         const response = await corsRequest({
           url,
           options: {
-            method: 'PATCH',
+            method: "PATCH",
             data: {ids: rows.map(row => row.data.id)}
           }
         });
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           await this.getData({});
           Toast.create.positive(response.data.detail)
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       }
     },

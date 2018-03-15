@@ -1,6 +1,6 @@
 import load from "src/utils/route-loader";
 
-const appName = 'base';
+const appName = "base";
 
 function routeName(name) {
   return `${appName}:${name}`

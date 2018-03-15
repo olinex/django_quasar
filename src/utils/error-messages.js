@@ -1,4 +1,4 @@
-import deepGetter from './deep-getter'
+import deepGetter from "./deep-getter";
 
 const errorMessages = {
   required(field) {
@@ -68,22 +68,22 @@ function getErrorMessage({validator,name}) {
   for (let value of Object.values(valid.$params)) {
     if (!valid[value.type]) {
       switch(value.type){
-        case 'minLength':
+        case "minLength":
           messages.push(errorMessages[value.type](name,value.min));
               break;
-        case 'maxLength':
+        case "maxLength":
           messages.push(errorMessages[value.type](name,value.max));
               break;
-        case 'minValue':
+        case "minValue":
           messages.push(errorMessages[value.type](name,value.min));
               break;
-        case 'maxValue':
+        case "maxValue":
           messages.push(errorMessages[value.type](name,value.max));
               break;
-        case 'between':
+        case "between":
           messages.push(errorMessages[value.type](name,value.min,value.max));
               break;
-        case 'sameAs':
+        case "sameAs":
           messages.push(errorMessages[value.type](name,value.eq));
               break;
         default:
@@ -91,13 +91,13 @@ function getErrorMessage({validator,name}) {
       }
     }
   }
-  return messages.join(',')
+  return messages.join(",")
 }
 
 function mapErrorMessage(names) {
   const map = {};
   for (let name of names) {
-    map[`${name.split('/').join('__')}_err`] = function () {
+    map[`${name.split("/").join("__")}_err`] = function () {
       return getErrorMessage({validator:this.$v, name})
     }
   }

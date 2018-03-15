@@ -8,10 +8,10 @@ const searchRequest = async ({province, name, pageSize, page, ordering}) => {
     options: {
       params: {
         province,
-        [searchName.startswith('name')]: name,
+        [searchName.startswith("name")]: name,
         [searchName.pageSize]: pageSize || DEFAULT_PAGE_SIZE,
         [searchName.page]: page || 1,
-        [searchName.ordering]: ordering || '-id',
+        [searchName.ordering]: ordering || "-id",
       }
     }
   })
@@ -28,7 +28,7 @@ const provinceLimitSearchRequest = (province) => {
 const detailRequest = async (id) => {
   return await corsRequest({
     url: http.DETAIL_URL(id),
-    options: {method: 'GET'}
+    options: {method: "GET"}
   })
 };
 
@@ -36,7 +36,7 @@ const updateRequest = async ({id,name,province,sequence}) => {
   return await corsRequest({
     url: http.DETAIL_URL(id),
     options: {
-      method: 'PATCH',
+      method: "PATCH",
       data: {
         name,province,sequence
       }
@@ -48,7 +48,7 @@ const createRequest = async ({name,province,sequence}) => {
   return await corsRequest({
     url: http.LIST_URL(),
     options: {
-      method: 'POST',
+      method: "POST",
       data: {
         name,province,sequence
       }

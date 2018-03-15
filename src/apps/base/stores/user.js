@@ -1,4 +1,4 @@
-import settings from 'src/settings';
+import settings from "src/settings";
 import {Toast} from "quasar";
 import {baseSocket} from "../services/user";
 import {refreshRequest} from "../services/user";
@@ -38,10 +38,10 @@ function initial() {
 
 function getColor(status) {
   switch (status) {
-    case 'success':
-      return 'positive';
-    case 'error':
-      return 'negative';
+    case "success":
+      return "positive";
+    case "error":
+      return "negative";
     default:
       return status
   }
@@ -49,8 +49,8 @@ function getColor(status) {
 
 function getIcon(status) {
   switch (status) {
-    case 'success':
-      return 'done';
+    case "success":
+      return "done";
     default:
       return status
   }
@@ -59,7 +59,7 @@ function getIcon(status) {
 const state = initial();
 
 const getters = {
-  fullName: state => `${state.first_name || '*'} ${state.last_name || '*'}`,
+  fullName: state => `${state.first_name || "*"} ${state.last_name || "*"}`,
   initialData: () => initial()
 };
 
@@ -141,41 +141,41 @@ const actions = {
   async refreshAction({commit}) {
     const response = await refreshRequest();
     if (response.status === settings.RESPONSE_STATUS.OK) {
-      commit('refresh', response.data);
-      commit('login');
+      commit("refresh", response.data);
+      commit("login");
     } else {
-      commit('clear')
+      commit("clear")
     }
   },
   async socketToggleAction({commit, state, dispatch}) {
     if (state.socket) {
       state.socket.close();
-      commit('leaveSocket')
+      commit("leaveSocket")
     } else {
       const socket = await baseSocket(
       async function(event) {
         const data = JSON.parse(event.data);
-        await dispatch('socketResponseAction',data);
+        await dispatch("socketResponseAction",data);
       }
       );
-      commit('joinSocket',socket)
+      commit("joinSocket",socket)
     }
   },
   socketResponseAction({commit,state},data) {
     const color = getColor(data.status);
     const icon = getIcon(data.status);
     switch (data.type) {
-      case 'talk':
-        commit('addTalk',data);
-        commit('addTalker',data.from_user_id);
+      case "talk":
+        commit("addTalk",data);
+        commit("addTalker",data.from_user_id);
         break;
-      case 'response':
+      case "response":
         Toast.create[color]({
           icon: icon,
           html: data.detail,
         });
         break;
-      case 'notice':
+      case "notice":
         // {user_id,username, avatar, type, detail, content, status, create_time}
         Toast.create.info({
           image: data.avatar,
@@ -183,8 +183,8 @@ const actions = {
           html: `NOTICE: ${data.username} ${data.content}`
         });
         break;
-      case 'message':
-        store.commit('setNewMessagesCount',data.count);
+      case "message":
+        store.commit("setNewMessagesCount",data.count);
         Toast.create.info({
           image: data.avatar,
           timeout: 6000,

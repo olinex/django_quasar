@@ -9,7 +9,7 @@
         <div class="row justify-center">
           <!-- first name -->
           <q-field
-            class="col-6" :error="$v.first_name.$invalid"
+            class="col-6" :error="$v.first_name.$error"
             :error-label="first_name_err"
             helper="length must greater than 1 and less than 3"
           >
@@ -17,7 +17,7 @@
           </q-field>
           <!-- last name -->
           <q-field
-            class="col-6" :error="$v.last_name.$invalid"
+            class="col-6" :error="$v.last_name.$error"
             :error-label="last_name_err"
             helper="length must greater than 1 and less than 13"
           >
@@ -25,7 +25,7 @@
           </q-field>
           <!-- emial -->
           <q-field
-            class="col-12" :error="$v.email.$invalid"
+            class="col-12" :error="$v.email.$error"
             :error-label="email_err"
             helper="email address"
           >
@@ -33,7 +33,7 @@
           </q-field>
           <!-- phone -->
           <q-field
-            class="col-12" :error="$v.phone.$invalid"
+            class="col-12" :error="$v.phone.$error"
             :error-label="phone_err"
             helper="phone number"
           >
@@ -47,12 +47,12 @@
             extensions=".gif,.jpg,.jpeg,.png"
           />
           <location
-            ref='location' v-model="region"
-            :error="$v.region.$invalid"
+            ref="location" v-model="region"
+            :error="$v.region.$error"
             :error_label="region_err"
           />
           <q-field
-            class="col-12" :error="$v.address.$invalid"
+            class="col-12" :error="$v.address.$error"
             :error-label="address_err"
             helper="address"
           >
@@ -71,7 +71,7 @@
         <div class="row justify-center">
           <!-- old password -->
           <q-field
-            class="col-12" :error="$v.old_password.$invalid"
+            class="col-12" :error="$v.old_password.$error"
             :error-label="old_password_err"
             helper="the last password user used to login"
           >
@@ -82,7 +82,7 @@
           </q-field>
           <!-- new password -->
           <q-field
-            class="col-6" :error="$v.password1.$invalid"
+            class="col-6" :error="$v.password1.$error"
             :error-label="password1_err"
             helper="the new password"
           >
@@ -93,7 +93,7 @@
           </q-field>
           <!-- new password repeat -->
           <q-field
-            class="col-6" :error="$v.password2.$invalid"
+            class="col-6" :error="$v.password2.$error"
             :error-label="password2_err"
             helper="repeat new password"
           >
@@ -112,15 +112,15 @@
 </template>
 
 <script>
-  import {Toast} from 'quasar'
-  import {mapErrorMessage} from 'src/utils/error-messages'
-  import {http} from "../urls/user"
-  import {passwordRequest, updateRequest} from '../services/user'
-  import Location from '../components/Location'
+  import {Toast} from "quasar";
+  import {mapErrorMessage} from "src/utils/error-messages";
+  import {http} from "../urls/user";
+  import {passwordRequest, updateRequest} from "../services/user";
+  import Location from "../components/Location";
   import {
     email, minLength, maxLength, numeric, requiredIf, sameAs, required
-  } from 'vuelidate/lib/validators'
-  import defaultHeader from 'src/utils/default-headers'
+  } from "vuelidate/lib/validators";
+  import defaultHeader from "src/utils/default-headers";
 
   export default {
     components: {Location},
@@ -147,9 +147,9 @@
         region: this.$store.state.user.region,
         address: this.$store.state.user.address,
         avatar: this.$store.state.user.avatar,
-        old_password: '',
-        password1: '',
-        password2: ''
+        old_password: "",
+        password1: "",
+        password2: ""
       }
     },
     validations: {
@@ -160,8 +160,8 @@
       region: {numeric, minLength: minLength(1)},
       address: {minLength: minLength(3), maxLength: maxLength(190)},
       old_password: {required, minLength: minLength(6)},
-      password1: {requiredIf: requiredIf('password2'), sameAs: sameAs('password2'), minLength: minLength(6)},
-      password2: {requiredIf: requiredIf('password1'), sameAs: sameAs('password1'), minLength: minLength(6)},
+      password1: {requiredIf: requiredIf("password2"), sameAs: sameAs("password2"), minLength: minLength(6)},
+      password2: {requiredIf: requiredIf("password1"), sameAs: sameAs("password1"), minLength: minLength(6)},
     },
     computed: {
       uploadUrl() {
@@ -171,9 +171,9 @@
         return defaultHeader()
       },
       ...mapErrorMessage([
-        'first_name', 'last_name', 'email', 'phone',
-        'region', 'address',
-        'old_password', 'password1', 'password2'
+        "first_name", "last_name", "email", "phone",
+        "region", "address",
+        "old_password", "password1", "password2"
       ]),
       passwordValid() {
         return (
@@ -193,9 +193,9 @@
     },
     methods: {
       clearPassowrd() {
-        this.old_password = '';
-        this.password1 = '';
-        this.password2 = ''
+        this.old_password = "";
+        this.password1 = "";
+        this.password2 = ""
       },
       async changePassword() {
         if (this.passwordValid) {
@@ -208,9 +208,7 @@
           });
           if (response.status === this.$settings.RESPONSE_STATUS.OK) {
             this.clearPassowrd();
-            Toast.create.positive('password changed successfully')
-          } else {
-            Toast.create.negative(response.data.detail)
+            Toast.create.positive("password changed successfully")
           }
         }
       },
@@ -229,10 +227,8 @@
             data
           );
           if (response.status === this.$settings.RESPONSE_STATUS.OK) {
-            this.$store.commit('user/refresh', data);
-            Toast.create.positive('user data changed successfully')
-          } else {
-            Toast.create.negative(response.data.detail)
+            this.$store.commit("user/refresh", data);
+            Toast.create.positive("user data changed successfully")
           }
         }
       }

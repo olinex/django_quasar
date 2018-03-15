@@ -14,7 +14,7 @@
         <div class="row">
           <!-- name -->
           <q-field
-            class="col-12" :error="$v.name.$invalid"
+            class="col-12" :error="$v.name.$error"
             :error-label="name_err"
             helper="required"
           >
@@ -36,17 +36,17 @@
 </template>
 
 <script>
-  import {Toast} from 'quasar'
+  import {Toast} from "quasar"
   import {routeName} from "../apps";
   import {createRequest} from "../services/group"
   import {searchRequest} from "../services/permission"
-  import {required} from 'vuelidate/lib/validators'
-  import {mapErrorMessage} from 'src/utils/error-messages'
+  import {required} from "vuelidate/lib/validators"
+  import {mapErrorMessage} from "src/utils/error-messages"
 
   export default {
     data() {
       return {
-        name: '',
+        name: "",
         permissions: []
       }
     },
@@ -54,7 +54,7 @@
       name: {required}
     },
     computed: {
-      ...mapErrorMessage(['name']),
+      ...mapErrorMessage(["name"]),
       permissionSearchRequest() {
         return searchRequest
       }
@@ -67,10 +67,8 @@
         });
         if (response.status === this.$settings.RESPONSE_STATUS.CREATED) {
           const id = response.data.id;
-          this.$router.push({name:routeName('GroupForm'),params: {id}});
-          Toast.create.positive("update successfully")
-        } else {
-          Toast.create.negative(response.data.detail)
+          this.$router.push({name:routeName("GroupForm"),params: {id}});
+          Toast.create.positive("create successfully")
         }
       }
     },

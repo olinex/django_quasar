@@ -1,5 +1,6 @@
-import BaseTable from './BaseTable'
+import BaseTable from "./BaseTable";
+import HistoryTable from "./HistoryTable";
 
 export {
-  BaseTable
+  BaseTable, HistoryTable
 }

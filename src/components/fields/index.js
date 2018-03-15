@@ -1,7 +1,7 @@
-import ChatTextField from './ChatTextField'
-import ForeignKey from './ForeignKey'
-import ManyToManyField from './ManyToManyField'
-import DictField from './DictField'
+import ChatTextField from "./ChatTextField";
+import ForeignKey from "./ForeignKey";
+import ManyToManyField from "./ManyToManyField";
+import DictField from "./DictField";
 
 export {
   ChatTextField,

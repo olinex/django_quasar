@@ -21,32 +21,32 @@
           </q-btn>
         </button-group>
         <div class="row">
+
           <!-- country -->
           <country
-            class="col-6"
+            float-label="country" class="col-6"
             v-model="city__province__country"
             helper="the country of the region"
           />
 
           <!-- province -->
           <province
-            ref="province"
-            class="col-6" v-model="city__province"
-            helper="the province of the region"
-            :country="city__province__country"
+            ref="province" class="col-6" v-model="city__province"
+            :error="$v.city__province.$error" :error-label="city__province_err"
+            float-label="province" @blur="$v.city__province.$touch"
+            helper="the province of the region" :country="city__province__country"
           />
 
           <!-- city -->
           <city
-            ref="city"
-            class="col-6" v-model="city"
-            helper="the city of the region"
-            :province="city__province"
+            ref="city" class="col-6" v-model="city"
+            :error="$v.city.$error" :error-label="city_err" float-label="city"
+            helper="the city of the region" :province="city__province" @blur="$v.city.$touch"
           />
 
           <!-- name -->
           <q-field
-            class="col-6" :error="$v.name.$invalid"
+            class="col-6" :error="$v.name.$error"
             :error-label="name_err"
             helper="required"
           >
@@ -58,7 +58,7 @@
 
           <!-- sequence -->
           <q-field
-            class="col-6" :error="$v.sequence.$invalid"
+            class="col-6" :error="$v.sequence.$error"
             :error-label="sequence_err"
             helper="required"
           >
@@ -87,11 +87,11 @@
 </template>
 
 <script>
-  import {Toast} from 'quasar'
+  import {Toast} from "quasar"
   import {http} from "../urls/region"
   import {detailRequest,updateRequest} from "../services/region"
-  import {required,numeric,minValue} from 'vuelidate/lib/validators'
-  import {mapErrorMessage} from 'src/utils/error-messages'
+  import {required,numeric,minValue} from "vuelidate/lib/validators"
+  import {mapErrorMessage} from "src/utils/error-messages"
   import Country from "../components/fields/Country"
   import Province from "../components/fields/Province"
   import City from "../components/fields/City"
@@ -106,26 +106,28 @@
     },
     data() {
       return {
-        name: '',
+        name: "",
         city: 0,
-        city__name: '',
+        city__name: "",
         city__province: 0,
-        city__province__country: '',
-        city__province__name: '',
+        city__province__country: "",
+        city__province__name: "",
         is_draft: true,
         is_active: true,
         sequence: 0,
-        create_time: '',
-        last_modify_time: ''
+        create_time: "",
+        last_modify_time: ""
       }
     },
     validations: {
       name: {required},
+      city__province: {required,numeric,minValue:minValue(0)},
+      city: {required,numeric,minValue:minValue(0)},
       sequence: {required,numeric,minValue:minValue(0)}
     },
     computed: {
       ...mapErrorMessage([
-        'name','sequence'
+        "name","province", "city", "sequence"
       ]),
       url() {
         return http.LIST_URL()
@@ -157,22 +159,18 @@
         const response = await detailRequest(this.$props.id);
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.refresh(response.data)
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       },
       async update() {
         const response = await updateRequest({
           id: this.$props.id,
           name: this.name,
-          province: this.province,
+          city: this.city,
           sequence: this.sequence
         });
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
           this.refresh(response.data);
           Toast.create.positive("update successfully")
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       }
     }

@@ -33,10 +33,10 @@
 </template>
 
 <script>
-  import {DefaultBackGround} from 'src/components/backgrounds'
-  import {HOME_NAME} from 'src/settings'
-  import {Toast} from 'quasar'
-  import {loginRequest} from '../services/user'
+  import {DefaultBackGround} from "src/components/backgrounds";
+  import {HOME_NAME} from "src/settings";
+  import {Toast} from "quasar";
+  import {loginRequest} from "../services/user";
 
   export default {
     components: {
@@ -44,20 +44,20 @@
     },
     data() {
       return {
-        username: '',
-        password: ''
+        username: "",
+        password: ""
       }
     },
     methods: {
       initial() {
-        this.username = '';
-        this.password = ''
+        this.username = "";
+        this.password = ""
       },
       async login() {
         const response = await loginRequest(this.$data);
         this.initial();
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
-          this.$store.commit('user/refresh', response.data);
+          this.$store.commit("user/refresh", response.data);
           this.$router.replace({name: HOME_NAME})
         } else {
           Toast.create.negative("invalid password or username")

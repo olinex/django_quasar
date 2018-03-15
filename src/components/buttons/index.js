@@ -1,4 +1,4 @@
-import FixedButton from './FixedButton'
+import FixedButton from "./FixedButton";
 
 export {
   FixedButton

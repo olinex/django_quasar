@@ -28,13 +28,13 @@
       getIcon(state) {
         if (state === this.$props.current) {
           if (this.isLast) {
-            return 'done'
+            return "done"
           }
-          return 'edit'
+          return "edit"
         } else if (this.currentIndex > this.$props.states.indexOf(state)) {
-          return 'done'
+          return "done"
         } else {
-          return 'pause'
+          return "pause"
         }
       },
     },

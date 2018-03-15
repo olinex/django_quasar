@@ -17,7 +17,7 @@
     props: {
       label: {type: String, required: true},
       value: {type: Array},
-      field: {type: String, default: 'name'},
+      field: {type: String, default: "name"},
       request: {type: Function, required: true}
     },
     async mounted() {
@@ -51,7 +51,7 @@
         }
       },
       inputHandler($event) {
-        this.$emit('input', $event)
+        this.$emit("input", $event)
       }
     }
   }

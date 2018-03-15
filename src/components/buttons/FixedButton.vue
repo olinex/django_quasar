@@ -21,14 +21,14 @@
 </template>
 
 <script>
-  import {Toast} from 'quasar'
-  import {mapState} from 'vuex'
-  import {onlineNoticeRequest,mailNoticeRequest} from "src/apps/base/services/user"
+  import {Toast} from "quasar";
+  import {mapState} from "vuex";
+  import {onlineNoticeRequest,mailNoticeRequest} from "src/apps/base/services/user";
 
   export default {
     name: "fixed-button",
     computed: mapState(
-      'user',
+      "user",
       {
         mail_notice: state => state.mail_notice,
         online_notice: state => state.online_notice,
@@ -39,27 +39,23 @@
       async mailNoticeTrigger() {
         const response = await mailNoticeRequest({mail_notice:!this.mail_notice});
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
-          this.$store.commit('user/mailNoticeToggle');
+          this.$store.commit("user/mailNoticeToggle");
           if (this.mail_notice) {
-            Toast.create.positive('mail notice on')
+            Toast.create.positive("mail notice on")
           } else {
-            Toast.create.positive('mail notice off')
+            Toast.create.positive("mail notice off")
           }
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       },
       async onlineNoticeTrigger() {
         const response = await onlineNoticeRequest({online_notice:!this.online_notice});
         if (response.status === this.$settings.RESPONSE_STATUS.OK) {
-          this.$store.commit('user/onlineNoticeToggle');
+          this.$store.commit("user/onlineNoticeToggle");
           if (this.online_notice) {
-            Toast.create.positive('online notice on')
+            Toast.create.positive("online notice on")
           } else {
-            Toast.create.positive('online notice off')
+            Toast.create.positive("online notice off")
           }
-        } else {
-          Toast.create.negative(response.data.detail)
         }
       }
     }
